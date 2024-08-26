@@ -1,16 +1,26 @@
 extends CharacterBody3D
 
-
-const SPEED = 1.5
-const MAX_MOVEMENT_SPEED = 50.0
-const JUMP_VELOCITY = 5.5
 const SENSITIVITY = 0.004
 
+const FALL_SPEED_MAX = 30
+const JUMP_VELOCITY = 4.5
+
+const TARGET_LERP = .9
+var WALK_SPEED = 15.0
+var acc_speed = 20.0
+
 var gravity = 9.8
-var movement := Vector3(0, 0, 0)
+
+var is_grappling = false
+
+var input_dir = Vector2.ZERO
+var direction = Vector3.ZERO
+
+var current_max_speed : float = WALK_SPEED
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
+@onready var camera_cast = $Head/Camera3D/camera_cast
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -22,71 +32,50 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		movement.y -= gravity * delta
-	else:
-		movement.y = 0.0
-
-	var moving_x = false
-	var moving_z = false
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("left", "right", "up", "down")
-	var input := Vector3(input_dir.x, 0, input_dir.y)
+	input_dir = Input.get_vector("left", "right", "up", "down")
+	direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
 	
-	if input.x:
-		moving_x = true
-		movement.x += input.x * SPEED
-		movement.x = clamp(movement.x, -MAX_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED)
-		
-	if input.z:
-		moving_z = true
-		movement.z += input.z * SPEED
-		movement.z = clamp(movement.z, -MAX_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED)
-		
-	if input.x and not input.z:
-		movement.z *= 0.80
-		
-	if input.z and not input.x:
-		movement.x *= 0.80
-	
-	# Handle jump.
+	var target_speed : Vector3 = direction * current_max_speed
 	var jumped = false
+	
 	if Input.is_action_pressed("jump") and is_on_floor():
 		jumped = true
-		movement *= 0.90
-		movement.y = JUMP_VELOCITY
+		if input_dir:
+			velocity *= 1.5
+		else:
+			velocity *= 0.9
+		velocity.y = JUMP_VELOCITY
 		
-	movement = transform.basis.normalize() * movement
-	var direction := movement
-	
-	if direction:
-		if input:
-			velocity.x = direction.x
-			velocity.z = direction.z
-		elif not jumped and is_on_floor():
-			velocity.x = 0.0
-			velocity.z = 0.0
-		elif jumped and is_on_floor():
-			velocity.x *= 0.90
-			velocity.z *= 0.90
-		
-		
-		#velocity.z = clamp(velocity.z, -MAX_SPEED, MAX_SPEED)
-		
+	# Add the gravity.
+	if not is_on_floor():
+		velocity.y -= gravity * delta
 	
 		
-		
+	if not input_dir and not jumped and is_on_floor():
+		target_speed.x = 0.0
+		target_speed.z = 0.0
+		velocity.x *= 0.5
+		velocity.z *= 0.5
 	
-	if not jumped and is_on_floor() and not moving_x:
-		movement.x *= 0.5
-	if not jumped and is_on_floor() and not moving_z:
-		movement.z *= 0.5
-
-	velocity.y = movement.y
+	#calculate dif between max and current speed
+	#ignore y axis
+	var speed_difference : Vector3 = target_speed - velocity
+	speed_difference.y = 0
+ 
+	#final force that will be applied to character
+	var movement = speed_difference * acc_speed
+	
+	if input_dir or (not jumped and is_on_floor()):
+		velocity = velocity + (movement) * delta
+	
+		#elif not jumped and is_on_floor():
+			#velocity.x = 0.0
+			#velocity.z = 0.0
+		#elif jumped and is_on_floor():
+			#velocity.x *= 0.90
+			#velocity.z *= 0.90
+			
 	move_and_slide()
 	
-	$Head/Camera3D/DebugLabel.text = "dvx:" + str(velocity.x) + "\ndvy:" + str(velocity.y) + "\ndvz:" + str(velocity.z) + "\ndx:" + str(movement.x) + "\ndy:" + str(movement.y) + "\ndz:" + str(movement.z)
+	$Head/Camera3D/DebugLabel.text = str(target_speed) + "\n " + str(velocity)
 	
