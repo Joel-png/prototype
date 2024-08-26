@@ -3,15 +3,19 @@ extends CharacterBody3D
 const SENSITIVITY = 0.004
 
 const FALL_SPEED_MAX = 30
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 10.0
 
-const TARGET_LERP = .9
+const TARGET_LERP = .7
 var WALK_SPEED = 15.0
-var acc_speed = 20.0
+var acc_speed = 10.0
 
-var gravity = 9.8
+var gravity = 9.8 * 3
 
 var is_grappling = false
+var grapple_hook_position = Vector3.ZERO
+const GRAPPLE_RAY_MAX = 100.0
+const GRAPPLE_FORCE_MAX = 55.0
+const GRAPPLE_MIN_DIST = 5.0
 
 var input_dir = Vector2.ZERO
 var direction = Vector3.ZERO
@@ -21,9 +25,12 @@ var current_max_speed : float = WALK_SPEED
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 @onready var camera_cast = $Head/Camera3D/camera_cast
+@onready var grapple_pivot = $GrapplePivot
+@onready var grapple_point = $Head/Camera3D/camera_cast/point_of_grapple
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
@@ -32,6 +39,30 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta: float) -> void:
+	# grapple
+	$Head/Camera3D/DebugLabel2.text = str((camera_cast.get_collision_point() - position).normalized())
+	var grapple_raycast_hit = camera_cast.get_collider()
+	if grapple_raycast_hit:
+		grapple_point.global_position = camera_cast.get_collision_point()
+	if Input.is_action_just_pressed("left_click"):
+		if grapple_raycast_hit:
+			grapple_hook_position = camera_cast.get_collision_point()
+			is_grappling = true
+		else:
+			is_grappling = false
+ 
+	if is_grappling && Input.is_action_pressed("left_click"):
+		grapple_pivot.look_at(grapple_hook_position)
+		var grapple_direction = (grapple_hook_position - position).normalized()
+		
+		if grapple_hook_position.distance_to(position) < GRAPPLE_MIN_DIST:
+			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX * grapple_hook_position.distance_to(position)/GRAPPLE_MIN_DIST
+			velocity = grapple_target_speed
+		else:
+			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX
+			velocity = grapple_target_speed
+	
+	# movement
 	input_dir = Input.get_vector("left", "right", "up", "down")
 	direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
 	
@@ -78,4 +109,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	$Head/Camera3D/DebugLabel.text = str(target_speed) + "\n " + str(velocity)
+	
 	
