@@ -22,11 +22,14 @@ var direction = Vector3.ZERO
 
 var current_max_speed : float = WALK_SPEED
 
-@onready var head = $Head
-@onready var camera = $Head/Camera3D
-@onready var camera_cast = $Head/Camera3D/camera_cast
-@onready var grapple_pivot = $GrapplePivot
-@onready var grapple_point = $Head/Camera3D/camera_cast/point_of_grapple
+@onready var head = $PlayerHead
+@onready var camera = $PlayerHead/Camera3D
+@onready var camera_cast = $PlayerHead/Camera3D/camera_cast
+@onready var grapple_pivot = $PlayerGrapplePivot
+@onready var grapple_point = $PlayerHead/Camera3D/camera_cast/point_of_grapple
+
+@onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
+@onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -40,7 +43,6 @@ func _unhandled_input(event):
 
 func _physics_process(delta: float) -> void:
 	# grapple
-	$Head/Camera3D/DebugLabel2.text = str((camera_cast.get_collision_point() - position).normalized())
 	var grapple_raycast_hit = camera_cast.get_collider()
 	if grapple_raycast_hit:
 		grapple_point.global_position = camera_cast.get_collision_point()
@@ -108,6 +110,6 @@ func _physics_process(delta: float) -> void:
 			
 	move_and_slide()
 	
-	$Head/Camera3D/DebugLabel.text = str(target_speed) + "\n " + str(velocity)
+	debug0.text = str(target_speed) + "\n " + str(velocity)
 	
 	
