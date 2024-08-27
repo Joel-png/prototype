@@ -8,6 +8,7 @@ const JUMP_VELOCITY = 10.0
 const TARGET_LERP = .7
 var WALK_SPEED = 15.0
 var acc_speed = 10.0
+var too_fast_slow_down = 0.90
 
 var gravity = 9.8 * 3
 
@@ -66,15 +67,15 @@ func _physics_process(delta: float) -> void:
 	
 	# movement
 	input_dir = Input.get_vector("left", "right", "up", "down")
-	direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
-	
+	direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+#	transform.basis * 
 	var target_speed : Vector3 = direction * current_max_speed
 	var jumped = false
 	
 	if Input.is_action_pressed("jump") and is_on_floor():
 		jumped = true
 		if input_dir:
-			velocity *= 1.5
+			velocity *= too_fast_slow_down
 		else:
 			velocity *= 0.9
 		velocity.y = JUMP_VELOCITY
@@ -92,24 +93,32 @@ func _physics_process(delta: float) -> void:
 	
 	#calculate dif between max and current speed
 	#ignore y axis
-	var speed_difference : Vector3 = target_speed - velocity
+	
+	var local_velocity = transform.basis.inverse() * velocity
+	
+	#only if bhopping or midair
+	if not (not jumped and is_on_floor()):
+		#keep velocity if velocity is higher than movement could make
+		if local_velocity.x < 0 and target_speed.x < 0 and local_velocity.x < -current_max_speed or local_velocity.x >= 0 and target_speed.x >= 0 and local_velocity.x > current_max_speed:
+				target_speed.x = local_velocity.x
+		if local_velocity.z < 0 and target_speed.z < 0 and local_velocity.z < -current_max_speed or local_velocity.z >= 0 and target_speed.z >= 0 and local_velocity.z > current_max_speed:
+				target_speed.z = local_velocity.z
+		
+		#keep velocity when using a key that doesnt interupt velocity
+		if input_dir.x == 0:
+			target_speed.x = local_velocity.x
+		if input_dir.y == 0:
+			target_speed.z = local_velocity.z
+	var speed_difference : Vector3 = target_speed - local_velocity
 	speed_difference.y = 0
  
 	#final force that will be applied to character
 	var movement = speed_difference * acc_speed
 	
 	if input_dir or (not jumped and is_on_floor()):
-		velocity = velocity + (movement) * delta
-	
-		#elif not jumped and is_on_floor():
-			#velocity.x = 0.0
-			#velocity.z = 0.0
-		#elif jumped and is_on_floor():
-			#velocity.x *= 0.90
-			#velocity.z *= 0.90
-			
+		velocity = velocity + (transform.basis * movement) * delta
 	move_and_slide()
 	
 	debug0.text = str(target_speed) + "\n " + str(velocity)
-	
+	debug1.text = str(local_velocity) + "\n" + str(target_speed)
 	
