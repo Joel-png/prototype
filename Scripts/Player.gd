@@ -3,14 +3,14 @@ extends CharacterBody3D
 const SENSITIVITY = 0.004
 
 const FALL_SPEED_MAX = 30
-const JUMP_VELOCITY = 10.0
+const JUMP_VELOCITY = 20.0
 
 const TARGET_LERP = .7
-var WALK_SPEED = 15.0
+var WALK_SPEED = 10.0
 var acc_speed = 10.0
 var too_fast_slow_down = 0.90
 
-var gravity = 9.8 * 3
+var gravity = 9.8 * 5
 
 var is_grappling = false
 var grapple_hook_position = Vector3.ZERO
@@ -23,18 +23,39 @@ var direction = Vector3.ZERO
 
 var current_max_speed : float = WALK_SPEED
 
+
+
 @onready var head = $PlayerHead
 @onready var camera = $PlayerHead/Camera3D
 @onready var camera_cast = $PlayerHead/Camera3D/camera_cast
 @onready var grapple_pivot = $PlayerGrapplePivot
-@onready var grapple_point = $PlayerHead/Camera3D/camera_cast/point_of_grapple
+
+#inventory
+@onready var inventory = $PlayerHead/Camera3D/Inventory
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
 
+var holdable: Holdable = null
+var grapple: Grapple = Grapple.new(self)
+var shotgun: Shotgun = Shotgun.new(self)
+var hotbar = [shotgun, grapple]
+var hotbar_length = hotbar.size()
+var hotbar_pressed = Array()
+var hotbar_selected = 0
+
+
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
+	for object in hotbar:
+		inventory.add_child(object.get_scene())
+	
+	select_holdable(hotbar[0])
+	hotbar_pressed.resize(hotbar_length)
+	hotbar_pressed.fill(false)
+	
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
@@ -43,27 +64,10 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta: float) -> void:
-	# grapple
-	var grapple_raycast_hit = camera_cast.get_collider()
-	if grapple_raycast_hit:
-		grapple_point.global_position = camera_cast.get_collision_point()
-	if Input.is_action_just_pressed("left_click"):
-		if grapple_raycast_hit:
-			grapple_hook_position = camera_cast.get_collision_point()
-			is_grappling = true
-		else:
-			is_grappling = false
- 
-	if is_grappling && Input.is_action_pressed("left_click"):
-		grapple_pivot.look_at(grapple_hook_position)
-		var grapple_direction = (grapple_hook_position - position).normalized()
-		
-		if grapple_hook_position.distance_to(position) < GRAPPLE_MIN_DIST:
-			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX * grapple_hook_position.distance_to(position)/GRAPPLE_MIN_DIST
-			velocity = grapple_target_speed
-		else:
-			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX
-			velocity = grapple_target_speed
+	
+	hotbar_logic()
+	
+	holdable.action()
 	
 	# movement
 	input_dir = Input.get_vector("left", "right", "up", "down")
@@ -120,5 +124,25 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	debug0.text = str(target_speed) + "\n " + str(velocity)
-	debug1.text = str(local_velocity) + "\n" + str(target_speed)
+	#debug1.text = str(local_velocity) + "\n" + str(target_speed)
 	
+func hotbar_logic():
+	var new_hotbar_selected = false
+	for i in range(hotbar_pressed.size()):
+		if Input.is_action_pressed(str(i+1)) and not hotbar_pressed[i]:
+			hotbar_pressed[i] = true
+			if hotbar_selected != i:
+				hotbar_selected = i
+				new_hotbar_selected = true
+		elif not Input.is_action_pressed(str(i+1)) and hotbar_pressed[i]:
+			hotbar_pressed[i] = false
+			
+	if new_hotbar_selected:
+		select_holdable(hotbar[hotbar_selected])
+		
+	
+func select_holdable(item_to_hold: Holdable):
+	if holdable:
+		holdable.deselect()
+	holdable = item_to_hold
+	holdable.select()

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2g0rqo5jkx7r"]
+
+[ext_resource type="Script" path="res://Scripts/Grapple.gd" id="1_4geut"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cwjq0"]
+
+[node name="Grapple" type="Node3D"]
+script = ExtResource("1_4geut")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.0893346, 0, 0, 0, 0.280227, 0, 0, 0, 0.512283, 0, 0, 0)
+mesh = SubResource("BoxMesh_cwjq0")

@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7a7od8pghued"]
+[gd_scene load_steps=3 format=3 uid="uid://b7a7od8pghued"]
+
+[ext_resource type="Script" path="res://Scripts/Shotgun.gd" id="1_fkpy2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_psf4i"]
 
 [node name="Node3D" type="Node3D"]
+transform = Transform3D(0.127165, 0, 0, 0, 0.355402, 0, 0, 0, 0.566637, 0, 0, 0)
+script = ExtResource("1_fkpy2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_psf4i")
