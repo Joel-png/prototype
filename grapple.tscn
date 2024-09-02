@@ -1,8 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://b2g0rqo5jkx7r"]
+[gd_scene load_steps=6 format=3 uid="uid://b2g0rqo5jkx7r"]
 
 [ext_resource type="Script" path="res://Scripts/Grapple.gd" id="1_4geut"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cwjq0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_na8j6"]
+cull_mode = 2
+albedo_color = Color(0.2156, 0.28666, 0.44, 1)
+metallic = 0.45
+metallic_specular = 1.0
+roughness = 0.22
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_jq7w7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vewh4"]
 
 [node name="Grapple" type="Node3D"]
 script = ExtResource("1_4geut")
@@ -10,3 +21,16 @@ script = ExtResource("1_4geut")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.0893346, 0, 0, 0, 0.280227, 0, 0, 0, 0.512283, 0, 0, 0)
 mesh = SubResource("BoxMesh_cwjq0")
+
+[node name="GrapplePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0863281, -0.254831)
+
+[node name="mesh" type="MeshInstance3D" parent="GrapplePoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0863282, -0.254831)
+top_level = true
+material_override = SubResource("StandardMaterial3D_na8j6")
+mesh = SubResource("ImmediateMesh_jq7w7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GrapplePoint"]
+transform = Transform3D(0.136618, 0, 0, 0, 0.136618, 0, 0, 0, 0.136618, 0, 0, 0)
+mesh = SubResource("BoxMesh_vewh4")

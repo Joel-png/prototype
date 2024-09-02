@@ -3,14 +3,14 @@ extends CharacterBody3D
 const SENSITIVITY = 0.004
 
 const FALL_SPEED_MAX = 30
-const JUMP_VELOCITY = 20.0
+const JUMP_VELOCITY = 15.0
 
 const TARGET_LERP = .7
 var WALK_SPEED = 10.0
 var acc_speed = 10.0
 var too_fast_slow_down = 0.90
 
-var gravity = 9.8 * 5
+var gravity = 9.8 * 4
 
 var is_grappling = false
 var grapple_hook_position = Vector3.ZERO
@@ -28,6 +28,7 @@ var current_max_speed : float = WALK_SPEED
 @onready var head = $PlayerHead
 @onready var camera = $PlayerHead/Camera3D
 @onready var camera_cast = $PlayerHead/Camera3D/camera_cast
+@onready var crosshair = $PlayerHead/Camera3D/Crosshair
 @onready var grapple_pivot = $PlayerGrapplePivot
 
 #inventory
@@ -125,6 +126,7 @@ func _physics_process(delta: float) -> void:
 	
 	debug0.text = str(target_speed) + "\n " + str(velocity)
 	#debug1.text = str(local_velocity) + "\n" + str(target_speed)
+	holdable.end_action()
 	
 func hotbar_logic():
 	var new_hotbar_selected = false

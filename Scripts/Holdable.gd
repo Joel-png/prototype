@@ -10,6 +10,9 @@ func _init(new_overseer):
 
 func action():
 	print("Action called on Holdable item")
+	
+func end_action():
+	print("Action called on Holdable item")
 
 func deselect():
 	scene.visible = false

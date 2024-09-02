@@ -1,7 +1,7 @@
 extends Holdable
 class_name Shotgun
 
-const SHOTGUN_FORCE = 35.0
+const SHOTGUN_FORCE = 50.0
 const SHOTGUN_FORCE_DIRECTION = Vector3(0, 0, 1)
 
 func _init(new_overseer):

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=5 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_i527r"]
+[ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -44,5 +45,7 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471426, -0.198471, -0.537794)
+
+[node name="Crosshair" parent="PlayerHead/Camera3D" instance=ExtResource("2_72jpy")]
 
 [node name="PlayerGrapplePivot" type="Node3D" parent="."]
