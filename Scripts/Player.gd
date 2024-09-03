@@ -48,6 +48,7 @@ var hotbar_selected = 0
 
 
 func _ready():
+	camera.current = is_multiplayer_authority()
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
 	for object in hotbar:
@@ -65,6 +66,8 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta: float) -> void:
+	if !is_multiplayer_authority():
+		return
 	
 	hotbar_logic()
 	
