@@ -71,7 +71,7 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * SENSITIVITY)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta):
 	is_player = is_multiplayer_authority()
 	
 	hotbar_logic()
@@ -137,16 +137,16 @@ func _physics_process(delta: float) -> void:
 	holdable.end_action()
 	
 func hotbar_logic():
-	for i in range(hotbar.size()):
-		if Input.is_action_pressed(str(i+1)):
-			if hotbar_to_select != i:
-				hotbar_to_select = i
+	if is_player:
+		for i in range(hotbar.size()):
+			if Input.is_action_pressed(str(i+1)):
+				if hotbar_to_select != i:
+					hotbar_to_select = i
 			
 	if hotbar_to_select != hotbar_selected:
 		select_holdable(hotbar[hotbar_to_select])
 		hotbar_selected = hotbar_to_select
 		
-	
 func select_holdable(item_to_hold: Holdable):
 	if holdable:
 		holdable.deselect()

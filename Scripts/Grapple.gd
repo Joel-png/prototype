@@ -1,8 +1,6 @@
 extends Holdable
 class_name Grapple
 
-var is_grappling = false
-var grapple_hook_position = Vector3.ZERO
 const GRAPPLE_RAY_MAX = 100.0
 const GRAPPLE_FORCE_MAX = 55.0
 const GRAPPLE_MIN_DIST = 2.0
@@ -35,28 +33,27 @@ func action():
 	
 	if Input.is_action_just_pressed("left_click"):
 		if grapple_raycast_hit:
-			grapple_hook_position = overseer.camera_cast.get_collision_point()
-			is_grappling = true
+			overseer.grapple_hook_position = overseer.camera_cast.get_collision_point()
+			overseer.is_grappling = true
 		else:
-			is_grappling = false
+			overseer.is_grappling = false
  
-	if is_grappling and Input.is_action_pressed("left_click"):
-		overseer.grapple_pivot.look_at(grapple_hook_position)
-		var grapple_direction = (grapple_hook_position - overseer.position).normalized()
+	if overseer.is_grappling and Input.is_action_pressed("left_click"):
+		overseer.grapple_pivot.look_at(overseer.grapple_hook_position)
+		var grapple_direction = (overseer.grapple_hook_position - overseer.position).normalized()
 		
-		if grapple_hook_position.distance_to(overseer.position) < GRAPPLE_MIN_DIST:
-			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX * max(0, grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
+		if overseer.grapple_hook_position.distance_to(overseer.position) < GRAPPLE_MIN_DIST:
+			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX * max(0, overseer.grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
 			overseer.velocity = grapple_target_speed
 		else:
 			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX
 			overseer.velocity = grapple_target_speed
 			
-	if is_grappling and not Input.is_action_pressed("left_click"):
-		is_grappling = false
+	if overseer.is_grappling and not Input.is_action_pressed("left_click"):
+		overseer.is_grappling = false
 
 func end_action():
-	overseer.debug1.text = str(is_grappling)
-	if is_grappling:
+	if overseer.is_grappling:
 		create_rope_mesh()
 		grapple_mesh.visible = true
 	else:
@@ -79,7 +76,7 @@ func crosshair_info(ray_hit):
 func create_rope_mesh():
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
-	points.append(grapple_hook_position - grapple_point.position)
+	points.append(overseer.grapple_hook_position - grapple_point.position)
 	
 	vertex_array.clear()
 	
@@ -143,7 +140,7 @@ func create_rope_mesh():
 func calculate_rope_normal():
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
-	points.append(grapple_hook_position - grapple_point.position)
+	points.append(overseer.grapple_hook_position - grapple_point.position)
 	
 	normal_array.clear()
 	tangent_array.clear()
