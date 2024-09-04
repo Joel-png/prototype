@@ -29,6 +29,7 @@ properties/5/spawn = true
 properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
 script = ExtResource("1_i527r")
 
 [node name="PlayerMesh3D" type="MeshInstance3D" parent="."]
@@ -72,3 +73,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471426, -0.198471, -0.53779
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_504ej")
+
+[node name="HoldableSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")

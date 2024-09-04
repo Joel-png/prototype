@@ -20,11 +20,14 @@ var grapple_mesh
 var mesh = ImmediateMesh.new()
 
 func _init(new_overseer):
+	scene_to_set = "res://grapple.tscn"
 	super._init(new_overseer)
-	scene = load("res://grapple.tscn").instantiate()
-	grapple_point = scene.get_node("GrapplePoint")
-	grapple_mesh = scene.get_node("GrapplePoint/mesh")
-	scene.visible = false
+	if scene:
+		grapple_point = scene.get_node("GrapplePoint")
+		grapple_mesh = scene.get_node("GrapplePoint/mesh")
+		scene.visible = false
+	else:
+		queue_free()
 	
 
 func action():

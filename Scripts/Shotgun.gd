@@ -5,10 +5,12 @@ const SHOTGUN_FORCE = 50.0
 const SHOTGUN_FORCE_DIRECTION = Vector3(0, 0, 1)
 
 func _init(new_overseer):
+	scene_to_set = "res://shotgun.tscn"
 	super._init(new_overseer)
-	
-	scene = load("res://shotgun.tscn").instantiate()
-	scene.visible = false
+	if scene:
+		scene.visible = false
+	else:
+		queue_free()
 	
 func action():
 	if Input.is_action_just_pressed("left_click"):

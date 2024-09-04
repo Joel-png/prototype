@@ -15,6 +15,7 @@ func spawn_player(data):
 	p.set_multiplayer_authority(data)
 	print(data)
 	players[data] = p
+	#players[data].collision_mask = players.size()
 	return p
 	
 func remove_player(data):

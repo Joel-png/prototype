@@ -33,6 +33,7 @@ var current_max_speed : float = WALK_SPEED
 
 #inventory
 @onready var inventory = $PlayerHead/Camera3D/Inventory
+@onready var holdable_spawner = $HoldableSpawner
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
@@ -45,18 +46,20 @@ var hotbar_length = hotbar.size()
 var hotbar_selected = 0
 var hotbar_to_select = 0
 var is_player
+var is_focus = true
 
 
 func _ready():
+	holdable_spawner.spawn_function = spawn_holdable
 	grapple = Grapple.new(self)
 	shotgun = Shotgun.new(self)
-	hotbar = [shotgun, grapple]
+	hotbar = [shotgun.get_self(), grapple.get_self()]
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
-	for object in hotbar:
-		inventory.add_child(object.get_scene())
+	#for object in hotbar:
+		#inventory.add_child(object)
 	
 	select_holdable(hotbar[0])
 	
@@ -66,10 +69,11 @@ func _ready():
 	
 	
 func _unhandled_input(event):
-	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * SENSITIVITY)
-		camera.rotate_x(-event.relative.y * SENSITIVITY)
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	if is_focus:
+		if event is InputEventMouseMotion:
+			rotate_y(-event.relative.x * SENSITIVITY)
+			camera.rotate_x(-event.relative.y * SENSITIVITY)
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta):
 	is_player = is_multiplayer_authority()
@@ -77,6 +81,14 @@ func _physics_process(delta):
 	hotbar_logic()
 	
 	if is_player:
+		if Input.is_action_just_pressed("Escape"):
+			if is_focus:
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+				is_focus = false
+			else:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				is_focus = true
+			
 		holdable.action()
 		# movement
 		input_dir = Input.get_vector("left", "right", "up", "down")
@@ -152,3 +164,8 @@ func select_holdable(item_to_hold: Holdable):
 		holdable.deselect()
 	holdable = item_to_hold
 	holdable.select()
+	
+func spawn_holdable(data):
+	var h = (load(data) as PackedScene).instantiate()
+	print(data)
+	return h
