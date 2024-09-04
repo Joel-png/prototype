@@ -4,6 +4,9 @@ extends Control
 var crosshair_text_timer = 0.0
 var crosshair_text_countdown = 0.2
 
+func _ready():
+	if !is_multiplayer_authority():
+		hide()
 
 func _process(delta):
 	crosshair_text_timer -= delta

@@ -38,25 +38,31 @@ var current_max_speed : float = WALK_SPEED
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
 
 var holdable: Holdable = null
-var grapple: Grapple = Grapple.new(self)
-var shotgun: Shotgun = Shotgun.new(self)
-var hotbar = [shotgun, grapple]
+var grapple: Grapple
+var shotgun: Shotgun
+var hotbar = []
 var hotbar_length = hotbar.size()
-var hotbar_pressed = Array()
 var hotbar_selected = 0
-
+var hotbar_to_select = 0
+var is_player
 
 
 func _ready():
-	camera.current = is_multiplayer_authority()
+	grapple = Grapple.new(self)
+	shotgun = Shotgun.new(self)
+	hotbar = [shotgun, grapple]
+	is_player = is_multiplayer_authority()
+	camera.current = is_player
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
 	for object in hotbar:
 		inventory.add_child(object.get_scene())
 	
 	select_holdable(hotbar[0])
-	hotbar_pressed.resize(hotbar_length)
-	hotbar_pressed.fill(false)
+	
+	if !is_player:
+		debug0.hide()
+		#debug1.hide()
 	
 	
 func _unhandled_input(event):
@@ -66,84 +72,79 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 func _physics_process(delta: float) -> void:
-	if !is_multiplayer_authority():
-		return
+	is_player = is_multiplayer_authority()
 	
 	hotbar_logic()
 	
-	holdable.action()
-	
-	# movement
-	input_dir = Input.get_vector("left", "right", "up", "down")
-	direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
-#	transform.basis * 
-	var target_speed : Vector3 = direction * current_max_speed
-	var jumped = false
-	
-	if Input.is_action_pressed("jump") and is_on_floor():
-		jumped = true
-		if input_dir:
-			velocity *= too_fast_slow_down
-		else:
-			velocity *= 0.9
-		velocity.y = JUMP_VELOCITY
+	if is_player:
+		holdable.action()
+		# movement
+		input_dir = Input.get_vector("left", "right", "up", "down")
+		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+	#	transform.basis * 
+		var target_speed : Vector3 = direction * current_max_speed
+		var jumped = false
 		
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-	
+		if Input.is_action_pressed("jump") and is_on_floor():
+			jumped = true
+			if input_dir:
+				velocity *= too_fast_slow_down
+			else:
+				velocity *= 0.9
+			velocity.y = JUMP_VELOCITY
+			
+		# Add the gravity.
+		if not is_on_floor():
+			velocity.y -= gravity * delta
 		
-	if not input_dir and not jumped and is_on_floor():
-		target_speed.x = 0.0
-		target_speed.z = 0.0
-		velocity.x *= 0.5
-		velocity.z *= 0.5
-	
-	#calculate dif between max and current speed
-	#ignore y axis
-	
-	var local_velocity = transform.basis.inverse() * velocity
-	
-	#only if bhopping or midair
-	if not (not jumped and is_on_floor()):
-		#keep velocity if velocity is higher than movement could make
-		if local_velocity.x < 0 and target_speed.x < 0 and local_velocity.x < -current_max_speed or local_velocity.x >= 0 and target_speed.x >= 0 and local_velocity.x > current_max_speed:
+			
+		if not input_dir and not jumped and is_on_floor():
+			target_speed.x = 0.0
+			target_speed.z = 0.0
+			velocity.x *= 0.5
+			velocity.z *= 0.5
+		
+		#calculate dif between max and current speed
+		#ignore y axis
+		
+		var local_velocity = transform.basis.inverse() * velocity
+		
+		#only if bhopping or midair
+		if not (not jumped and is_on_floor()):
+			#keep velocity if velocity is higher than movement could make
+			if local_velocity.x < 0 and target_speed.x < 0 and local_velocity.x < -current_max_speed or local_velocity.x >= 0 and target_speed.x >= 0 and local_velocity.x > current_max_speed:
+					target_speed.x = local_velocity.x
+			if local_velocity.z < 0 and target_speed.z < 0 and local_velocity.z < -current_max_speed or local_velocity.z >= 0 and target_speed.z >= 0 and local_velocity.z > current_max_speed:
+					target_speed.z = local_velocity.z
+			
+			#keep velocity when using a key that doesnt interupt velocity
+			if input_dir.x == 0:
 				target_speed.x = local_velocity.x
-		if local_velocity.z < 0 and target_speed.z < 0 and local_velocity.z < -current_max_speed or local_velocity.z >= 0 and target_speed.z >= 0 and local_velocity.z > current_max_speed:
+			if input_dir.y == 0:
 				target_speed.z = local_velocity.z
+		var speed_difference : Vector3 = target_speed - local_velocity
+		speed_difference.y = 0
+	 
+		#final force that will be applied to character
+		var movement = speed_difference * acc_speed
 		
-		#keep velocity when using a key that doesnt interupt velocity
-		if input_dir.x == 0:
-			target_speed.x = local_velocity.x
-		if input_dir.y == 0:
-			target_speed.z = local_velocity.z
-	var speed_difference : Vector3 = target_speed - local_velocity
-	speed_difference.y = 0
- 
-	#final force that will be applied to character
-	var movement = speed_difference * acc_speed
-	
-	if input_dir or (not jumped and is_on_floor()):
-		velocity = velocity + (transform.basis * movement) * delta
-	move_and_slide()
-	
-	debug0.text = str(target_speed) + "\n " + str(velocity)
-	#debug1.text = str(local_velocity) + "\n" + str(target_speed)
+		if input_dir or (not jumped and is_on_floor()):
+			velocity = velocity + (transform.basis * movement) * delta
+		move_and_slide()
+		
+		debug0.text = str(target_speed) + "\n " + str(velocity)
+		#debug1.text = str(local_velocity) + "\n" + str(target_speed)
 	holdable.end_action()
 	
 func hotbar_logic():
-	var new_hotbar_selected = false
-	for i in range(hotbar_pressed.size()):
-		if Input.is_action_pressed(str(i+1)) and not hotbar_pressed[i]:
-			hotbar_pressed[i] = true
-			if hotbar_selected != i:
-				hotbar_selected = i
-				new_hotbar_selected = true
-		elif not Input.is_action_pressed(str(i+1)) and hotbar_pressed[i]:
-			hotbar_pressed[i] = false
+	for i in range(hotbar.size()):
+		if Input.is_action_pressed(str(i+1)):
+			if hotbar_to_select != i:
+				hotbar_to_select = i
 			
-	if new_hotbar_selected:
-		select_holdable(hotbar[hotbar_selected])
+	if hotbar_to_select != hotbar_selected:
+		select_holdable(hotbar[hotbar_to_select])
+		hotbar_selected = hotbar_to_select
 		
 	
 func select_holdable(item_to_hold: Holdable):

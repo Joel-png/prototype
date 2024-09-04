@@ -22,6 +22,18 @@ offset_bottom = 142.0
 text = "Refresh"
 metadata/_edit_use_anchors_ = true
 
+[node name="Host local" type="Button" parent="."]
+offset_top = 185.0
+offset_right = 132.0
+offset_bottom = 256.0
+text = "Host local"
+
+[node name="Join local" type="Button" parent="."]
+offset_top = 256.0
+offset_right = 132.0
+offset_bottom = 327.0
+text = "Join local"
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../Level")
 
@@ -37,3 +49,5 @@ layout_mode = 2
 
 [connection signal="pressed" from="Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="Refresh" to="." method="_on_refresh_pressed"]
+[connection signal="pressed" from="Host local" to="." method="_on_host_local_pressed"]
+[connection signal="pressed" from="Join local" to="." method="_on_join_local_pressed"]

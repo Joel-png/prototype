@@ -1,5 +1,7 @@
 extends Node3D
 
+var PORT = 9999
+var enet_peer = ENetMultiplayerPeer.new()
 var lobby_id = 0
 var peer = SteamMultiplayerPeer.new()
 
@@ -16,22 +18,17 @@ func spawn_level(data):
 	var a = (load(data) as PackedScene).instantiate()
 	return a
 	
-func _on_host_pressed() -> void:
+func _on_host_pressed():
 	peer.create_lobby(SteamMultiplayerPeer.LOBBY_TYPE_PUBLIC)
 	multiplayer.multiplayer_peer = peer
 	multiplayer_spawner.spawn("res://world.tscn")
-	$Host.hide()
-	$Refresh.hide()
-	$LobbyContainer/Lobbies.hide()
+	hide_menu()
 	
 func join_lobby(id):
 	peer.connect_lobby(id)
 	multiplayer.multiplayer_peer = peer
 	lobby_id = id
-	print(lobby_id)
-	$Host.hide()
-	$Refresh.hide()
-	$LobbyContainer/Lobbies.hide()
+	hide_menu()
 	
 func _on_lobby_created(connect, id):
 	if connect:
@@ -64,3 +61,24 @@ func _on_refresh_pressed():
 		for n in $LobbyContainer/Lobbies.get_children():
 			n.queue_free()
 	open_lobby_list()
+
+
+func _on_host_local_pressed():
+	enet_peer.create_server(PORT)
+	multiplayer.multiplayer_peer = enet_peer
+	multiplayer_spawner.spawn("res://world.tscn")
+	hide_menu()
+
+
+func _on_join_local_pressed() -> void:
+	enet_peer.create_client("localhost", PORT)
+	multiplayer.multiplayer_peer = enet_peer
+	
+	hide_menu()
+	
+func hide_menu():
+	$Host.hide()
+	$Refresh.hide()
+	$LobbyContainer/Lobbies.hide()
+	$"Host local".hide()
+	$"Join local".hide()

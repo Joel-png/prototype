@@ -55,6 +55,7 @@ func action():
 		is_grappling = false
 
 func end_action():
+	overseer.debug1.text = str(is_grappling)
 	if is_grappling:
 		create_rope_mesh()
 		grapple_mesh.visible = true
@@ -73,7 +74,8 @@ func crosshair_info(ray_hit):
 	else:
 		string_for_crosshair = "|-----|"
 	overseer.crosshair.display_crosshair_text(string_for_crosshair)
-	
+
+@rpc("call_local")
 func create_rope_mesh():
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
