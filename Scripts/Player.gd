@@ -32,6 +32,7 @@ var current_max_speed : float = WALK_SPEED
 @onready var grapple_pivot = $PlayerGrapplePivot
 @onready var animation_player = $AnimationPlayer
 @onready var projectiles = $"../../Projectiles"
+@onready var projectile_scene = preload("res://projectile.tscn")
 
 #inventory
 @onready var inventory = $PlayerHead/Camera3D/Inventory
@@ -172,13 +173,19 @@ func spawn_holdable(data):
 	var h = (load(data) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	print(data)
 	return h
+	
+@rpc("any_peer", "call_local")
+func spawn_projectile(pos, rot):
+	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+	p._setup(pos, rot)
+	projectiles.add_child(p)
+	return p
 
 @rpc("any_peer", "call_local")
 func shoot_animation():
-	print("shot")
 	animation_player.stop()
 	animation_player.play("shoot")
 	
-func shoot():
-	print("shooting")
+func shoot(pos, rot):
+	spawn_projectile.rpc(pos, rot)
 	shoot_animation.rpc()

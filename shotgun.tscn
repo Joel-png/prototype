@@ -18,7 +18,7 @@ render_priority = 0
 next_pass = SubResource("StandardMaterial3D_0ex26")
 shader = ExtResource("2_m7nvd")
 
-[node name="Node3D" type="Node3D"]
+[node name="Shotgun" type="Node3D"]
 script = ExtResource("1_fkpy2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -29,3 +29,6 @@ mesh = SubResource("BoxMesh_psf4i")
 transform = Transform3D(0.0971137, 0, 0, 0, 0.0549229, 0, 0, 0, 0.375078, 0.000447899, 0.104696, -0.0273035)
 mesh = SubResource("BoxMesh_43613")
 surface_material_override/0 = SubResource("ShaderMaterial_gbwyb")
+
+[node name="ProjectileSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105796, -0.198008)
