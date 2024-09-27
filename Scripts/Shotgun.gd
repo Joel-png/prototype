@@ -14,5 +14,6 @@ func _init(new_overseer):
 	
 func action():
 	if Input.is_action_just_pressed("left_click"):
+		overseer.shoot_animation.rpc()
 		var shotgun_direction = overseer.transform.basis * overseer.camera.transform.basis * SHOTGUN_FORCE_DIRECTION * SHOTGUN_FORCE
 		overseer.velocity += shotgun_direction

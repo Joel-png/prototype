@@ -30,6 +30,8 @@ var current_max_speed : float = WALK_SPEED
 @onready var camera_cast = $PlayerHead/Camera3D/camera_cast
 @onready var crosshair = $PlayerHead/Camera3D/Crosshair
 @onready var grapple_pivot = $PlayerGrapplePivot
+@onready var animation_player = $AnimationPlayer
+@onready var projectiles = $"../../Projectiles"
 
 #inventory
 @onready var inventory = $PlayerHead/Camera3D/Inventory
@@ -61,7 +63,7 @@ func _ready():
 	#for object in hotbar:
 		#inventory.add_child(object)
 	
-	select_holdable(hotbar[0])
+	select_holdable(0)
 	
 	if !is_player:
 		debug0.hide()
@@ -78,9 +80,8 @@ func _unhandled_input(event):
 func _physics_process(delta):
 	is_player = is_multiplayer_authority()
 	
-	hotbar_logic()
-	
 	if is_player:
+		hotbar_logic()
 		if Input.is_action_just_pressed("Escape"):
 			if is_focus:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -156,16 +157,28 @@ func hotbar_logic():
 					hotbar_to_select = i
 			
 	if hotbar_to_select != hotbar_selected:
-		select_holdable(hotbar[hotbar_to_select])
+		select_holdable.rpc(hotbar_to_select)
 		hotbar_selected = hotbar_to_select
 		
-func select_holdable(item_to_hold: Holdable):
+
+@rpc("any_peer", "call_local")
+func select_holdable(item_to_hold):
 	if holdable:
 		holdable.deselect()
-	holdable = item_to_hold
+	holdable = hotbar[item_to_hold]
 	holdable.select()
 	
 func spawn_holdable(data):
-	var h = (load(data) as PackedScene).instantiate()
+	var h = (load(data) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	print(data)
 	return h
+
+@rpc("any_peer", "call_local")
+func shoot_animation():
+	print("shot")
+	animation_player.stop()
+	animation_player.play("shoot")
+	
+func shoot():
+	print("shooting")
+	shoot_animation.rpc()
