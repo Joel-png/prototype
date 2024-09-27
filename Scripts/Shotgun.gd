@@ -18,4 +18,4 @@ func action():
 	if Input.is_action_just_pressed("left_click"):
 		overseer.shoot(projectile_spawn.global_position, projectile_spawn.global_rotation)
 		var shotgun_direction = overseer.transform.basis * overseer.camera.transform.basis * SHOTGUN_FORCE_DIRECTION * SHOTGUN_FORCE
-		overseer.velocity += shotgun_direction
+		#overseer.velocity += shotgun_direction
