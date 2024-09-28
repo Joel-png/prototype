@@ -12,7 +12,7 @@ func _init(new_overseer):
 		add_to_parent()
 	
 	
-func action():
+func action(delta):
 	return
 	
 func end_action():

@@ -68,7 +68,10 @@ func _ready():
 	
 	if !is_player:
 		debug0.hide()
-		#debug1.hide()
+		debug1.hide()
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		Engine.max_fps = 144
 	
 	
 func _unhandled_input(event):
@@ -91,7 +94,7 @@ func _physics_process(delta):
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				is_focus = true
 			
-		holdable.action()
+		holdable.action(delta)
 		# movement
 		input_dir = Input.get_vector("left", "right", "up", "down")
 		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
@@ -147,7 +150,7 @@ func _physics_process(delta):
 		move_and_slide()
 		
 		debug0.text = str(target_speed) + "\n " + str(velocity)
-		#debug1.text = str(local_velocity) + "\n" + str(target_speed)
+		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 	holdable.end_action()
 	
 func hotbar_logic():
@@ -186,6 +189,18 @@ func shoot_animation():
 	animation_player.stop()
 	animation_player.play("shoot")
 	
-func shoot(pos, rot):
-	spawn_projectile.rpc(pos, rot)
+func shoot(pos, rot, config):
+	#[speed, firerate, bullet_spread_hor, bullet_spread_ver, bloom_hor, bloom_ver]
+	var base_rot = rot
+	var bullet_spread_hor = config[2]
+	var bullet_spread_ver = config[3]
+	var bloom_hor = config[4]
+	var bloom_ver = config[5]
+	for _x in range(-bloom_hor, bloom_hor + 1, max(1, bloom_hor * 2) / bullet_spread_hor):
+		for _y in range(-bloom_ver, bloom_ver + 1, max(1, bloom_ver * 2) / bullet_spread_ver):
+			var rot_with_bloom = base_rot
+			rot_with_bloom.y += deg_to_rad(_x)
+			rot_with_bloom.x += deg_to_rad(_y)
+			print(rot_with_bloom)
+			spawn_projectile.rpc(pos, rot_with_bloom)
 	shoot_animation.rpc()

@@ -30,7 +30,7 @@ func _init(new_overseer):
 		queue_free()
 	
 
-func action():
+func action(delta):
 	var grapple_raycast_hit = overseer.camera_cast.get_collider()
 	crosshair_info(grapple_raycast_hit)
 	
