@@ -22,6 +22,7 @@ var input_dir = Vector2.ZERO
 var direction = Vector3.ZERO
 
 var current_max_speed : float = WALK_SPEED
+var rng = RandomNumberGenerator.new()
 
 
 
@@ -43,6 +44,7 @@ var current_max_speed : float = WALK_SPEED
 
 var holdable: Holdable = null
 var grapple: Grapple
+var gun: Gun
 var shotgun: Shotgun
 var hotbar = []
 var hotbar_length = hotbar.size()
@@ -54,9 +56,10 @@ var is_focus = true
 
 func _ready():
 	holdable_spawner.spawn_function = spawn_holdable
+	gun = Gun.new(self)
 	grapple = Grapple.new(self)
 	shotgun = Shotgun.new(self)
-	hotbar = [shotgun.get_self(), grapple.get_self()]
+	hotbar = [gun.get_self(), shotgun.get_self(), grapple.get_self()]
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -149,7 +152,7 @@ func _physics_process(delta):
 			velocity = velocity + (transform.basis * movement) * delta
 		move_and_slide()
 		
-		debug0.text = str(target_speed) + "\n " + str(velocity)
+		debug0.text = str(target_speed) + "\n " + str(velocity) + "\n " + str(global_position)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 	holdable.end_action()
 	
@@ -178,9 +181,9 @@ func spawn_holdable(data):
 	return h
 	
 @rpc("any_peer", "call_local")
-func spawn_projectile(pos, rot):
+func spawn_projectile(pos, rot, config):
 	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-	p._setup(pos, rot)
+	p._setup(pos, rot, config)
 	projectiles.add_child(p)
 	return p
 
@@ -191,16 +194,27 @@ func shoot_animation():
 	
 func shoot(pos, rot, config):
 	#[speed, firerate, bullet_spread_hor, bullet_spread_ver, bloom_hor, bloom_ver]
-	var base_rot = rot
 	var bullet_spread_hor = config[2]
 	var bullet_spread_ver = config[3]
 	var bloom_hor = config[4]
 	var bloom_ver = config[5]
-	for _x in range(-bloom_hor, bloom_hor + 1, max(1, bloom_hor * 2) / bullet_spread_hor):
-		for _y in range(-bloom_ver, bloom_ver + 1, max(1, bloom_ver * 2) / bullet_spread_ver):
-			var rot_with_bloom = base_rot
-			rot_with_bloom.y += deg_to_rad(_x)
-			rot_with_bloom.x += deg_to_rad(_y)
-			print(rot_with_bloom)
-			spawn_projectile.rpc(pos, rot_with_bloom)
+	for _x in range(bullet_spread_hor):
+		for _y in range(bullet_spread_ver):
+			var bloom_y = deg_to_rad(calc_bloom(bloom_hor, bullet_spread_hor, _x))
+			var bloom_x = deg_to_rad(calc_bloom(bloom_ver, bullet_spread_ver, _y))
+			spawn_projectile.rpc(pos, get_what_look_at(), [config[0], bloom_x, bloom_y])
 	shoot_animation.rpc()
+
+func calc_bloom(bloom, proj_amount, i):
+	var bloom_inc = float(bloom * 2) / proj_amount
+	var lower_bloom = (-bloom) + bloom_inc * i
+	var upper_bloom = (-bloom) + bloom_inc * (i + 1)
+	return rng.randf_range(lower_bloom, upper_bloom)
+	
+func get_what_look_at():
+	if camera_cast.get_collider():
+		return camera_cast.get_collision_point()
+	else:
+		var forward_direction = -camera_cast.global_transform.basis.z.normalized()
+		print(forward_direction)
+		return camera_cast.global_transform.origin + forward_direction * 100

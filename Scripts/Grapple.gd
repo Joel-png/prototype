@@ -91,7 +91,6 @@ func create_rope_mesh():
 		var norm = normal_array[p]
 		var forward = tangent_array[p]
 		var bitangent = norm.cross(forward).normalized()
-		var test = Vector3(1, 1, 1)
 		
 		for c in range(resolution):
 			var angle = (float(c) / resolution) * 2.0 * PI

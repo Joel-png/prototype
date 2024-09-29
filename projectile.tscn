@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dh4murj2utxni"]
+[gd_scene load_steps=8 format=3 uid="uid://dh4murj2utxni"]
 
 [ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_7ls1k"]
 
@@ -9,6 +9,11 @@ emission_energy_multiplier = 8.03
 
 [sub_resource type="BoxMesh" id="BoxMesh_hqea6"]
 material = SubResource("StandardMaterial3D_rqv5v")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4ixoo"]
+material = SubResource("StandardMaterial3D_rqv5v")
+size = Vector3(0.1, 0.1, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilnqj"]
 emission_enabled = true
@@ -26,16 +31,16 @@ size = Vector3(0.04, 0.04, 0.04)
 [node name="Projectile" type="Node3D"]
 script = ExtResource("1_7ls1k")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="Base" type="MeshInstance3D" parent="Meshes"]
 mesh = SubResource("BoxMesh_hqea6")
 skeleton = NodePath("")
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
-target_position = Vector3(0, 0, -1.5)
-hit_from_inside = true
-collide_with_areas = true
+[node name="Laser" type="MeshInstance3D" parent="Meshes"]
+visible = false
+mesh = SubResource("BoxMesh_4ixoo")
+skeleton = NodePath("")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ilnqj")
