@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_7ls1k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rqv5v"]
+cull_mode = 2
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 8.03
@@ -13,9 +14,10 @@ size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_4ixoo"]
 material = SubResource("StandardMaterial3D_rqv5v")
-size = Vector3(0.1, 0.1, 10)
+size = Vector3(0.1, 0.1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilnqj"]
+cull_mode = 2
 emission_enabled = true
 emission = Color(0.808998, 0.808998, 0.808998, 1)
 emission_energy_multiplier = 8.0
@@ -34,18 +36,23 @@ script = ExtResource("1_7ls1k")
 [node name="Meshes" type="Node3D" parent="."]
 
 [node name="Base" type="MeshInstance3D" parent="Meshes"]
+cast_shadow = 0
 mesh = SubResource("BoxMesh_hqea6")
 skeleton = NodePath("")
 
 [node name="Laser" type="MeshInstance3D" parent="Meshes"]
 visible = false
+cast_shadow = 0
 mesh = SubResource("BoxMesh_4ixoo")
 skeleton = NodePath("")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ilnqj")
+cast_shadow = 0
 emitting = false
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_a1mvg")
 draw_pass_1 = SubResource("BoxMesh_mvmv0")
+
+[node name="YPivot" type="Node3D" parent="."]

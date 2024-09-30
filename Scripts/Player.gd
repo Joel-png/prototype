@@ -51,7 +51,8 @@ var hotbar_length = hotbar.size()
 var hotbar_selected = 0
 var hotbar_to_select = 0
 var is_player
-var is_focus = true
+var is_focus = false
+var test_degree = [90, 90]
 
 
 func _ready():
@@ -62,7 +63,7 @@ func _ready():
 	hotbar = [gun.get_self(), shotgun.get_self(), grapple.get_self()]
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
 	#for object in hotbar:
 		#inventory.add_child(object)
@@ -73,7 +74,7 @@ func _ready():
 		debug0.hide()
 		debug1.hide()
 	else:
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Engine.max_fps = 144
 	
 	
@@ -82,7 +83,7 @@ func _unhandled_input(event):
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * SENSITIVITY)
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _physics_process(delta):
 	is_player = is_multiplayer_authority()
@@ -152,7 +153,7 @@ func _physics_process(delta):
 			velocity = velocity + (transform.basis * movement) * delta
 		move_and_slide()
 		
-		debug0.text = str(target_speed) + "\n " + str(velocity) + "\n " + str(global_position)
+		debug0.text = str(rad_to_deg(camera.rotation.x)) + "\n " + str(velocity) + "\n " + str(global_position)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 	holdable.end_action()
 	
@@ -183,8 +184,8 @@ func spawn_holdable(data):
 @rpc("any_peer", "call_local")
 func spawn_projectile(pos, rot, config):
 	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-	p._setup(pos, rot, config)
 	projectiles.add_child(p)
+	p._setup(pos, rot, config, camera.global_rotation)
 	return p
 
 @rpc("any_peer", "call_local")
@@ -209,12 +210,13 @@ func calc_bloom(bloom, proj_amount, i):
 	var bloom_inc = float(bloom * 2) / proj_amount
 	var lower_bloom = (-bloom) + bloom_inc * i
 	var upper_bloom = (-bloom) + bloom_inc * (i + 1)
-	return rng.randf_range(lower_bloom, upper_bloom)
+	#return rng.randf_range(lower_bloom, upper_bloom)
+	return (lower_bloom + upper_bloom) / 2
 	
 func get_what_look_at():
 	if camera_cast.get_collider():
 		return camera_cast.get_collision_point()
 	else:
 		var forward_direction = -camera_cast.global_transform.basis.z.normalized()
-		print(forward_direction)
+		#print(camera_cast.global_transform.basis)
 		return camera_cast.global_transform.origin + forward_direction * 100

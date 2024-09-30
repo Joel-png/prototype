@@ -1,8 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsjmofcc0y8yw"]
+[gd_scene load_steps=4 format=3 uid="uid://dsjmofcc0y8yw"]
 
 [ext_resource type="Script" path="res://Scripts/gun.gd" id="1_byhcj"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5aisj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vgs4i"]
+size = Vector3(0.05, 0.05, 0.1)
 
 [node name="Gun" type="Node3D"]
 script = ExtResource("1_byhcj")
@@ -12,4 +15,9 @@ transform = Transform3D(0.0555446, 0, 0, 0, 0.132257, 0, 0, 0, 0.316751, 0, 0.04
 mesh = SubResource("BoxMesh_5aisj")
 skeleton = NodePath("")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0902796, -0.139618)
+mesh = SubResource("BoxMesh_vgs4i")
+
 [node name="ProjectileSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896396, -0.183327)
