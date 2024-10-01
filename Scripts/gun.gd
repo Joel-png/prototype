@@ -13,7 +13,7 @@ func _init(new_overseer):
 	if scene:
 		scene.visible = false
 		projectile_spawn = scene.get_node("ProjectileSpawn")
-		projectile_config = ProjectileConfig.new(250, 0.05, 2, 2, 2, 2)
+		projectile_config = ProjectileConfig.new(250, 0.01, 1, 1, 2, 2)
 	else:
 		queue_free()
 	

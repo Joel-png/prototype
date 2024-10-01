@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dh4murj2utxni"]
+[gd_scene load_steps=13 format=3 uid="uid://dh4murj2utxni"]
 
 [ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_7ls1k"]
 
@@ -30,6 +30,31 @@ initial_velocity_max = 5.0
 [sub_resource type="BoxMesh" id="BoxMesh_mvmv0"]
 size = Vector3(0.04, 0.04, 0.04)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78sma"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+vertex_color_use_as_albedo = true
+
+[sub_resource type="Gradient" id="Gradient_rv12k"]
+offsets = PackedFloat32Array(0, 0.209091)
+colors = PackedColorArray(1, 1, 1, 0.207843, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5wti3"]
+gradient = SubResource("Gradient_rv12k")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q5dtq"]
+direction = Vector3(0, 0, 1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_5wti3")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ou1y4"]
+size = Vector2(0.1, 0.05)
+orientation = 0
+
 [node name="Projectile" type="Node3D"]
 script = ExtResource("1_7ls1k")
 
@@ -46,7 +71,7 @@ cast_shadow = 0
 mesh = SubResource("BoxMesh_4ixoo")
 skeleton = NodePath("")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="DeathSparks" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_ilnqj")
 cast_shadow = 0
 emitting = false
@@ -56,3 +81,10 @@ process_material = SubResource("ParticleProcessMaterial_a1mvg")
 draw_pass_1 = SubResource("BoxMesh_mvmv0")
 
 [node name="YPivot" type="Node3D" parent="."]
+
+[node name="TrailParticle" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_78sma")
+emitting = false
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_q5dtq")
+draw_pass_1 = SubResource("QuadMesh_ou1y4")

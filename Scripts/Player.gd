@@ -85,7 +85,7 @@ func _unhandled_input(event):
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
-func _physics_process(delta):
+func _process(delta):
 	is_player = is_multiplayer_authority()
 	
 	if is_player:
@@ -98,7 +98,7 @@ func _physics_process(delta):
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				is_focus = true
 			
-		holdable.action(delta)
+		#holdable.action(delta)
 		# movement
 		input_dir = Input.get_vector("left", "right", "up", "down")
 		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
@@ -152,7 +152,7 @@ func _physics_process(delta):
 		if input_dir or (not jumped and is_on_floor()):
 			velocity = velocity + (transform.basis * movement) * delta
 		move_and_slide()
-		
+		holdable.action(delta)
 		debug0.text = str(rad_to_deg(camera.rotation.x)) + "\n " + str(velocity) + "\n " + str(global_position)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 	holdable.end_action()

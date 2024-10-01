@@ -5,21 +5,30 @@ var damage = 5.0
 var hit = false
 var first_frame = true
 var traveled_distance = 0
+var parent
+var lower_particle = false
+var final_trail_length = false
 
 @onready var meshes = $Meshes
 @onready var mesh = $Meshes/Base
 @onready var laser_mesh = $Meshes/Laser
-@onready var particles = $GPUParticles3D
+@onready var death_sparks = $DeathSparks
+@onready var trail_particles = $TrailParticle
 @onready var y_pivot = $YPivot
 
 func _ready():
 	mesh.mesh.resource_local_to_scene = true
+	trail_particles.draw_pass_1.resource_local_to_scene = true
+	
 	var mesh_offset = speed/10
 	mesh.mesh.size = Vector3(0.1, 0.1, mesh_offset)
 	mesh.position.z = -mesh_offset/2
 	
 	
 func _setup(start_pos, look_to, config, rot):
+	if get_parent_node_3d().get_child_count() > 3000:
+		print(get_parent_node_3d().get_child_count())
+		lower_particle = true
 	speed = config[0]
 	var bloom_x = config[1]
 	var bloom_y = config[2]
@@ -31,38 +40,48 @@ func _setup(start_pos, look_to, config, rot):
 		look_at_from_position(start_pos, look_to)
 	rotate_object_local(Vector3.UP, bloom_y)
 	rotate_object_local(Vector3.RIGHT, bloom_x)
-	#y_pivot.rotate_object_local(Vector3.UP, bloom_y)
-	#rotation.x = y_pivot.global_rotation.x
-	#rotation.y = y_pivot.global_rotation.y
 	
 	
-	
-
-func get_x_y_angles_between_points(point_a, point_b):
-	var direction = (point_b - point_a).normalized()
-	var yaw = atan2(direction.x, direction.z)
-	var pitch = asin(direction.y)
-	return Vector2(pitch, yaw)
 
 func _process(delta: float):
-	if not first_frame:
+	#if Input.is_action_just_pressed("right_click"):
+		if first_frame:
+			trail_particles.emitting = true
+			first_frame = false
+			var mesh_offset = speed * delta * (Engine.get_frames_per_second()/30) * 2
+			trail_particles.draw_pass_1.size.x = mesh_offset
+			trail_particles.draw_pass_1.center_offset.z = -mesh_offset/2
+		else:
+			if not lower_particle:
+				trail_particles.emitting = true
+			
 		var space_state = get_world_3d().direct_space_state
 		var query = PhysicsRayQueryParameters3D.create(global_transform.origin, global_transform.origin + global_transform.basis.z * (-speed * delta))
 		var result = space_state.intersect_ray(query)
 		if hit:
+			trail_particles.emitting = false
 			meshes.visible = false
-			particles.emitting = true
+			if not lower_particle:
+				death_sparks.emitting = true
 			await get_tree().create_timer(1.0).timeout
-			queue_free()
-		#if Input.is_action_just_pressed("right_click"):
+			kill()
+		
 		#ray.target_position = Vector3(0, 0, -1.2 * speed * delta)
 		if not result and not hit:
 			position += transform.basis * Vector3(0, 0, -speed) * delta
 			traveled_distance += speed * delta
+			
+			
+			
 			if traveled_distance > speed * 5:
-				queue_free()
+				kill()
+			
+				
+			
 		elif not hit:
 			hit = true
 			position = result.position
-	else:
-		first_frame = false
+			
+
+func kill():
+	queue_free()
