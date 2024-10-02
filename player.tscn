@@ -98,7 +98,7 @@ mesh = SubResource("CapsuleMesh_qh12d")
 skeleton = NodePath("")
 
 [node name="PlayerCollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_65i5w")
 
 [node name="PlayerHead" type="Node3D" parent="."]
@@ -120,8 +120,9 @@ text = "Text"
 metadata/_edit_use_anchors_ = true
 
 [node name="camera_cast" type="RayCast3D" parent="PlayerHead/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.860351)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00139099)
 target_position = Vector3(0, 0, -100)
+hit_from_inside = true
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]

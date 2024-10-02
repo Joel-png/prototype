@@ -178,7 +178,6 @@ func select_holdable(item_to_hold):
 	
 func spawn_holdable(data):
 	var h = (load(data) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-	print(data)
 	return h
 	
 @rpc("any_peer", "call_local")
@@ -215,8 +214,7 @@ func calc_bloom(bloom, proj_amount, i):
 	
 func get_what_look_at():
 	if camera_cast.get_collider():
-		return camera_cast.get_collision_point()
-	else:
-		var forward_direction = -camera_cast.global_transform.basis.z.normalized()
-		#print(camera_cast.global_transform.basis)
-		return camera_cast.global_transform.origin + forward_direction * 100
+		if position.distance_to(camera_cast.get_collision_point()) > 2:
+			return camera_cast.get_collision_point()
+	var forward_direction = -camera_cast.global_transform.basis.z.normalized()
+	return camera_cast.global_transform.origin + forward_direction * 100
