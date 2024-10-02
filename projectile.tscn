@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dh4murj2utxni"]
+[gd_scene load_steps=15 format=3 uid="uid://dh4murj2utxni"]
 
 [ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_7ls1k"]
 
@@ -17,22 +17,37 @@ material = SubResource("StandardMaterial3D_rqv5v")
 size = Vector3(0.1, 0.1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ilnqj"]
+transparency = 1
 cull_mode = 2
-emission_enabled = true
-emission = Color(0.808998, 0.808998, 0.808998, 1)
-emission_energy_multiplier = 8.0
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_w4th1"]
+offsets = PackedFloat32Array(0, 0.509091, 0.736364, 0.863636, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0.980392, 0.223529, 0, 0.556863, 1, 0, 0, 0.286275, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lfudf"]
+gradient = SubResource("Gradient_w4th1")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_a1mvg"]
+lifetime_randomness = 0.4
 direction = Vector3(0, 0, 1)
-initial_velocity_min = 3.0
+spread = 30.0
+initial_velocity_min = 2.0
 initial_velocity_max = 5.0
+gravity = Vector3(0, -3, 0)
+linear_accel_min = -1.15
+linear_accel_max = 10.34
+radial_accel_min = -12.64
+radial_accel_max = -5.75
+color_ramp = SubResource("GradientTexture1D_lfudf")
 
-[sub_resource type="BoxMesh" id="BoxMesh_mvmv0"]
-size = Vector3(0.04, 0.04, 0.04)
+[sub_resource type="QuadMesh" id="QuadMesh_hnihe"]
+size = Vector2(0.05, 0.05)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78sma"]
 transparency = 1
-blend_mode = 1
 cull_mode = 2
 shading_mode = 0
 disable_ambient_light = true
@@ -41,21 +56,22 @@ vertex_color_use_as_albedo = true
 billboard_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_rv12k"]
-offsets = PackedFloat32Array(0, 0.981818)
-colors = PackedColorArray(1, 1, 1, 0.207843, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0.272727, 0.545455, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.278431, 0, 0.85098, 0.203922, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5wti3"]
 gradient = SubResource("Gradient_rv12k")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q5dtq"]
+lifetime_randomness = 0.39
 emission_shape = 3
 emission_box_extents = Vector3(0.05, 0.05, 0.5)
-direction = Vector3(0, 0, 1)
+direction = Vector3(0, 0, -1)
 spread = 0.0
-radial_velocity_min = -2.00002
-radial_velocity_max = -1.00002
 gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_5wti3")
+hue_variation_min = -0.1
+hue_variation_max = 0.1
 
 [sub_resource type="QuadMesh" id="QuadMesh_ou1y4"]
 size = Vector2(0.05, 0.05)
@@ -77,19 +93,23 @@ mesh = SubResource("BoxMesh_4ixoo")
 skeleton = NodePath("")
 
 [node name="DeathSparks" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00204134, 0, -0.00877142)
 material_override = SubResource("StandardMaterial3D_ilnqj")
 cast_shadow = 0
 emitting = false
+amount = 100
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_a1mvg")
-draw_pass_1 = SubResource("BoxMesh_mvmv0")
+draw_pass_1 = SubResource("QuadMesh_hnihe")
 
 [node name="YPivot" type="Node3D" parent="."]
 
 [node name="TrailParticle" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_78sma")
-amount = 1000
+extra_cull_margin = 1000.0
+amount = 10000
+lifetime = 0.5
 fixed_fps = 144
 process_material = SubResource("ParticleProcessMaterial_q5dtq")
 draw_pass_1 = SubResource("QuadMesh_ou1y4")

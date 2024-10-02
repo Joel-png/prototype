@@ -2,7 +2,7 @@ extends Holdable
 class_name Grapple
 
 const GRAPPLE_RAY_MAX = 100.0
-const GRAPPLE_FORCE_MAX = 55.0
+const GRAPPLE_FORCE_MAX = 80.0
 const GRAPPLE_MIN_DIST = 2.0
 
 var vertex_array : PackedVector3Array = []

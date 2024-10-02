@@ -7,7 +7,7 @@ var hit = false
 var first_frame = true
 var traveled_distance = 0
 var low_mode = false
-var particle_amount_per_second = 1000
+var particle_amount_ratio = 1
 
 @onready var meshes = $Meshes
 @onready var mesh = $Meshes/Base
@@ -47,9 +47,12 @@ func _setup(start_pos, look_to, config, rot):
 		hit = true
 	else:
 		var mesh_offset = max(speed * delta, size)
-		trail_particles.process_material.emission_box_extents.z = mesh_offset / 2
-		trail_particles.process_material.emission_shape_offset.z = -mesh_offset / 2
+		trail_particles.process_material.emission_box_extents.z = mesh_offset
+		trail_particles.process_material.emission_shape_offset.z = -mesh_offset
 	trail_particles.fixed_fps = Engine.get_frames_per_second()
+	particle_amount_ratio = min(speed/10000.0, 1)
+	#trail_particles.amount_ratio = particle_amount_ratio
+	#print(particle_amount_ratio)
 
 func _process(delta: float):
 	#if Input.is_action_just_pressed("right_click"):
