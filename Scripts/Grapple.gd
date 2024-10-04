@@ -14,23 +14,12 @@ var uv_array : PackedVector2Array = []
 var rope_width = 0.04
 var resolution = 4
 
-var grapple_point
-var grapple_mesh
+@onready var grapple_point = $GrapplePoint
+@onready var grapple_mesh = $GrapplePoint/mesh
 
 var mesh = ImmediateMesh.new()
 
-func _init(new_overseer):
-	scene_to_set = "res://grapple.tscn"
-	super._init(new_overseer)
-	if scene:
-		grapple_point = scene.get_node("GrapplePoint")
-		grapple_mesh = scene.get_node("GrapplePoint/mesh")
-		scene.visible = false
-	else:
-		queue_free()
-	
-
-func action(delta):
+func action(_delta):
 	var grapple_raycast_hit = overseer.camera_cast.get_collider()
 	crosshair_info(grapple_raycast_hit)
 	
@@ -115,7 +104,7 @@ func create_rope_mesh():
 	mesh.clear_surfaces()
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	for i in range(index_array.size() / 3):
+	for i in range(floor(index_array.size() / 3.0)):
 		var p1 = vertex_array[index_array[3*i]]
 		var p2 = vertex_array[index_array[3*i+1]]
 		var p3 = vertex_array[index_array[3*i+2]]

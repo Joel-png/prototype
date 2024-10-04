@@ -5,30 +5,25 @@ var overseer
 var scene
 var scene_to_set
 
-func _init(new_overseer):
+func init(new_overseer):
 	overseer = new_overseer
-	if scene_to_set:
-		scene = overseer.spawn_holdable(scene_to_set)
-		add_to_parent()
-	
-	
-func action(delta):
+	add_to_parent()
+	visible = false
+
+func action(_delta):
 	return
-	
+
 func end_action():
 	return
 
 func add_to_parent():
-	overseer.inventory.add_child(scene)
+	overseer.inventory.add_child(self)
 	
 func deselect():
-	scene.visible = false
+	visible = false
 	
 func select():
-	scene.visible = true
+	visible = true
 
 func get_scene():
 	return scene
-
-func get_self():
-	return self

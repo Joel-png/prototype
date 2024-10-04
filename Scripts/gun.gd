@@ -1,28 +1,17 @@
 extends Holdable
 class_name Gun
 
-#const SHOTGUN_FORCE = 50.0
-#const SHOTGUN_FORCE_DIRECTION = Vector3(0, 0, 1)
-var muzzle
 var projectile_config: ProjectileConfig
 var action_cooldown = 0
+@onready var muzzle = $Muzzle
 
-func _init(new_overseer):
-	scene_to_set = "res://gun.tscn"
-	super._init(new_overseer)
-	if scene:
-		scene.visible = false
-		muzzle = scene.get_node("Muzzle")
-		projectile_config = ProjectileConfig.new(250, 0.1, 1, 1, 2, 2)
-	else:
-		queue_free()
+func _ready():
+	projectile_config = ProjectileConfig.new(250, 0.1, 1, 1, 2, 2)
 	
 
 func action(delta):
 	if Input.is_action_pressed("left_click") and action_cooldown <= 0:
 		action_cooldown = projectile_config.firerate
 		overseer.shoot(muzzle.global_position, muzzle.global_rotation, projectile_config.get_config())
-		#var shotgun_direction = overseer.transform.basis * overseer.camera.transform.basis * SHOTGUN_FORCE_DIRECTION * SHOTGUN_FORCE
-		#overseer.velocity += shotgun_direction
 	if action_cooldown > 0:
 		action_cooldown -= delta

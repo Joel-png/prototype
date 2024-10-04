@@ -34,10 +34,12 @@ var rng = RandomNumberGenerator.new()
 @onready var animation_player = $AnimationPlayer
 @onready var projectiles = $"../../Projectiles"
 @onready var projectile_scene = preload("res://projectile.tscn")
+@onready var grapple_scene = preload("res://grapple.tscn")
+@onready var shotgun_scene = preload("res://shotgun.tscn")
+@onready var gun_scene = preload("res://gun.tscn")
 
 #inventory
 @onready var inventory = $PlayerHead/Camera3D/Inventory
-@onready var holdable_spawner = $HoldableSpawner
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
@@ -56,11 +58,13 @@ var test_degree = [90, 90]
 
 
 func _ready():
-	holdable_spawner.spawn_function = spawn_holdable
-	gun = Gun.new(self)
-	grapple = Grapple.new(self)
-	shotgun = Shotgun.new(self)
-	hotbar = [gun.get_self(), shotgun.get_self(), grapple.get_self()]
+	grapple = grapple_scene.instantiate()
+	grapple.init(self)
+	shotgun = shotgun_scene.instantiate()
+	shotgun.init(self)
+	gun = gun_scene.instantiate()
+	gun.init(self)
+	hotbar = [gun, shotgun, grapple]
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -176,10 +180,7 @@ func select_holdable(item_to_hold):
 	holdable = hotbar[item_to_hold]
 	holdable.select()
 	
-func spawn_holdable(data):
-	var h = (load(data) as PackedScene).instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-	return h
-	
+
 @rpc("any_peer", "call_local")
 func spawn_projectile(pos, rot, config):
 	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
@@ -193,7 +194,7 @@ func shoot_animation():
 	animation_player.stop()
 	animation_player.play("shoot")
 	
-func shoot(pos, rot, config):
+func shoot(pos, _rot, config):
 	#[speed, firerate, bullet_spread_hor, bullet_spread_ver, bloom_hor, bloom_ver]
 	var bullet_spread_hor = config[2]
 	var bullet_spread_ver = config[3]

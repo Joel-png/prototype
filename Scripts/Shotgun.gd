@@ -3,20 +3,14 @@ class_name Shotgun
 
 const SHOTGUN_FORCE = 50.0
 const SHOTGUN_FORCE_DIRECTION = Vector3(0, 0, 1)
-var muzzle
+
 var projectile_config: ProjectileConfig
 var action_cooldown = 0
 
-func _init(new_overseer):
-	scene_to_set = "res://shotgun.tscn"
-	super._init(new_overseer)
-	if scene:
-		scene.visible = false
-		muzzle = scene.get_node("Muzzle")
-		projectile_config = ProjectileConfig.new(350, 0.5, 5, 3, 10, 7)
-	else:
-		queue_free()
-	
+@onready var muzzle = $Muzzle
+
+func _ready():
+	projectile_config = ProjectileConfig.new(350, 0.5, 5, 3, 10, 7)
 
 func action(delta):
 	if Input.is_action_just_pressed("left_click") and action_cooldown <= 0:
