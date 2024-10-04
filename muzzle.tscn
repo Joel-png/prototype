@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://dtt4jrtcoa8dx"]
+
+[ext_resource type="Script" path="res://Scripts/muzzle.gd" id="1_b2s1o"]
+[ext_resource type="Shader" uid="uid://cn7k7ynk8vub3" path="res://Shaders/muzzle_flash.tres" id="1_crgce"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8u8i"]
+render_priority = 0
+shader = ExtResource("1_crgce")
+shader_parameter/flash_colour = Color(1, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_2xk6y"]
+_data = [Vector2(0.528986, 0), 0.0, -0.27705, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fnrb8"]
+curve = SubResource("Curve_2xk6y")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wydim"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+initial_velocity_max = 0.01
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_fnrb8")
+
+[sub_resource type="QuadMesh" id="QuadMesh_qpdxg"]
+size = Vector2(0.2, 0.2)
+center_offset = Vector3(0, 0.1, 0)
+
+[node name="Muzzle" type="Node3D"]
+script = ExtResource("1_b2s1o")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_b8u8i")
+cast_shadow = 0
+emitting = false
+amount = 5
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_wydim")
+draw_pass_1 = SubResource("QuadMesh_qpdxg")

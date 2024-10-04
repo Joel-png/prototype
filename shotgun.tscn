@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b7a7od8pghued"]
+[gd_scene load_steps=8 format=3 uid="uid://b7a7od8pghued"]
 
 [ext_resource type="Script" path="res://Scripts/Shotgun.gd" id="1_fkpy2"]
 [ext_resource type="Shader" path="res://shotgun.gdshader" id="2_m7nvd"]
+[ext_resource type="PackedScene" uid="uid://dtt4jrtcoa8dx" path="res://muzzle.tscn" id="3_3yn27"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_psf4i"]
 
@@ -30,5 +31,5 @@ transform = Transform3D(0.0971137, 0, 0, 0, 0.0549229, 0, 0, 0, 0.375078, 0.0004
 mesh = SubResource("BoxMesh_43613")
 surface_material_override/0 = SubResource("ShaderMaterial_gbwyb")
 
-[node name="ProjectileSpawn" type="Node3D" parent="."]
+[node name="Muzzle" parent="." instance=ExtResource("3_3yn27")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105796, -0.198008)

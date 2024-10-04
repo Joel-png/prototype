@@ -34,22 +34,10 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerHead/Camera3D/Inventory:rotation")
+tracks/0/path = NodePath("PlayerHead/Camera3D/Inventory:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerHead/Camera3D/Inventory:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -67,21 +55,9 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(0.329877, 1),
 "update": 0,
-"values": [Vector3(0.471426, -0.111331, -0.537794), Vector3(0.471426, -0.201362, -0.537794)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PlayerHead/Camera3D/Inventory:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Vector3(0.636818, 0, 0), Vector3(0.0605803, 0, 0)]
+"values": [Vector3(0.471426, -0.201362, -0.469965), Vector3(0.471426, -0.201362, -0.537794)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dln08"]
@@ -128,7 +104,7 @@ hit_from_inside = true
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.471, -0.201, -0.538)
+transform = Transform3D(1, 0, 0, 0, 0.998166, -0.0605433, 0, 0.0605433, 0.998166, 0.471, -0.201, -0.538)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead/Camera3D/Inventory"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 4.72592e-09, 0, -4.72592e-09, 0.1, 0, 0, 0)

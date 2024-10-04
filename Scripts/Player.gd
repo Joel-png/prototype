@@ -189,6 +189,7 @@ func spawn_projectile(pos, rot, config):
 
 @rpc("any_peer", "call_local")
 func shoot_animation():
+	holdable.muzzle.flash()
 	animation_player.stop()
 	animation_player.play("shoot")
 	
@@ -213,6 +214,7 @@ func calc_bloom(bloom, proj_amount, i):
 	return (lower_bloom + upper_bloom) / 2
 	
 func get_what_look_at():
+	# if point to shoot at is too close bullets will go to the side | if point isn't in raycast
 	if camera_cast.get_collider():
 		if position.distance_to(camera_cast.get_collision_point()) > 2:
 			return camera_cast.get_collision_point()

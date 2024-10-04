@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsjmofcc0y8yw"]
+[gd_scene load_steps=5 format=3 uid="uid://dsjmofcc0y8yw"]
 
 [ext_resource type="Script" path="res://Scripts/gun.gd" id="1_byhcj"]
+[ext_resource type="PackedScene" uid="uid://dtt4jrtcoa8dx" path="res://muzzle.tscn" id="2_h7h2f"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5aisj"]
 
@@ -21,3 +22,6 @@ mesh = SubResource("BoxMesh_vgs4i")
 
 [node name="ProjectileSpawn" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0896396, -0.183327)
+
+[node name="Muzzle" parent="." instance=ExtResource("2_h7h2f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0840513, -0.181501)

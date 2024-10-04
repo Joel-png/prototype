@@ -3,7 +3,7 @@ class_name Gun
 
 #const SHOTGUN_FORCE = 50.0
 #const SHOTGUN_FORCE_DIRECTION = Vector3(0, 0, 1)
-var projectile_spawn
+var muzzle
 var projectile_config: ProjectileConfig
 var action_cooldown = 0
 
@@ -12,7 +12,7 @@ func _init(new_overseer):
 	super._init(new_overseer)
 	if scene:
 		scene.visible = false
-		projectile_spawn = scene.get_node("ProjectileSpawn")
+		muzzle = scene.get_node("Muzzle")
 		projectile_config = ProjectileConfig.new(250, 0.1, 1, 1, 2, 2)
 	else:
 		queue_free()
@@ -21,7 +21,7 @@ func _init(new_overseer):
 func action(delta):
 	if Input.is_action_pressed("left_click") and action_cooldown <= 0:
 		action_cooldown = projectile_config.firerate
-		overseer.shoot(projectile_spawn.global_position, projectile_spawn.global_rotation, projectile_config.get_config())
+		overseer.shoot(muzzle.global_position, muzzle.global_rotation, projectile_config.get_config())
 		#var shotgun_direction = overseer.transform.basis * overseer.camera.transform.basis * SHOTGUN_FORCE_DIRECTION * SHOTGUN_FORCE
 		#overseer.velocity += shotgun_direction
 	if action_cooldown > 0:
