@@ -21,17 +21,22 @@ sky = SubResource("Sky_tug5e")
 tonemap_mode = 2
 fog_enabled = true
 fog_sun_scatter = 0.01
-fog_density = 0.0885
+fog_density = 0.058
 fog_aerial_perspective = 1.0
 fog_sky_affect = 0.232
 fog_depth_begin = 0.0
 fog_depth_end = 116.0
+volumetric_fog_density = 0.084
+volumetric_fog_anisotropy = 0.25
+volumetric_fog_detail_spread = 6.0
+volumetric_fog_ambient_inject = 0.35
+volumetric_fog_sky_affect = 0.25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7y4f"]
 albedo_texture = ExtResource("1_ooc0k")
-metallic = 1.0
-metallic_specular = 1.0
-roughness = 0.2
+metallic = 0.51
+metallic_specular = 0.1
+roughness = 0.59
 uv1_scale = Vector3(200, 200, 200)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_geq3u"]
@@ -61,7 +66,7 @@ uv1_scale = Vector3(20, 20, 20)
 [node name="World" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.415905, 0.901388, 0.120514, 0.123407, 0.187234, -0.974533, 0, 0, 0)
+transform = Transform3D(-0.900996, -0.39044, -0.189109, -0.413544, 0.904706, 0.102414, 0.131102, 0.170479, -0.976601, 0, 0, 0)
 light_intensity_lux = 4545.45
 light_temperature = 4000.0
 light_color = Color(0.601294, 0.283561, 0.318917, 1)

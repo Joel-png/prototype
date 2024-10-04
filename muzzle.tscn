@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dtt4jrtcoa8dx"]
+[gd_scene load_steps=11 format=3 uid="uid://dtt4jrtcoa8dx"]
 
 [ext_resource type="Script" path="res://Scripts/muzzle.gd" id="1_b2s1o"]
 [ext_resource type="Shader" uid="uid://cn7k7ynk8vub3" path="res://Shaders/muzzle_flash.tres" id="1_crgce"]
@@ -26,6 +26,43 @@ alpha_curve = SubResource("CurveTexture_fnrb8")
 size = Vector2(0.2, 0.2)
 center_offset = Vector3(0, 0.1, 0)
 
+[sub_resource type="Animation" id="Animation_hviwh"]
+resource_name = "flash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GPUParticles3D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_544jh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GPUParticles3D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_blcma"]
+_data = {
+"RESET": SubResource("Animation_544jh"),
+"flash": SubResource("Animation_hviwh")
+}
+
 [node name="Muzzle" type="Node3D"]
 script = ExtResource("1_b2s1o")
 
@@ -41,3 +78,8 @@ explosiveness = 1.0
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_wydim")
 draw_pass_1 = SubResource("QuadMesh_qpdxg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_blcma")
+}
