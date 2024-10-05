@@ -13,8 +13,9 @@ func _ready():
 func spawn_player(data):
 	var p = player_scene.instantiate()
 	p.set_multiplayer_authority(data)
-	print(data)
+	#print(data)
 	players[data] = p
+	p.position.y = 20
 	#players[data].collision_mask = players.size()
 	return p
 	

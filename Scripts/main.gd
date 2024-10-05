@@ -21,7 +21,8 @@ func spawn_level(data):
 func _on_host_pressed():
 	peer.create_lobby(SteamMultiplayerPeer.LOBBY_TYPE_PUBLIC)
 	multiplayer.multiplayer_peer = peer
-	multiplayer_spawner.spawn("res://world.tscn")
+	var world = multiplayer_spawner.spawn("res://world.tscn")
+	world.set_multiplayer_authority(1)
 	hide_menu()
 	
 func join_lobby(id):
@@ -66,7 +67,8 @@ func _on_refresh_pressed():
 func _on_host_local_pressed():
 	enet_peer.create_server(PORT)
 	multiplayer.multiplayer_peer = enet_peer
-	multiplayer_spawner.spawn("res://world.tscn")
+	var world = multiplayer_spawner.spawn("res://world.tscn")
+	world.set_multiplayer_authority(1)
 	hide_menu()
 
 
