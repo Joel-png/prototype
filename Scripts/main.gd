@@ -31,8 +31,8 @@ func join_lobby(id):
 	lobby_id = id
 	hide_menu()
 	
-func _on_lobby_created(connect, id):
-	if connect:
+func _on_lobby_created(_connect, id):
+	if _connect:
 		lobby_id = id
 		#Steam.setLobbyData(lobby_id, "name", str("Joel test Lobby" + Steam.getPersonaName()))
 		Steam.setLobbyData(lobby_id, "name", str("Joel test lobby"))
