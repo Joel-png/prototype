@@ -11,4 +11,5 @@ func _ready():
 
 func set_seed():
 	terrain_seed = randi_range(0, 10)
+	terrain_seed = 0
 	print(str(terrain_seed) + " set world seed")
