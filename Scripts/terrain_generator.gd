@@ -6,11 +6,10 @@ var world_size : int = 50
 var mesh_resolution : int = 1
 var height_multiplier = 80
 var scale_multiplier = 10
-var grass_scale = 5
+var grass_scale = 1
 
 
 @export var noise_texture : NoiseTexture2D
-@export var gradient : GradientTexture2D
 var terrain_seed = 0
 var image: Image
 
@@ -55,7 +54,7 @@ func generate():
 	
 	for i in range(data.get_vertex_count()):
 		var vertex = data.get_vertex(i)
-		var y = get_noise_y(vertex.x + world_size / 2 + 1, vertex.z + world_size / 2 + 1)
+		var y = get_noise_y(vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
 		vertex.y = y * height_multiplier
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
@@ -78,11 +77,5 @@ func generate():
 	
 
 func get_noise_y(x, z):
-	var value = image.get_pixel(x, z).r
-	return value
-	
-func get_gradient_y(x, z):
-	var increase = 2
-	var image = gradient.get_image()
 	var value = image.get_pixel(x, z).r
 	return value
