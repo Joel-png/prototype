@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://br5o5h3turssi"]
+
+[ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Assets/s_ground_material.tres" id="1_wvhqs"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_wvhqs")

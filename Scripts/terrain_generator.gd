@@ -4,9 +4,9 @@ extends Node3D
 var mesh : MeshInstance3D
 var world_size : int = 50
 var mesh_resolution : int = 1
-var height_multiplier = 80
-var scale_multiplier = 10
-var grass_scale = 1
+var height_multiplier = 400
+var scale_multiplier = 50
+var grass_scale = 5
 
 
 @export var noise_texture : NoiseTexture2D
@@ -41,7 +41,7 @@ func generate():
 	plane_mesh.size = Vector2(world_size + 1, world_size + 1)
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
-	plane_mesh.material = preload("res://Assets/terrain_material.tres")
+	plane_mesh.material = preload("res://Assets/ground_material.tres")
 	
 	var surface = SurfaceTool.new()
 	var data = MeshDataTool.new()
