@@ -159,6 +159,8 @@ func _process(delta):
 		holdable.action(delta)
 		debug0.text = str(rad_to_deg(camera.rotation.x)) + "\n " + str(velocity) + "\n " + str(global_position)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
+		
+		get_parent_node_3d().update_grass(position)
 	holdable.end_action()
 	
 func hotbar_logic():

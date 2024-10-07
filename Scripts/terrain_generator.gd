@@ -2,11 +2,11 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh : MeshInstance3D
-var world_size : int = 50
+var world_size : int = 100
 var mesh_resolution : int = 1
-var height_multiplier = 400
-var scale_multiplier = 50
-var grass_scale = 5
+var height_multiplier = 70
+var scale_multiplier = 20
+var grass_scale = 2
 
 
 @export var noise_texture : NoiseTexture2D
@@ -15,6 +15,7 @@ var image: Image
 
 @onready var world = $".."
 @onready var grass = $GrassParticle
+@onready var grass_outer = $GrassParticle2
 
 func setup():
 	terrain_seed = world.terrain_seed
@@ -23,16 +24,31 @@ func setup():
 	noise_texture.noise.seed = terrain_seed
 	print(str(terrain_seed) + "is seed")
 	var shader_material = grass.process_material
+	var shader_material_outer = grass_outer.process_material
 	shader_material.set_shader_parameter("map_heightmap", noise_texture)
+	shader_material_outer.set_shader_parameter("map_heightmap", noise_texture)
+	var normal_map = noise_texture
+	normal_map.as_normal_map = true
+	normal_map.bump_strength = 10
+	shader_material.set_shader_parameter("map_normalmap", normal_map)
+	shader_material_outer.set_shader_parameter("map_normalmap", normal_map)
+	
+	
 	
 	var heightmap_scale = world_size + 2
 	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
 	var rows = (heightmap_scale - 1) * grass_scale
 	grass.amount = rows*rows
+	grass_outer.amount = rows*rows
 	shader_material.set_shader_parameter("instance_rows", rows)
 	shader_material.set_shader_parameter("map_heightmap_size", heightmap_size)
 	shader_material.set_shader_parameter("__terrain_amplitude", height_multiplier)
 	shader_material.set_shader_parameter("size_difference_of_world", scale_multiplier)
+	
+	shader_material_outer.set_shader_parameter("instance_rows", rows)
+	shader_material_outer.set_shader_parameter("map_heightmap_size", heightmap_size)
+	shader_material_outer.set_shader_parameter("__terrain_amplitude", height_multiplier)
+	shader_material_outer.set_shader_parameter("size_difference_of_world", scale_multiplier)
 	await noise_texture.changed
 	generate()
 
@@ -41,7 +57,7 @@ func generate():
 	plane_mesh.size = Vector2(world_size + 1, world_size + 1)
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
-	plane_mesh.material = preload("res://Assets/ground_material.tres")
+	plane_mesh.material = preload("res://Assets/Ground/ground_material.tres")
 	
 	var surface = SurfaceTool.new()
 	var data = MeshDataTool.new()
@@ -79,3 +95,4 @@ func generate():
 func get_noise_y(x, z):
 	var value = image.get_pixel(x, z).r
 	return value
+	

@@ -33,8 +33,20 @@ float get_height(vec2 pos) {
 	return __terrain_amplitude * (texture(map_heightmap, pos).r);
 }
 
+vec3 unpack_normalmap(vec3 rgb) {
+	vec3 n = rgb.xyz * 2.0 - vec3(1.0);
+	return n;
+}
+
+vec3 get_normal(vec2 pos) {
+	pos -= map_heightmap_size/2.0 * size_difference_of_world;
+	pos /= map_heightmap_size * size_difference_of_world;
+	return terrain_normal_basis * unpack_normalmap(texture(map_normalmap, pos).rgb);
+}
+
+
 vec3 get_noise(vec2 pos) {
-	pos -= map_heightmap_size/2.0 * size_difference_of_world;//med_offset + 1.0;
+	pos -= map_heightmap_size/2.0 * size_difference_of_world;
 	pos /= map_heightmap_size * size_difference_of_world;
 	return texture(map_clumpmap, pos).rgb;
 }
@@ -105,10 +117,50 @@ void start() {
 	pos.z += sin( noise.z * instance_pos_randomize) * base_scale.z ; 
 	
 	// re-transform to orient to normal if the setting is on	
-	
-	TRANSFORM[0].xyz = vec3(0.0);
-	TRANSFORM[1].xyz = vec3(0.0);
-	TRANSFORM[2].xyz = vec3(0.0);
+	// Fetch the normal at this position
+	vec3 normal = get_normal(pos.xz);
+
+	// If you want to orient the particle to the normal
+	// Rotate Y-axis (up) to align with the normal's direction
+	if (instance_orient_to_normal == true) {
+	    // Get the normal at the current position
+	    vec3 normal = get_normal(pos.xz);
+	    normal = normalize(normal); // Normalize the normal vector
+
+	    // Define the up vector (default Y-axis)
+	    vec3 up = vec3(0.0, 1.0, 0.0);
+
+	    // Compute a right vector by crossing the up vector with the normal
+	    vec3 right = normalize(cross(up, normal));
+
+	    // Recompute the up vector to ensure it's orthogonal to the normal and right vector
+	    up = normalize(cross(normal, right));
+
+	    // Construct the rotation matrix using the right, up, and normal vectors
+	    mat3 rotation_matrix = mat3(right, up, normal);
+
+	    // Apply the orientation influence
+	    rotation_matrix *= instance_orientation_influence;
+
+	    // Update the TRANSFORM matrix to include the rotation
+	    TRANSFORM[0][0] = rotation_matrix[0][0];
+	    TRANSFORM[0][1] = rotation_matrix[0][1];
+	    TRANSFORM[0][2] = rotation_matrix[0][2];
+
+	    TRANSFORM[1][0] = rotation_matrix[1][0];
+	    TRANSFORM[1][1] = rotation_matrix[1][1];
+	    TRANSFORM[1][2] = rotation_matrix[1][2];
+
+	    TRANSFORM[2][0] = rotation_matrix[2][0];
+	    TRANSFORM[2][1] = rotation_matrix[2][1];
+	    TRANSFORM[2][2] = rotation_matrix[2][2];
+	}
+	else {
+		TRANSFORM[0].xyz = vec3(0.0);
+		TRANSFORM[1].xyz = vec3(0.0);
+		TRANSFORM[2].xyz = vec3(0.0);
+	}
+
 	
 	// finalize transform positioning and scaling including randomizations	
 	TRANSFORM[3][0] = pos.x;

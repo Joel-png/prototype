@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://byh4vmt3rmtmv"
-path.s3tc="res://.godot/imported/burned_ground_01_diff_1k.jpg-d2317818c4639763c24e60e475bdd0fd.s3tc.ctex"
+path.s3tc="res://.godot/imported/burned_ground_01_diff_1k.jpg-f98655db4f0709504739730a330ec7e9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/ground/burned_ground_01_diff_1k.jpg"
-dest_files=["res://.godot/imported/burned_ground_01_diff_1k.jpg-d2317818c4639763c24e60e475bdd0fd.s3tc.ctex"]
+source_file="res://Assets/Ground/burned_ground_01_diff_1k.jpg"
+dest_files=["res://.godot/imported/burned_ground_01_diff_1k.jpg-f98655db4f0709504739730a330ec7e9.s3tc.ctex"]
 
 [params]
 
