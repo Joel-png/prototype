@@ -108,6 +108,7 @@ emitting = false
 amount = 100
 one_shot = true
 explosiveness = 1.0
+draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_a1mvg")
 draw_pass_1 = SubResource("QuadMesh_hnihe")
 
@@ -116,9 +117,10 @@ draw_pass_1 = SubResource("QuadMesh_hnihe")
 [node name="TrailParticle" type="GPUParticles3D" parent="."]
 material_override = SubResource("StandardMaterial3D_78sma")
 extra_cull_margin = 1000.0
-amount = 10000
+amount = 7000
 lifetime = 0.5
 fixed_fps = 144
+draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_q5dtq")
 draw_pass_1 = SubResource("QuadMesh_ou1y4")
 

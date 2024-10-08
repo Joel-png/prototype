@@ -34,7 +34,7 @@ float get_height(vec2 pos) {
 }
 
 vec3 unpack_normalmap(vec3 rgb) {
-	vec3 n = rgb.xyz * 2.0 - vec3(1.0);
+	vec3 n = rgb.xzy * 2.0 - vec3(1.0);
 	return n;
 }
 

@@ -4,9 +4,9 @@ extends Node3D
 var mesh : MeshInstance3D
 var world_size : int = 100
 var mesh_resolution : int = 1
-var height_multiplier = 70
-var scale_multiplier = 20
-var grass_scale = 2
+var height_multiplier = 50
+var scale_multiplier = 10
+var grass_scale = 5
 
 
 @export var noise_texture : NoiseTexture2D

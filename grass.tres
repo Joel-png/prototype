@@ -19,7 +19,7 @@ texture = ExtResource("4_3we6a")
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx;
+render_mode blend_mix, depth_draw_always, cull_disabled, diffuse_lambert, specular_disabled, depth_prepass_alpha, ambient_light_disabled, vertex_lighting, alpha_to_coverage, alpha_to_coverage_and_one;
 
 uniform sampler2D tex_frg_3;
 uniform sampler2D tex_frg_2;
@@ -55,8 +55,15 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-142.805, 95.0283)
+graph_offset = Vector2(-328.136, 50.4803)
+modes/depth_draw = 1
 modes/cull = 2
+modes/specular = 2
+flags/depth_prepass_alpha = true
+flags/ambient_light_disabled = true
+flags/vertex_lighting = true
+flags/alpha_to_coverage = true
+flags/alpha_to_coverage_and_one = true
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_5vpog")
 nodes/fragment/2/position = Vector2(-220, 180)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_5wm46")
