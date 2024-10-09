@@ -2,12 +2,12 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh : MeshInstance3D
-var world_size : int = 75
+var world_size : int = 29
 var mesh_resolution : int = 1
-var scale_multiplier = 80
+var scale_multiplier = 30
 var height_multiplier = 3 * scale_multiplier
 
-var grass_scale = 10
+var grass_scale = 7
 
 
 @export var noise_texture : NoiseTexture2D
@@ -15,8 +15,9 @@ var terrain_seed = 0
 var image: Image
 
 @onready var world = $".."
-@onready var grass_clumps = $GrassParticle
-@onready var grass_spots = $GrassParticle2
+@onready var grass_clumps = $GrassClumpParticle
+@onready var grass_spots = $GrassSpotParticle
+@onready var rocks_small = $RockSmallParticle
 
 func setup():
 	terrain_seed = world.terrain_seed
@@ -24,53 +25,46 @@ func setup():
 	noise_texture.height = world_size + 2
 	noise_texture.noise.seed = terrain_seed
 	print(str(terrain_seed) + "is seed")
-	var shader_material = grass_clumps.process_material
-	var shader_material_outer = grass_spots.process_material
+	var grass_clumps_sm = grass_clumps.process_material
+	var grass_spots_sm = grass_spots.process_material
+	var rock_small_sm = rocks_small.process_material
 	
 	await noise_texture.changed
 	#image = noise_texture.get_image()
 	image = modify_noise(noise_texture)
-	image.save_png("res://Assets/image.png")
+	
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)
-	shader_material.set_shader_parameter("map_heightmap", height_texture)
-	shader_material_outer.set_shader_parameter("map_heightmap", height_texture)
+	
 	var normal_map = ImageTexture.new()
 	var normal_image = Image.new()
 	normal_image.copy_from(image)
-	normal_image.bump_map_to_normal_map(10.0)
-	normal_image.save_png("res://Assets/image_normal.png")
+	normal_image.bump_map_to_normal_map(height_multiplier)
+	
 	normal_map.set_image(normal_image)
-	shader_material.set_shader_parameter("map_normalmap", normal_map)
-	shader_material_outer.set_shader_parameter("map_normalmap", normal_map)
+	
 	
 	
 	
 	var heightmap_scale = world_size + 2
 	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
-	var rows = (heightmap_scale - 1) * grass_scale
+	var rows = 100 * grass_scale
 	var grass_base_spacing = 0.25 # spacing at which is considered the default render distance for other spacings
 	var grass_clumps_spacing = 0.25
 	var grass_spots_spacing = 1.0
-	var clump_rows = rows * (grass_base_spacing / grass_clumps_spacing)
-	var spots_rows = rows * (grass_base_spacing / grass_spots_spacing)
-	grass_clumps.amount = clump_rows*clump_rows
+	var rocks_small_spacing = 4.0
+	var clumps_rows = floor(rows * (grass_base_spacing / grass_clumps_spacing))
+	var spots_rows = floor(rows * (grass_base_spacing / grass_spots_spacing))
+	var rocks_small_rows = floor(rows * (grass_base_spacing / rocks_small_spacing))
+	print(rocks_small_rows)
+	grass_clumps.amount = clumps_rows*clumps_rows
 	grass_spots.amount = spots_rows*spots_rows
-	print(grass_spots.amount)
-	print(spots_rows)
-	print(clump_rows)
+	rocks_small.amount = rocks_small_rows*rocks_small_rows
 	
-	shader_material.set_shader_parameter("instance_spacing", 0.25)
-	shader_material.set_shader_parameter("instance_rows", clump_rows)
-	shader_material.set_shader_parameter("map_heightmap_size", heightmap_size)
-	shader_material.set_shader_parameter("__terrain_amplitude", height_multiplier)
-	shader_material.set_shader_parameter("size_difference_of_world", scale_multiplier)
-	
-	shader_material_outer.set_shader_parameter("instance_spacing", 1)
-	shader_material_outer.set_shader_parameter("instance_rows", spots_rows)
-	shader_material_outer.set_shader_parameter("map_heightmap_size", heightmap_size)
-	shader_material_outer.set_shader_parameter("__terrain_amplitude", height_multiplier)
-	shader_material_outer.set_shader_parameter("size_difference_of_world", scale_multiplier)
+	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size, height_multiplier, scale_multiplier)
+	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size, height_multiplier, scale_multiplier)
+	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size, height_multiplier, scale_multiplier)
+		
 	generate()
 
 func generate():
@@ -78,7 +72,9 @@ func generate():
 	plane_mesh.size = Vector2(world_size + 1, world_size + 1)
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
-	plane_mesh.material = preload("res://Assets/Ground/ground_material.tres")
+	var material = preload("res://Assets/Ground/ground_material.tres")
+	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 4)
+	plane_mesh.material = material
 	
 	var surface = SurfaceTool.new()
 	var data = MeshDataTool.new()
@@ -113,6 +109,15 @@ func generate():
 	add_child(mesh)
 	
 
+func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size, heightmap_multiplier, scale_multiplier):
+	material.set_shader_parameter("map_heightmap", height_texture)
+	material.set_shader_parameter("map_normalmap", normal_map)
+	material.set_shader_parameter("instance_spacing", spacing)
+	material.set_shader_parameter("instance_rows", rows)
+	material.set_shader_parameter("map_heightmap_size", heightmap_size)
+	material.set_shader_parameter("__terrain_amplitude", height_multiplier)
+	material.set_shader_parameter("size_difference_of_world", scale_multiplier)
+	
 func get_noise_y(x, z):
 	var value = image.get_pixel(x, z).r
 	return value

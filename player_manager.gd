@@ -1,9 +1,10 @@
 extends Node3D
 
-@onready var grass = $"../TerrainGeneration/GrassParticle"
-@onready var grass2 = $"../TerrainGeneration/GrassParticle2"
+@onready var grass_clump = $"../TerrainGeneration/GrassClumpParticle"
+@onready var grass_spot = $"../TerrainGeneration/GrassSpotParticle"
+@onready var rock_small = $"../TerrainGeneration/RockSmallParticle"
 
 func update_grass(pos):
-	grass.position = pos
-	grass2.position = pos
-	grass.draw_pass_1.surface_get_material(0).set_shader_parameter("player_pos", pos)
+	grass_clump.position = pos
+	grass_spot.position = pos
+	rock_small.position = pos

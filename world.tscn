@@ -1,11 +1,12 @@
-[gd_scene load_steps=22 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=27 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
+[ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Assets/Ground/s_ground_material.tres" id="2_i2gpx"]
 [ext_resource type="Script" path="res://player_manager.gd" id="3_6oj04"]
 [ext_resource type="Script" path="res://Scripts/multiplayer_spawner.gd" id="3_lu5lj"]
 [ext_resource type="Script" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
-[ext_resource type="Shader" path="res://Assets/Ground/grass.gdshader" id="5_2jamn"]
+[ext_resource type="Shader" path="res://Assets/Ground/s_detail.gdshader" id="5_2jamn"]
 [ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://grass_shader_material.tres" id="7_4kvgo"]
 [ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
 [ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
@@ -47,6 +48,11 @@ volumetric_fog_emission_energy = 0.0
 volumetric_fog_anisotropy = 0.46
 volumetric_fog_detail_spread = 6.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eaxcj"]
+render_priority = 0
+shader = ExtResource("2_i2gpx")
+shader_parameter/uv_scale = 1.0
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1mi5f"]
@@ -56,39 +62,41 @@ noise = SubResource("FastNoiseLite_xhuuh")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_woola"]
 frequency = 1.0
-fractal_type = 0
+fractal_type = 3
+fractal_octaves = 9
 fractal_weighted_strength = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_le406"]
-width = 101
-height = 101
-seamless = true
+width = 200
+height = 200
+generate_mipmaps = false
 noise = SubResource("FastNoiseLite_woola")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2f7kd"]
 shader = ExtResource("5_2jamn")
-shader_parameter/instance_rows = 100.0
+shader_parameter/instance_rows = 200.0
 shader_parameter/instance_rot_randomize = 360.0
 shader_parameter/instance_spacing = 0.25
 shader_parameter/instance_scale_x = 1.0
 shader_parameter/instance_scale_y = 1.0
 shader_parameter/instance_scale_z = 1.0
-shader_parameter/instance_scale_randomize = 1.0
-shader_parameter/instance_pos_randomize = 5.0
+shader_parameter/instance_scale_randomize = 2.0
+shader_parameter/instance_pos_randomize = 2.5
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
 shader_parameter/_coverage_altitude = 10.0
 shader_parameter/_coverage_range = 1000.0
 shader_parameter/_slope_coverage = 1000.0
-shader_parameter/clumping_strength = 65.0
+shader_parameter/clumping_strength = 60.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/height_offset = 0.0
 shader_parameter/size_difference_of_world = 3.0
 shader_parameter/instance_orient_to_normal = true
-shader_parameter/instance_orientation_influence = 1.0
+shader_parameter/instance_orientation_influence = 2.982
 shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
+shader_parameter/noise_size = 1.0
 shader_parameter/map_heightmap = ExtResource("7_hic37")
 shader_parameter/map_normalmap = ExtResource("8_1a4ak")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
@@ -113,7 +121,7 @@ blend_shape_mode = 0
 shader = ExtResource("5_2jamn")
 shader_parameter/instance_rows = 100.0
 shader_parameter/instance_rot_randomize = 360.0
-shader_parameter/instance_spacing = 1.0
+shader_parameter/instance_spacing = 2.5
 shader_parameter/instance_scale_x = 1.0
 shader_parameter/instance_scale_y = 1.0
 shader_parameter/instance_scale_z = 1.0
@@ -124,18 +132,72 @@ shader_parameter/instance_scale_max = 1.0
 shader_parameter/_coverage_altitude = 10.0
 shader_parameter/_coverage_range = 1000.0
 shader_parameter/_slope_coverage = 1000.0
-shader_parameter/clumping_strength = 53.857
+shader_parameter/clumping_strength = 0.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/height_offset = -0.1
 shader_parameter/size_difference_of_world = 3.0
-shader_parameter/instance_orient_to_normal = true
+shader_parameter/instance_orient_to_normal = false
+shader_parameter/instance_orientation_influence = 1.011
+shader_parameter/__terrain_amplitude = 40.0
+shader_parameter/map_heightmap_size = Vector2(101, 101)
+shader_parameter/map_normalmap_size = Vector2(101, 101)
+shader_parameter/noise_size = 1.0
+shader_parameter/map_heightmap = ExtResource("7_hic37")
+shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v56lm"]
+shader = ExtResource("5_2jamn")
+shader_parameter/instance_rows = 20.0
+shader_parameter/instance_rot_randomize = 360.0
+shader_parameter/instance_spacing = 2.0
+shader_parameter/instance_scale_x = 1.0
+shader_parameter/instance_scale_y = 1.0
+shader_parameter/instance_scale_z = 1.0
+shader_parameter/instance_scale_randomize = 0.1
+shader_parameter/instance_pos_randomize = 10.0
+shader_parameter/instance_scale_min = 0.5
+shader_parameter/instance_scale_max = 2.0
+shader_parameter/_coverage_altitude = 10.0
+shader_parameter/_coverage_range = 1000.0
+shader_parameter/_slope_coverage = 1000.0
+shader_parameter/clumping_strength = 25.0
+shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/height_offset = 0.0
+shader_parameter/size_difference_of_world = 3.0
+shader_parameter/instance_orient_to_normal = false
 shader_parameter/instance_orientation_influence = 1.0
 shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
+shader_parameter/noise_size = 1.0
 shader_parameter/map_heightmap = ExtResource("7_hic37")
 shader_parameter/map_normalmap = ExtResource("8_1a4ak")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe32i"]
+depth_draw_mode = 1
+shading_mode = 2
+albedo_color = Color(0.560955, 0.560955, 0.560955, 1)
+metallic = 0.37
+metallic_specular = 1.0
+roughness = 0.63
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_8yg87"]
+_surfaces = [{
+"aabb": AABB(-0.899701, -0.063209, -0.885091, 1.85219, 1.1052, 1.71257),
+"attribute_data": PackedByteArray("BJIjZZiHAZOgiU9hh34fakR71pKCvY41MnshKhrJylAzIAhI976HlEnDlXdHvIaVR7yGlUnDlXcv4f548cr5bjMgCEgyeyEq0RgDSdEYA0kyeyEqAzK8SGBa5UDbaOs5pnMSM0e8hpUv4f54qE3OldEMOXyc5ERqHmIEdNZL7VyhcMdf22jrOWBa5UChcMdf22jrOYd+H2qgiU9hpnMSM0nDlXf3voeUv6qPYQSSI2WYhwGTv6qPYQSSI2UQvWpNgr2ONTJ7ISqmcxIzoIlPYYd+H2pEe9aSoXDHXx5iBHSzX1+TjkWxYAMyvEjWS+1cYFrlQB5iBHSzX1+T1kvtXI5FsWBtO4101ENWlNEMOXyc5ERqYhhAZdEYA0kzIAhIGsnKUNEYA0kDMrxIYhhAZW07jXSORbFg0Qw5fGIYQGX4Ds6V1ENWlG07jXQaycpQnOREaoK9jjWCvY41nOREahC9ak3xyvluL+H+eL+qj2EQvWpNScOVd/HK+W7UQ1aUs19fk6hNzpVHvIaV976HlJiHAZNEe9aS"),
+"format": 34896613399,
+"index_count": 180,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAwABAAQABQAGAAcABwAGAAgACQAKAAsADAANAA4ADgANAA8AEAARABIAEwAUABUAFQAUABYAFgAUABcAFwAUABgAGQAaABsAGwAaABwAHAAaAB0AHgAfACAAIAAfACEAIQAfACIAIwAkACUAJQAkACYAJgAkACcAKAApACoAKgApACsAKwApACwALQAuAC8ALwAuADAAMAAuADEAMQAuADIAMgAuADMANAA1ADYANgA1ADcANwA1ADgAOQA6ADsAOwA6ADwAPQA+AD8APwA+AEAAQAA+AEEAQQA+AEIAQwBEAEUARQBEAEYARgBEAEcARwBEAEgASQBKAEsASwBKAEwATABKAE0ATgBPAFAAUABPAFEAUQBPAFIAUwBUAFUAVgBXAFgAWABXAFkAWQBXAFoAWwBcAF0AXQBcAF4AXwBgAGEAYQBgAGIAYgBgAGMAYwBgAGQAZABgAGUA"),
+"material": SubResource("StandardMaterial3D_xe32i"),
+"name": "Sphere",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 102,
+"vertex_data": PackedByteArray("Aeq3hoRKbdBJ4ZoH5GqF0GT1rZDJY4fQ///ueSyJm9CJ7hEIG42A0Hpoy+cOUKIiHHn//2eCmCCdH/SxSWPFH84tzs77s1geE215A+AYHBGJbBdUAAAcEaQhwwDfNhwRpCHDAN82WPKJbBdUAABU8gkYZFDPIVfywlUuaT0CUfLOLc7O+7PWDBx5//9ngtYMWi36zMK21gxaLfrMwrZ5sRx5//9ngj6xTmSUza3LWrHpqW7cYc8GsYO4kenwv/Wwp7NH9K6sHrGkIcMA3zaKCAkYZFDPIXUIRA0AAFSmcQgAAHxGk61oCFsKq3bsSF0Ic9IXXD7cy50embKXRvObnVDtCZNstcWdg7iR6fC/dJ3pqW7cYc9knVDtCZNstXnCg7iR6fC/5sH//+55LIlJw2T1rZDJY0vDp7NH9K6sT8GJbBdUAACG6BNteQPgGI/o9K9ykPcdlOgB6reGhEqW6EnhmgfkapTo9K9ykPcdVeYB6reGhEqr5Fd5h7mCIFXmemjL5w5QruUcef//Z4JZ5KezR/SurFTjZPWtkMljA+T//+55LIlVrInuEQgbjW6sUO0Jk2y1a6xz0hdcPtx9rI3GnAbF3HysHo/6jnb29J1OZJTNrcv0nR6ZspdG8/Sd6alu3GHP9J1z0hdcPtw+jY3GnAbF3DmNHpmyl0bzW40ej/qOdvZSjeht0Vn//zuNcH38A7r2Oo0AAHxGk60EDlsKq3bsSBgNhxbbhELM8g1aLfrMwrbzDM4tzs77s5QLnR/0sUljlAtaLfrMwrZNmk5klM2ty1iahxbbhELMX5robdFZ//9Smh6P+o529jqaAAB8RpOtZZqHFtuEQsxwmkQNAABUpnGacH38A7r2bprobdFZ//9omp0f9LFJYwAbWwqrduxIABt6aMvnDlAAG3poy+cOUIfoWwqrduxIyOdXeYe5giAO6MJVLmk9AnnnCRhkUM8hjOf0r3KQ9x3Y+Fd5h7mCIAL5iWwXVAAATfnCVS5pPQKY+XB9/AO69hHVjcacBsXcENVEDQAAVKYR1aQhwwDfNhDVE215A+AYENVJ4ZoH5GoQ1YnuEQgbjRDVUHaNFkZ3RRZVd0AWHngFFgx3VhZO5Mk4eOJmNsHhdzWQ4OozQRYQfEEWEHxBFhB8I2ZA/BNmKfwfZjv8BWYU/InTkQ+J05EPidORD7jYuZfD27+WNto/l4rfipUG4RCVxN0blsQ9lHjVPXt42T12eOA9a3jpPV54ybvTKwO7mS2wuw0sNbp0L3G1wT6mu0sg47v3IVa7Fx5VuxEeJ7zTI8F5gxn6eWIZIHpLGSl6RhkgekwZ4rYqDkC4IhHitioOa7dUD4O4tRFbuYoTyrhOEl9spBlVboUaGm5rGjNv6Ronb+Qa6ts6lurbOpbq2zqW6ts6lqdkhRWUalUWlm5UHwJuCB58a14YT2v5F8vwpTYJ8A02vPCZNuvv9TXQ7hY10O4WNZXH4qvoxs2rfMa/q0bH2Kv0yA2sL04Z2MFNwdi1TdPY0E2q2BBOSdhw8N9ScPDfUnDw31KZiJPVqIqI1OeJ6tSCixnUTYs01EebtwWPmsUERpkSA/eXVwHqVZVU6lWVVOpVlVTqVZVU6lWVVOlVlVTpVZVU")
+}]
+blend_shape_mode = 0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
@@ -146,7 +208,7 @@ properties/0/replication_mode = 1
 script = ExtResource("1_5i068")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.900996, -0.39044, -0.189109, -0.413544, 0.904706, 0.102414, 0.131102, 0.170479, -0.976601, 0, 0, 0)
+transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.431745, 0.849659, 0.302782, 0.0424598, 0.354452, -0.93411, 0, 0, 0)
 light_intensity_lux = 4545.45
 light_temperature = 4000.0
 light_color = Color(0.495005, 0.293684, 0.353005, 1)
@@ -162,9 +224,10 @@ directional_shadow_max_distance = 888.6
 environment = SubResource("Environment_f23m3")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 4.51013, 0.765652, 0, -5.3683, 0.643255, 32.0649, 34.2903, -79.2303)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.8313, 0)
+material_override = SubResource("ShaderMaterial_eaxcj")
 use_collision = true
-size = Vector3(61.8309, 15.7396, 1)
+size = Vector3(50, 5, 50)
 
 [node name="Players" type="Node3D" parent="."]
 script = ExtResource("3_6oj04")
@@ -180,27 +243,34 @@ player_scene = ExtResource("2_6vsb2")
 script = ExtResource("4_hblxr")
 noise_texture = SubResource("NoiseTexture2D_1mi5f")
 
-[node name="GrassParticle" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399734, -0.259109, -1.44857)
-visible = false
-extra_cull_margin = 6187.38
-amount = 10000
+[node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.046, 0, 142.381)
+extra_cull_margin = 500.0
+amount = 40000
 lifetime = 0.01
 explosiveness = 1.0
 draw_order = 3
 process_material = SubResource("ShaderMaterial_2f7kd")
 draw_pass_1 = SubResource("ArrayMesh_4ig01")
 
-[node name="GrassParticle2" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399734, -0.259109, -1.44857)
-visible = false
-extra_cull_margin = 6187.38
+[node name="GrassSpotParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.8424, 0, 124.28)
+extra_cull_margin = 500.0
 amount = 10000
 lifetime = 0.01
 explosiveness = 1.0
 draw_order = 3
 process_material = SubResource("ShaderMaterial_xs7c2")
 draw_pass_1 = ExtResource("8_i2t62")
+
+[node name="RockSmallParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+extra_cull_margin = 500.0
+amount = 400
+lifetime = 0.01
+explosiveness = 1.0
+draw_order = 3
+process_material = SubResource("ShaderMaterial_v56lm")
+draw_pass_1 = SubResource("ArrayMesh_8yg87")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iuys2")
