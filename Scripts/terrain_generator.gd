@@ -4,9 +4,10 @@ extends Node3D
 var mesh : MeshInstance3D
 var world_size : int = 75
 var mesh_resolution : int = 1
-var height_multiplier = 80
-var scale_multiplier = 20
-var grass_scale = 5
+var scale_multiplier = 80
+var height_multiplier = 3 * scale_multiplier
+
+var grass_scale = 10
 
 
 @export var noise_texture : NoiseTexture2D
@@ -14,8 +15,8 @@ var terrain_seed = 0
 var image: Image
 
 @onready var world = $".."
-@onready var grass = $GrassParticle
-@onready var grass_outer = $GrassParticle2
+@onready var grass_clumps = $GrassParticle
+@onready var grass_spots = $GrassParticle2
 
 func setup():
 	terrain_seed = world.terrain_seed
@@ -23,8 +24,8 @@ func setup():
 	noise_texture.height = world_size + 2
 	noise_texture.noise.seed = terrain_seed
 	print(str(terrain_seed) + "is seed")
-	var shader_material = grass.process_material
-	var shader_material_outer = grass_outer.process_material
+	var shader_material = grass_clumps.process_material
+	var shader_material_outer = grass_spots.process_material
 	
 	await noise_texture.changed
 	#image = noise_texture.get_image()
@@ -48,15 +49,25 @@ func setup():
 	var heightmap_scale = world_size + 2
 	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
 	var rows = (heightmap_scale - 1) * grass_scale
-	grass.amount = rows*rows
-	grass_outer.amount = rows*rows
+	var grass_base_spacing = 0.25 # spacing at which is considered the default render distance for other spacings
+	var grass_clumps_spacing = 0.25
+	var grass_spots_spacing = 1.0
+	var clump_rows = rows * (grass_base_spacing / grass_clumps_spacing)
+	var spots_rows = rows * (grass_base_spacing / grass_spots_spacing)
+	grass_clumps.amount = clump_rows*clump_rows
+	grass_spots.amount = spots_rows*spots_rows
+	print(grass_spots.amount)
+	print(spots_rows)
+	print(clump_rows)
 	
-	shader_material.set_shader_parameter("instance_rows", rows)
+	shader_material.set_shader_parameter("instance_spacing", 0.25)
+	shader_material.set_shader_parameter("instance_rows", clump_rows)
 	shader_material.set_shader_parameter("map_heightmap_size", heightmap_size)
 	shader_material.set_shader_parameter("__terrain_amplitude", height_multiplier)
 	shader_material.set_shader_parameter("size_difference_of_world", scale_multiplier)
 	
-	shader_material_outer.set_shader_parameter("instance_rows", rows)
+	shader_material_outer.set_shader_parameter("instance_spacing", 1)
+	shader_material_outer.set_shader_parameter("instance_rows", spots_rows)
 	shader_material_outer.set_shader_parameter("map_heightmap_size", heightmap_size)
 	shader_material_outer.set_shader_parameter("__terrain_amplitude", height_multiplier)
 	shader_material_outer.set_shader_parameter("size_difference_of_world", scale_multiplier)

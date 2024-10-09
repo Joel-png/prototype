@@ -12,10 +12,14 @@
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://grass_mesh.tres" id="8_i2t62"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
-sky_top_color = Color(0.350844, 0.0997372, 0.0842552, 1)
-sky_horizon_color = Color(0.36759, 0.389398, 0.535021, 1)
-sky_energy_multiplier = 0.21
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
+sky_horizon_color = Color(0.512898, 0.154585, 0.250554, 1)
+sky_energy_multiplier = 0.2
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.513726, 0.152941, 0.25098, 1)
+ground_curve = 0.117127
+ground_energy_multiplier = 0.2
+sun_curve = 0.621158
 
 [sub_resource type="Sky" id="Sky_tug5e"]
 sky_material = SubResource("ProceduralSkyMaterial_q50i2")
@@ -28,18 +32,20 @@ sky = SubResource("Sky_tug5e")
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.99
 tonemap_mode = 2
+sdfgi_read_sky_light = false
+sdfgi_bounce_feedback = 0.0
+sdfgi_cascades = 1
+sdfgi_max_distance = 25.6
 fog_enabled = true
-fog_sun_scatter = 0.01
-fog_density = 0.0305
-fog_aerial_perspective = 1.0
-fog_sky_affect = 0.232
+fog_aerial_perspective = 0.932
 fog_depth_begin = 0.0
 fog_depth_end = 116.0
-volumetric_fog_density = 0.084
-volumetric_fog_anisotropy = 0.25
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.036
+volumetric_fog_emission = Color(0.1333, 0.00298389, 0, 1)
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_anisotropy = 0.46
 volumetric_fog_detail_spread = 6.0
-volumetric_fog_ambient_inject = 0.35
-volumetric_fog_sky_affect = 0.25
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
 
@@ -68,13 +74,13 @@ shader_parameter/instance_scale_x = 1.0
 shader_parameter/instance_scale_y = 1.0
 shader_parameter/instance_scale_z = 1.0
 shader_parameter/instance_scale_randomize = 1.0
-shader_parameter/instance_pos_randomize = 22.523
+shader_parameter/instance_pos_randomize = 5.0
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
 shader_parameter/_coverage_altitude = 10.0
 shader_parameter/_coverage_range = 1000.0
 shader_parameter/_slope_coverage = 1000.0
-shader_parameter/clumping_strength = 0.0
+shader_parameter/clumping_strength = 65.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/height_offset = 0.0
 shader_parameter/size_difference_of_world = 3.0
@@ -112,7 +118,7 @@ shader_parameter/instance_scale_x = 1.0
 shader_parameter/instance_scale_y = 1.0
 shader_parameter/instance_scale_z = 1.0
 shader_parameter/instance_scale_randomize = 1.0
-shader_parameter/instance_pos_randomize = 40.541
+shader_parameter/instance_pos_randomize = 5.0
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
 shader_parameter/_coverage_altitude = 10.0
@@ -123,7 +129,7 @@ shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/height_offset = -0.1
 shader_parameter/size_difference_of_world = 3.0
 shader_parameter/instance_orient_to_normal = true
-shader_parameter/instance_orientation_influence = 0.26
+shader_parameter/instance_orientation_influence = 1.0
 shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
@@ -143,12 +149,12 @@ script = ExtResource("1_5i068")
 transform = Transform3D(-0.900996, -0.39044, -0.189109, -0.413544, 0.904706, 0.102414, 0.131102, 0.170479, -0.976601, 0, 0, 0)
 light_intensity_lux = 4545.45
 light_temperature = 4000.0
-light_color = Color(0.384491, 0.214161, 0.268465, 1)
+light_color = Color(0.495005, 0.293684, 0.353005, 1)
 light_energy = 0.001
 light_indirect_energy = 0.0
-light_volumetric_fog_energy = 0.0
 shadow_enabled = true
 shadow_bias = 0.0
+shadow_blur = 0.504
 directional_shadow_blend_splits = true
 directional_shadow_max_distance = 888.6
 
@@ -176,6 +182,7 @@ noise_texture = SubResource("NoiseTexture2D_1mi5f")
 
 [node name="GrassParticle" type="GPUParticles3D" parent="TerrainGeneration"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399734, -0.259109, -1.44857)
+visible = false
 extra_cull_margin = 6187.38
 amount = 10000
 lifetime = 0.01
@@ -186,6 +193,7 @@ draw_pass_1 = SubResource("ArrayMesh_4ig01")
 
 [node name="GrassParticle2" type="GPUParticles3D" parent="TerrainGeneration"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399734, -0.259109, -1.44857)
+visible = false
 extra_cull_margin = 6187.38
 amount = 10000
 lifetime = 0.01

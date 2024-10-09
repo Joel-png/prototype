@@ -78,8 +78,8 @@ func _ready():
 		debug0.hide()
 		debug1.hide()
 	else:
-		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		Engine.max_fps = 144
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		Engine.max_fps = 600
 	
 	
 func _unhandled_input(event):

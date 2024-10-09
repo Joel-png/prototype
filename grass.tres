@@ -1,9 +1,7 @@
-[gd_resource type="VisualShader" load_steps=9 format=3 uid="uid://c0e0abu643mw4"]
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://c0e0abu643mw4"]
 
 [ext_resource type="Texture2D" uid="uid://ce5en1vpcsx5g" path="res://Assets/plants_0002_1k_4gG5yU/plants_0002_opacity_1k.jpg" id="1_jutdw"]
 [ext_resource type="Texture2D" uid="uid://dcdx5jqwq5bsd" path="res://Assets/plants_0002_1k_4gG5yU/plants_0002_color_1k.jpg" id="2_kj38b"]
-[ext_resource type="Texture2D" uid="uid://cjqijjdxau0wq" path="res://Assets/plants_0002_1k_4gG5yU/plants_0002_height_1k.png" id="3_dvlok"]
-[ext_resource type="Texture2D" uid="uid://dhoqvy8bwtm84" path="res://Assets/plants_0002_1k_4gG5yU/plants_0002_normal_opengl_1k.png" id="4_3we6a"]
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_5vpog"]
 texture = ExtResource("1_jutdw")
@@ -11,20 +9,12 @@ texture = ExtResource("1_jutdw")
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_5wm46"]
 texture = ExtResource("2_kj38b")
 
-[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_4y8xf"]
-texture = ExtResource("3_dvlok")
-
-[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_macw2"]
-texture = ExtResource("4_3we6a")
-
 [resource]
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_always, cull_disabled, diffuse_lambert, specular_disabled, depth_prepass_alpha, ambient_light_disabled, vertex_lighting, alpha_to_coverage, alpha_to_coverage_and_one;
 
 uniform sampler2D tex_frg_3;
 uniform sampler2D tex_frg_2;
-uniform sampler2D tex_frg_4;
-uniform sampler2D tex_frg_5;
 
 
 
@@ -37,24 +27,15 @@ void fragment() {
 	vec4 n_out2p0 = texture(tex_frg_2, UV);
 
 
-// Texture2D:4
-	vec4 n_out4p0 = texture(tex_frg_4, UV);
-
-
-// Texture2D:5
-	vec4 n_out5p0 = texture(tex_frg_5, UV);
-
-
 // Output:0
 	ALBEDO = vec3(n_out3p0.xyz);
 	ALPHA = n_out2p0.x;
-	ROUGHNESS = n_out4p0.x;
-	NORMAL_MAP = vec3(n_out5p0.xyz);
 	BACKLIGHT = vec3(n_out2p0.xyz);
 
 
 }
 "
+graph_offset = Vector2(-334.438, -65.7889)
 modes/depth_draw = 1
 modes/cull = 2
 modes/specular = 2
@@ -68,8 +49,4 @@ nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_5vpog")
 nodes/fragment/2/position = Vector2(-220, 180)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_5wm46")
 nodes/fragment/3/position = Vector2(-220, -100)
-nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_4y8xf")
-nodes/fragment/4/position = Vector2(-220, 740)
-nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_macw2")
-nodes/fragment/5/position = Vector2(-220, 460)
-nodes/fragment/connections = PackedInt32Array(2, 0, 0, 1, 3, 0, 0, 0, 5, 0, 0, 9, 4, 0, 0, 3, 2, 0, 0, 18)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 1, 2, 0, 0, 18, 3, 0, 0, 0)

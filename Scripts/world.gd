@@ -10,6 +10,5 @@ func _ready():
 	terrain_generator.setup()
 
 func set_seed():
-	terrain_seed = randi_range(0, 10)
-	terrain_seed = 6
+	terrain_seed = randi_range(0, 1000)
 	print(str(terrain_seed) + " set world seed")

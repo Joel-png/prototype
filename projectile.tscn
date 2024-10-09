@@ -49,6 +49,7 @@ transparency = 1
 cull_mode = 2
 depth_draw_mode = 1
 shading_mode = 0
+disable_ambient_light = true
 vertex_color_use_as_albedo = true
 billboard_mode = 1
 
@@ -80,7 +81,6 @@ cull_mode = 2
 depth_draw_mode = 1
 shading_mode = 0
 disable_ambient_light = true
-disable_fog = true
 vertex_color_use_as_albedo = true
 billboard_mode = 1
 
