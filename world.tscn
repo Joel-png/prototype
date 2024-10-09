@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=32 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
 [ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://grass_mesh.tres" id="8_i2t62"]
+[ext_resource type="Shader" uid="uid://c65vkplbeg7ex" path="res://Shaders/shrub_leaves.tres" id="12_m6wjc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -146,6 +147,83 @@ shader_parameter/map_heightmap = ExtResource("7_hic37")
 shader_parameter/map_normalmap = ExtResource("8_1a4ak")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fmlye"]
+shader = ExtResource("5_2jamn")
+shader_parameter/instance_rows = 20.0
+shader_parameter/instance_rot_randomize = 360.0
+shader_parameter/instance_spacing = 4.0
+shader_parameter/instance_scale_x = 1.0
+shader_parameter/instance_scale_y = 1.0
+shader_parameter/instance_scale_z = 1.0
+shader_parameter/instance_scale_randomize = 0.5
+shader_parameter/instance_pos_randomize = 10.0
+shader_parameter/instance_scale_min = 0.05
+shader_parameter/instance_scale_max = 1.0
+shader_parameter/_coverage_altitude = 10.0
+shader_parameter/_coverage_range = 1000.0
+shader_parameter/_slope_coverage = 1000.0
+shader_parameter/clumping_strength = 60.0
+shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/height_offset = 0.0
+shader_parameter/size_difference_of_world = 3.0
+shader_parameter/instance_orient_to_normal = true
+shader_parameter/instance_orientation_influence = 2.982
+shader_parameter/__terrain_amplitude = 40.0
+shader_parameter/map_heightmap_size = Vector2(101, 101)
+shader_parameter/map_normalmap_size = Vector2(101, 101)
+shader_parameter/noise_size = 1.0
+shader_parameter/map_heightmap = ExtResource("7_hic37")
+shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_31khv"]
+render_priority = 0
+shader = ExtResource("12_m6wjc")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6w525"]
+render_priority = 0
+shader = ExtResource("12_m6wjc")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_dghkf"]
+_surfaces = [{
+"aabb": AABB(-1, 0, -1, 2, 8, 2),
+"attribute_data": PackedByteArray("/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAA="),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcA"),
+"material": SubResource("ShaderMaterial_31khv"),
+"name": "Plane.001",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("/38AAAAA/7//fwAA////v/9///8AAP+//3///////7///wAA/38AgAAAAAD/fwCA//////9/AIAAAP///38AgP9/AAD/fwAA/38AAP9/AAD/f////3////9/////f///")
+}, {
+"aabb": AABB(-2.82646, 4.95733, -3.3509, 6.48249, 6.31399, 5.67156),
+"attribute_data": PackedByteArray("/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA"),
+"format": 34896613399,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcACAAJAAoACgAJAAsADAANAA4ADgANAA8AEAARABIAEgARABMAFAAVABYAFgAVABcA"),
+"material": SubResource("ShaderMaterial_31khv"),
+"name": "Plane.007",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("KVXaEGq3Kt8TigAAFHcq3wAAzGVWQCrf6jTxVAAAKt8bl20IP5c3mSBIbQg/lzeZG5eEjP//N5kgSISM//83mQ9e2hDrb2HdLIEAAJO+Yd3h3Mxlgzxh3f//8VQri2HdgE32Z4mCwvK7kRxX9avC8pqb6LxMBcLy1d8OrLcuwvIxjDNVS3rsogtT3mkztOyi9di93m6g7KLOn2jzVtrsorFR6mCptBHjio0oXtV5EeP1Qf//g5YR4859Pf2vWxHjRUkE9kVJBPZFSQT2RUkE9gAA/38AAP9/AAD/fwAA/38vY3s8L2N7PC9jezwvY3s8mG4RN5huETeYbhE3mG4RNw1eJ0cNXidHDV4nRw1eJ0cWctf9FnLX/RZy1/0Wctf9")
+}, {
+"aabb": AABB(-5.33228, 6.74427, -6.2885, 12.1392, 6.98124, 10.7289),
+"attribute_data": PackedByteArray("/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAD/////AAD/////AAAAAAAA"),
+"format": 34896613399,
+"index_count": 72,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcACAAJAAoACgAJAAsADAANAA4ADgANAA8AEAARABIAEgARABMAFAAVABYAFgAVABcAGAAZABoAGgAZABsAHAAdAB4AHgAdAB8AIAAhACIAIgAhACMAJAAlACYAJgAlACcAKAApACoAKgApACsALAAtAC4ALgAtAC8A"),
+"material": SubResource("ShaderMaterial_6w525"),
+"name": "Plane.017",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 48,
+"vertex_data": PackedByteArray("NFYoZHGdxuuldKZtBIrG6+NEFOpslsbrVGOS8/+Cxuu5kKwnG8hRm6duETcqxFGba5yPlXD8UZtZevSkgPhRm4Rygz90wyqfx0+eMEjFKp/xZiWiKv4qnzREP5P//yqfx6wWG7h9/+LfuQAAEZ//4ufy9k5RbP/i///fM6qN/+LJnMQNqF0q2O+sohEugSrY29bdV3I4KtgB57tb91sq2JEyxA3eeR3kqkqiEaxcHeQAAN1Xlkgd5BgYu1tlKx3k10cWGwJe7dwpXwAAzUTt3K4h9k40Ge3cATnfMwAA7dyLld9p+Vpn9yyxyE7MbWf3K8a/nTYfZ/fM4aiCCjJn9zB4X1T+aHztbJc8WJ17fO3nlHie0yR87SO0VaJzN3ztMqwEbZSSdKAokjaK5aV0oDXbf9qmnXSgK8Gx9/ewdKAQlX2QLKGDqBN85pEwvoOoW7aW/p3Dg6henf//ouCDqPBrfHD5jnXc0IIKYj1xddwTZ9buMHB13PJ9ZOB0UnXchG339IRt9/SEbff0hG339MwxT5bMMU+WzDFPlswxT5a7D5RWuw+UVrsPlFa7D5RWDFvuQAxb7kAMW+5ADFvuQCtr1jsra9Y7K2vWOytr1js+R/fsPkf37D5H9+w+R/fsMUcT/jFHE/4xRxP+MUcT/kdm8z1HZvM9R2bzPUdm8z32d/Yy9nf2MvZ39jL2d/YyBGWBVARlgVQEZYFUBGWBVClSHEMpUhxDKVIcQylSHEOYmX/6mJl/+piZf/qYmX/6")
+}]
+blend_shape_mode = 0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v56lm"]
 shader = ExtResource("5_2jamn")
 shader_parameter/instance_rows = 20.0
@@ -262,6 +340,16 @@ explosiveness = 1.0
 draw_order = 3
 process_material = SubResource("ShaderMaterial_xs7c2")
 draw_pass_1 = ExtResource("8_i2t62")
+
+[node name="ShrubParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.046, 0, 142.381)
+extra_cull_margin = 500.0
+amount = 400
+lifetime = 0.01
+explosiveness = 1.0
+draw_order = 3
+process_material = SubResource("ShaderMaterial_fmlye")
+draw_pass_1 = SubResource("ArrayMesh_dghkf")
 
 [node name="RockSmallParticle" type="GPUParticles3D" parent="TerrainGeneration"]
 extra_cull_margin = 500.0

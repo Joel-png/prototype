@@ -18,6 +18,7 @@ var image: Image
 @onready var grass_clumps = $GrassClumpParticle
 @onready var grass_spots = $GrassSpotParticle
 @onready var rocks_small = $RockSmallParticle
+@onready var shrubs = $ShrubParticle
 
 func setup():
 	terrain_seed = world.terrain_seed
@@ -28,6 +29,7 @@ func setup():
 	var grass_clumps_sm = grass_clumps.process_material
 	var grass_spots_sm = grass_spots.process_material
 	var rock_small_sm = rocks_small.process_material
+	var shrubs_sm = shrubs.process_material
 	
 	await noise_texture.changed
 	#image = noise_texture.get_image()
@@ -43,9 +45,6 @@ func setup():
 	
 	normal_map.set_image(normal_image)
 	
-	
-	
-	
 	var heightmap_scale = world_size + 2
 	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
 	var rows = 100 * grass_scale
@@ -53,18 +52,22 @@ func setup():
 	var grass_clumps_spacing = 0.25
 	var grass_spots_spacing = 1.0
 	var rocks_small_spacing = 4.0
+	var shrubs_spacing = 10.0
 	var clumps_rows = floor(rows * (grass_base_spacing / grass_clumps_spacing))
 	var spots_rows = floor(rows * (grass_base_spacing / grass_spots_spacing))
 	var rocks_small_rows = floor(rows * (grass_base_spacing / rocks_small_spacing))
+	var shrubs_rows = floor(rows * (grass_base_spacing / shrubs_spacing))
 	print(rocks_small_rows)
 	grass_clumps.amount = clumps_rows*clumps_rows
 	grass_spots.amount = spots_rows*spots_rows
 	rocks_small.amount = rocks_small_rows*rocks_small_rows
+	shrubs.amount = shrubs_rows*shrubs_rows
 	
-	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size, height_multiplier, scale_multiplier)
-	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size, height_multiplier, scale_multiplier)
-	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size, height_multiplier, scale_multiplier)
-		
+	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size)
+	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size)
+	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size)
+	setup_shader(shrubs_sm, height_texture, normal_map, shrubs_spacing, shrubs_rows, heightmap_size)
+	
 	generate()
 
 func generate():
@@ -73,7 +76,7 @@ func generate():
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
 	var material = preload("res://Assets/Ground/ground_material.tres")
-	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 4)
+	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 4.0)
 	plane_mesh.material = material
 	
 	var surface = SurfaceTool.new()
@@ -109,7 +112,7 @@ func generate():
 	add_child(mesh)
 	
 
-func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size, heightmap_multiplier, scale_multiplier):
+func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size):
 	material.set_shader_parameter("map_heightmap", height_texture)
 	material.set_shader_parameter("map_normalmap", normal_map)
 	material.set_shader_parameter("instance_spacing", spacing)

@@ -1,0 +1,51 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://c65vkplbeg7ex"]
+
+[ext_resource type="Texture2D" uid="uid://mjti2usf8csd" path="res://Assets/plants_0002_1k_4gG5yU/shrub_branch.png" id="1_lpeh8"]
+[ext_resource type="Texture2D" uid="uid://c7gyk6f78q8up" path="res://Assets/plants_0002_1k_4gG5yU/shrub_branch_mask.png" id="2_8i5dc"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ho8cc"]
+expanded_output_ports = [0]
+texture = ExtResource("1_lpeh8")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_qofya"]
+texture = ExtResource("2_8i5dc")
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_always, cull_disabled, diffuse_lambert, specular_disabled, depth_prepass_alpha, ambient_light_disabled, vertex_lighting, alpha_to_coverage, alpha_to_coverage_and_one;
+
+uniform sampler2D tex_frg_4;
+uniform sampler2D tex_frg_5;
+
+
+
+void fragment() {
+// Texture2D:4
+	vec4 n_out4p0 = texture(tex_frg_4, UV);
+
+
+// Texture2D:5
+	vec4 n_out5p0 = texture(tex_frg_5, UV);
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+	ALPHA = n_out5p0.x;
+
+
+}
+"
+graph_offset = Vector2(-329.56, 193.823)
+modes/depth_draw = 1
+modes/cull = 2
+modes/specular = 2
+flags/depth_prepass_alpha = true
+flags/ambient_light_disabled = true
+flags/vertex_lighting = true
+flags/alpha_to_coverage = true
+flags/alpha_to_coverage_and_one = true
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_ho8cc")
+nodes/fragment/4/position = Vector2(-380, 200)
+nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_qofya")
+nodes/fragment/5/position = Vector2(-380, 560)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 5, 0, 0, 1)
