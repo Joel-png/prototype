@@ -1,12 +1,14 @@
-[gd_scene load_steps=22 format=3 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=22 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
-[ext_resource type="Material" uid="uid://br5o5h3turssi" path="res://Assets/Ground/ground_material.tres" id="2_chiv4"]
 [ext_resource type="Script" path="res://player_manager.gd" id="3_6oj04"]
 [ext_resource type="Script" path="res://Scripts/multiplayer_spawner.gd" id="3_lu5lj"]
 [ext_resource type="Script" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
 [ext_resource type="Shader" path="res://Assets/Ground/grass.gdshader" id="5_2jamn"]
+[ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://grass_shader_material.tres" id="7_4kvgo"]
+[ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
+[ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://grass_mesh.tres" id="8_i2t62"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
@@ -26,6 +28,7 @@ sky = SubResource("Sky_tug5e")
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.99
 tonemap_mode = 2
+fog_enabled = true
 fog_sun_scatter = 0.01
 fog_density = 0.0305
 fog_aerial_perspective = 1.0
@@ -56,20 +59,6 @@ height = 101
 seamless = true
 noise = SubResource("FastNoiseLite_woola")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3wrn5"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hiaq4"]
-width = 101
-height = 101
-noise = SubResource("FastNoiseLite_3wrn5")
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_amjj0"]
-width = 101
-height = 101
-as_normal_map = true
-bump_strength = 7.2
-noise = SubResource("FastNoiseLite_3wrn5")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2f7kd"]
 shader = ExtResource("5_2jamn")
 shader_parameter/instance_rows = 100.0
@@ -85,18 +74,34 @@ shader_parameter/instance_scale_max = 1.0
 shader_parameter/_coverage_altitude = 10.0
 shader_parameter/_coverage_range = 1000.0
 shader_parameter/_slope_coverage = 1000.0
-shader_parameter/clumping_strength = 65.811
+shader_parameter/clumping_strength = 0.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
-shader_parameter/height_offset = -0.1
+shader_parameter/height_offset = 0.0
 shader_parameter/size_difference_of_world = 3.0
 shader_parameter/instance_orient_to_normal = true
-shader_parameter/instance_orientation_influence = 2.692
+shader_parameter/instance_orientation_influence = 1.0
 shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
-shader_parameter/map_heightmap = SubResource("NoiseTexture2D_hiaq4")
-shader_parameter/map_normalmap = SubResource("NoiseTexture2D_amjj0")
+shader_parameter/map_heightmap = ExtResource("7_hic37")
+shader_parameter/map_normalmap = ExtResource("8_1a4ak")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4ig01"]
+_surfaces = [{
+"aabb": AABB(-1, -1, -1, 2, 2, 2),
+"attribute_data": PackedByteArray("/////wAA/////wAAAAAAAP////8AAP////8AAAAAAAA="),
+"format": 34896613399,
+"index_count": 12,
+"index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcA"),
+"material": ExtResource("7_4kvgo"),
+"name": "Plane",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("//8AAP9/AIAAAAAA/38AgP//////fwCAAAD///9/AID/fwAAAAD/v/9/AAD///+//3///wAA/7//f///////v/9/////f////3////9/////fwAA/38AAP9/AAD/fwAA")
+}]
+blend_shape_mode = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xs7c2"]
 shader = ExtResource("5_2jamn")
@@ -122,8 +127,8 @@ shader_parameter/instance_orientation_influence = 0.26
 shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
-shader_parameter/map_heightmap = SubResource("NoiseTexture2D_hiaq4")
-shader_parameter/map_normalmap = SubResource("NoiseTexture2D_amjj0")
+shader_parameter/map_heightmap = ExtResource("7_hic37")
+shader_parameter/map_normalmap = ExtResource("8_1a4ak")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
@@ -149,12 +154,6 @@ directional_shadow_max_distance = 888.6
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_f23m3")
-
-[node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 7.01141, 0, 0, 0, 1, 5.98837, 0.78755, -39.5305)
-material_override = ExtResource("2_chiv4")
-use_collision = true
-size = Vector3(66.5429, 0.270905, 73.6616)
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 4.51013, 0.765652, 0, -5.3683, 0.643255, 32.0649, 34.2903, -79.2303)
@@ -183,7 +182,7 @@ lifetime = 0.01
 explosiveness = 1.0
 draw_order = 3
 process_material = SubResource("ShaderMaterial_2f7kd")
-draw_pass_1 = ExtResource("8_i2t62")
+draw_pass_1 = SubResource("ArrayMesh_4ig01")
 
 [node name="GrassParticle2" type="GPUParticles3D" parent="TerrainGeneration"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.399734, -0.259109, -1.44857)
