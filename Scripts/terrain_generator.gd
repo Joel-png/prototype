@@ -11,6 +11,7 @@ var grass_scale = 7
 
 
 @export var noise_texture : NoiseTexture2D
+@export var test_noise : NoiseTexture2D
 var terrain_seed = 0
 var image: Image
 
@@ -21,6 +22,9 @@ var image: Image
 @onready var shrubs = $ShrubParticle
 
 func setup():
+	
+	
+	
 	terrain_seed = world.terrain_seed
 	noise_texture.width = world_size + 2
 	noise_texture.height = world_size + 2
@@ -31,9 +35,10 @@ func setup():
 	var rock_small_sm = rocks_small.process_material
 	var shrubs_sm = shrubs.process_material
 	
+	
 	await noise_texture.changed
-	#image = noise_texture.get_image()
 	image = modify_noise(noise_texture)
+	#image.save_png("res://Assets/Test_noise.png")
 	
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)

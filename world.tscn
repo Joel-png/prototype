@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=36 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Shader" uid="uid://c65vkplbeg7ex" path="res://Shaders/shrub_leaves.tres" id="12_m6wjc"]
+[ext_resource type="Material" uid="uid://b4c7k1k1ucv5e" path="res://ground_material.tres" id="13_stwjt"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -60,6 +61,16 @@ shader_parameter/uv_scale = 1.0
 width = 51
 height = 51
 noise = SubResource("FastNoiseLite_xhuuh")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hkpib"]
+noise_type = 2
+frequency = 0.03
+fractal_type = 0
+cellular_jitter = 0.45
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bsnyw"]
+noise = SubResource("FastNoiseLite_hkpib")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_woola"]
 frequency = 1.0
@@ -282,6 +293,9 @@ properties/0/path = NodePath(".:terrain_seed")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_jcq1b"]
+size = Vector2(10, 10)
+
 [node name="World" type="Node3D"]
 script = ExtResource("1_5i068")
 
@@ -320,6 +334,7 @@ player_scene = ExtResource("2_6vsb2")
 [node name="TerrainGeneration" type="Node3D" parent="."]
 script = ExtResource("4_hblxr")
 noise_texture = SubResource("NoiseTexture2D_1mi5f")
+test_noise = SubResource("NoiseTexture2D_bsnyw")
 
 [node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.046, 0, 142.381)
@@ -362,3 +377,8 @@ draw_pass_1 = SubResource("ArrayMesh_8yg87")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iuys2")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.3838, 21.5855, 0)
+mesh = SubResource("PlaneMesh_jcq1b")
+material = ExtResource("13_stwjt")

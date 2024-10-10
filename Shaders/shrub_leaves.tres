@@ -31,11 +31,12 @@ void fragment() {
 // Output:0
 	ALBEDO = vec3(n_out4p0.xyz);
 	ALPHA = n_out5p0.x;
+	BACKLIGHT = vec3(n_out5p0.xyz);
 
 
 }
 "
-graph_offset = Vector2(-329.56, 193.823)
+graph_offset = Vector2(-382.879, 18.5664)
 modes/depth_draw = 1
 modes/cull = 2
 modes/specular = 2
@@ -48,4 +49,4 @@ nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_ho8cc")
 nodes/fragment/4/position = Vector2(-380, 200)
 nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_qofya")
 nodes/fragment/5/position = Vector2(-380, 560)
-nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 5, 0, 0, 1)
+nodes/fragment/connections = PackedInt32Array(4, 0, 0, 0, 5, 0, 0, 1, 5, 0, 0, 18)
