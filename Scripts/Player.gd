@@ -38,6 +38,9 @@ var rng = RandomNumberGenerator.new()
 @onready var shotgun_scene = preload("res://shotgun.tscn")
 @onready var gun_scene = preload("res://gun.tscn")
 
+@onready var marker = $Marker
+@onready var player_manager = $".."
+
 #inventory
 @onready var inventory = $PlayerHead/Camera3D/Inventory
 
@@ -78,8 +81,9 @@ func _ready():
 		debug0.hide()
 		debug1.hide()
 	else:
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		Engine.max_fps = 600
+		print()
+		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		#Engine.max_fps = 600
 	
 	
 func _unhandled_input(event):
@@ -161,6 +165,10 @@ func _process(delta):
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 		
 		get_parent_node_3d().update_grass(position)
+		
+		player_manager.main_player_position = position
+	else:
+		scale_marker(position.distance_to(player_manager.main_player_position))
 	holdable.end_action()
 	
 func hotbar_logic():
@@ -223,3 +231,12 @@ func get_what_look_at():
 			return camera_cast.get_collision_point()
 	var forward_direction = -camera_cast.global_transform.basis.z.normalized()
 	return camera_cast.global_transform.origin + forward_direction * 100
+	
+func scale_marker(distance):
+	var max_distance = 15.0
+	var marker_scale = 1.0
+	if distance > max_distance:
+		marker_scale = distance/max_distance
+		marker.scale = Vector3(marker_scale, marker_scale, marker_scale)
+	else:
+		marker.scale = Vector3(marker_scale, marker_scale, marker_scale)

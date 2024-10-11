@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=33 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -6,12 +6,12 @@
 [ext_resource type="Script" path="res://Scripts/multiplayer_spawner.gd" id="3_lu5lj"]
 [ext_resource type="Script" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
 [ext_resource type="Shader" path="res://Shaders/s_detail.gdshader" id="5_2jamn"]
-[ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://Materials/grass_shader_material.tres" id="7_4kvgo"]
+[ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://Textures/grass_shader_material.tres" id="7_4kvgo"]
 [ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
 [ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
-[ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
-[ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
+[ext_resource type="Material" uid="uid://cst4s1b04t5hl" path="res://Textures/ground_material.tres" id="12_a8gum"]
+[ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Textures/branch_shader_material.tres" id="12_n4txx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -274,11 +274,6 @@ properties/0/replication_mode = 1
 [sub_resource type="PlaneMesh" id="PlaneMesh_jcq1b"]
 size = Vector2(10, 10)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pp5mj"]
-render_priority = 0
-shader = ExtResource("12_3c5pl")
-shader_parameter/uv_scale = 6.835
-
 [node name="World" type="Node3D"]
 script = ExtResource("1_5i068")
 
@@ -358,4 +353,4 @@ replication_config = SubResource("SceneReplicationConfig_iuys2")
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.3838, 21.5855, 0)
 mesh = SubResource("PlaneMesh_jcq1b")
-material = SubResource("ShaderMaterial_pp5mj")
+material = ExtResource("12_a8gum")

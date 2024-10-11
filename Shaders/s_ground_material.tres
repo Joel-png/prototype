@@ -99,7 +99,7 @@ constant = Vector2(0.5, 0.5)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_v1b3o"]
 noise_type = 2
-frequency = 0.03
+frequency = 0.04
 fractal_type = 0
 cellular_return_type = 0
 
@@ -125,7 +125,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uyhho"]
 noise_type = 2
-frequency = 0.03
+frequency = 0.04
 fractal_type = 0
 cellular_return_type = 4
 
@@ -468,7 +468,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-695.134, -316.92)
+graph_offset = Vector2(-1042.81, -475.922)
 nodes/fragment/0/position = Vector2(-20, -320)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_31ncu")
 nodes/fragment/2/position = Vector2(-2260, -1980)

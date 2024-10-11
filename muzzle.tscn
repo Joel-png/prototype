@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dtt4jrtcoa8dx"]
 
 [ext_resource type="Script" path="res://Scripts/muzzle.gd" id="1_b2s1o"]
-[ext_resource type="Shader" uid="uid://cn7k7ynk8vub3" path="res://Shaders/muzzle_flash.tres" id="1_crgce"]
+[ext_resource type="Shader" uid="uid://cn7k7ynk8vub3" path="res://Shaders/s_muzzle_flash.tres" id="1_crgce"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b8u8i"]
 render_priority = 0

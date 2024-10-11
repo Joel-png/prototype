@@ -2,10 +2,10 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh : MeshInstance3D
-var world_size : int = 29
+var world_size : int = 200
 var mesh_resolution : int = 1
-var scale_multiplier = 30
-var height_multiplier = 3 * scale_multiplier
+var scale_multiplier = 15
+var height_multiplier = 5 * scale_multiplier
 
 var grass_scale = 7
 
@@ -22,9 +22,6 @@ var image: Image
 @onready var shrubs = $ShrubParticle
 
 func setup():
-	
-	
-	
 	terrain_seed = world.terrain_seed
 	noise_texture.width = world_size + 2
 	noise_texture.height = world_size + 2
@@ -80,7 +77,7 @@ func generate():
 	plane_mesh.size = Vector2(world_size + 1, world_size + 1)
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
-	var material = preload("res://Assets/Ground/ground_material.tres")
+	var material = preload("res://Materials/ground_material.tres")
 	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 4.0)
 	plane_mesh.material = material
 	

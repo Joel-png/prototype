@@ -6,12 +6,12 @@
 [ext_resource type="Script" path="res://Scripts/multiplayer_spawner.gd" id="3_lu5lj"]
 [ext_resource type="Script" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
 [ext_resource type="Shader" path="res://Shaders/s_detail.gdshader" id="5_2jamn"]
-[ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://Materials/grass_shader_material.tres" id="7_4kvgo"]
+[ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://Material/grass_shader_material.tres" id="7_4kvgo"]
 [ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
 [ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
-[ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
+[ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Material/branch_shader_material.tres" id="12_n4txx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)

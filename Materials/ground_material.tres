@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cst4s1b04t5hl"]
+
+[ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="1_o6mnb"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_o6mnb")
+shader_parameter/uv_scale = 6.835
