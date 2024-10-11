@@ -93,10 +93,10 @@ void start() {
 	} else if (abs(y3 - pos.y) > _slope_coverage) {
 		pos.y = -10000.0;
 	}	
-	if (abs(pos.y) < _coverage_altitude*5.0-_coverage_range) {
+	if (abs(pos.y) < _coverage_altitude-_coverage_range) {
 		pos.y = -10000.0;
 	} 	
-	if (abs(pos.y) > _coverage_altitude*5.0+_coverage_range) {
+	if (abs(pos.y) > _coverage_altitude+_coverage_range) {
 		pos.y = -10000.0;
 	} 	
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=37 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -7,11 +7,12 @@
 [ext_resource type="Script" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
 [ext_resource type="Shader" path="res://Shaders/s_detail.gdshader" id="5_2jamn"]
 [ext_resource type="Material" uid="uid://cqsrnvdsadenf" path="res://Materials/grass_shader_material.tres" id="7_4kvgo"]
-[ext_resource type="Texture2D" uid="uid://7pgy3bjgaluk" path="res://Assets/image.png" id="7_hic37"]
-[ext_resource type="Texture2D" uid="uid://d3o0vhds1k2ws" path="res://Assets/image_normal.png" id="8_1a4ak"]
+[ext_resource type="Texture2D" uid="uid://b4jkx222552xh" path="res://Assets/heightmap.png" id="7_wkvnm"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
+[ext_resource type="Texture2D" uid="uid://bp2pxfrb4qf0x" path="res://Assets/normalmap.png" id="8_pbu1x"]
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
 [ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
+[ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -90,8 +91,8 @@ shader_parameter/instance_scale_randomize = 2.0
 shader_parameter/instance_pos_randomize = 2.5
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
-shader_parameter/_coverage_altitude = 10.0
-shader_parameter/_coverage_range = 1000.0
+shader_parameter/_coverage_altitude = 1.025
+shader_parameter/_coverage_range = 4.8
 shader_parameter/_slope_coverage = 1000.0
 shader_parameter/clumping_strength = 60.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -103,8 +104,8 @@ shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
 shader_parameter/noise_size = 1.0
-shader_parameter/map_heightmap = ExtResource("7_hic37")
-shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_heightmap = ExtResource("7_wkvnm")
+shader_parameter/map_normalmap = ExtResource("8_pbu1x")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4ig01"]
@@ -135,8 +136,8 @@ shader_parameter/instance_scale_randomize = 1.0
 shader_parameter/instance_pos_randomize = 5.0
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
-shader_parameter/_coverage_altitude = 10.0
-shader_parameter/_coverage_range = 1000.0
+shader_parameter/_coverage_altitude = 1.77
+shader_parameter/_coverage_range = 1.57
 shader_parameter/_slope_coverage = 1000.0
 shader_parameter/clumping_strength = 0.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -148,8 +149,8 @@ shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
 shader_parameter/noise_size = 1.0
-shader_parameter/map_heightmap = ExtResource("7_hic37")
-shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_heightmap = ExtResource("7_wkvnm")
+shader_parameter/map_normalmap = ExtResource("8_pbu1x")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fmlye"]
@@ -177,8 +178,8 @@ shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
 shader_parameter/noise_size = 1.0
-shader_parameter/map_heightmap = ExtResource("7_hic37")
-shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_heightmap = ExtResource("7_wkvnm")
+shader_parameter/map_normalmap = ExtResource("8_pbu1x")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ob7uw"]
@@ -238,8 +239,8 @@ shader_parameter/__terrain_amplitude = 40.0
 shader_parameter/map_heightmap_size = Vector2(101, 101)
 shader_parameter/map_normalmap_size = Vector2(101, 101)
 shader_parameter/noise_size = 1.0
-shader_parameter/map_heightmap = ExtResource("7_hic37")
-shader_parameter/map_normalmap = ExtResource("8_1a4ak")
+shader_parameter/map_heightmap = ExtResource("7_wkvnm")
+shader_parameter/map_normalmap = ExtResource("8_pbu1x")
 shader_parameter/map_clumpmap = SubResource("NoiseTexture2D_le406")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe32i"]
@@ -266,6 +267,11 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_kke3t"]
+lightmap_size_hint = Vector2i(42, 42)
+material = ExtResource("12_ulnk3")
+size = Vector2(8, 8)
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
 properties/0/spawn = true
@@ -277,13 +283,15 @@ size = Vector2(10, 10)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pp5mj"]
 render_priority = 0
 shader = ExtResource("12_3c5pl")
-shader_parameter/uv_scale = 6.835
+shader_parameter/uv_scale = 1.725
+
+[sub_resource type="BoxMesh" id="BoxMesh_isnlg"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_5i068")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.414726, 0.903109, 0.11134, 0.127314, 0.178745, -0.975623, 0, 0, 0)
+transform = Transform3D(-0.900996, -0.390441, -0.189108, -0.431738, 0.849714, 0.302637, 0.0425262, 0.35432, -0.934157, 0, 0, 0)
 light_intensity_lux = 4545.45
 light_temperature = 4000.0
 light_color = Color(0.495005, 0.293684, 0.353005, 1)
@@ -314,7 +322,7 @@ noise_texture = SubResource("NoiseTexture2D_1mi5f")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 
 [node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.482, 0, 139.972)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122.574, 0, 135.286)
 extra_cull_margin = 500.0
 amount = 40000
 lifetime = 0.01
@@ -352,10 +360,23 @@ draw_order = 3
 process_material = SubResource("ShaderMaterial_v56lm")
 draw_pass_1 = SubResource("ArrayMesh_8yg87")
 
+[node name="Water" type="CSGMesh3D" parent="TerrainGeneration"]
+mesh = SubResource("PlaneMesh_kke3t")
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iuys2")
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+[node name="PreviewGround" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.3838, 21.5855, 0)
+visible = false
 mesh = SubResource("PlaneMesh_jcq1b")
 material = SubResource("ShaderMaterial_pp5mj")
+
+[node name="PreviewWater" type="CSGMesh3D" parent="."]
+transform = Transform3D(8.56582, 0, 0, 0, 8.56582, 0, 0, 0, 8.56582, -72.0628, 49.8775, 0)
+visible = false
+mesh = SubResource("PlaneMesh_kke3t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(16.8029, 0, 0, 0, 16.8029, 0, 0, 0, 16.8029, -100.227, 0, 0)
+mesh = SubResource("BoxMesh_isnlg")

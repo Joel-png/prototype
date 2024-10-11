@@ -15,6 +15,8 @@ var grass_scale = 7
 var terrain_seed = 0
 var image: Image
 
+@onready var water = $Water
+
 @onready var world = $".."
 @onready var grass_clumps = $GrassClumpParticle
 @onready var grass_spots = $GrassSpotParticle
@@ -35,7 +37,7 @@ func setup():
 	
 	await noise_texture.changed
 	image = modify_noise(noise_texture)
-	image.save_png("res://Assets/image.png")
+	#image.save_png("res://Assets/heightmap.png")
 	
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)
@@ -44,31 +46,36 @@ func setup():
 	var normal_image = Image.new()
 	normal_image.copy_from(image)
 	normal_image.bump_map_to_normal_map(height_multiplier)
+	#normal_image.save_png("res://Assets/normalmap.png")
 	
 	normal_map.set_image(normal_image)
 	
 	var heightmap_scale = world_size + 2
 	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
 	var rows = 100 * grass_scale
-	var grass_base_spacing = 0.25 # spacing at which is considered the default render distance for other spacings
+	var base_spacing = 0.25 # spacing at which is considered the default render distance for other spacings
 	var grass_clumps_spacing = 0.25
 	var grass_spots_spacing = 1.0
 	var rocks_small_spacing = 4.0
 	var shrubs_spacing = 10.0
-	var clumps_rows = floor(rows * (grass_base_spacing / grass_clumps_spacing))
-	var spots_rows = floor(rows * (grass_base_spacing / grass_spots_spacing))
-	var rocks_small_rows = floor(rows * (grass_base_spacing / rocks_small_spacing))
-	var shrubs_rows = floor(rows * (grass_base_spacing / shrubs_spacing))
+	var clumps_rows = floor(rows * (base_spacing / grass_clumps_spacing))
+	var spots_rows = floor(rows * (base_spacing / grass_spots_spacing))
+	var rocks_small_rows = floor(rows * (base_spacing / rocks_small_spacing))
+	var shrubs_rows = floor(rows * (base_spacing / shrubs_spacing))
 	print(rocks_small_rows)
 	grass_clumps.amount = clumps_rows*clumps_rows
 	grass_spots.amount = spots_rows*spots_rows
 	rocks_small.amount = rocks_small_rows*rocks_small_rows
 	shrubs.amount = shrubs_rows*shrubs_rows
+	var water_height = height_multiplier * 0.1
+	var coverage_range = height_multiplier
+	var coverage_alt = water_height + height_multiplier
+	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size, coverage_range, coverage_alt)
+	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size, coverage_range, coverage_alt)
+	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size, coverage_range, coverage_alt)
+	setup_shader(shrubs_sm, height_texture, normal_map, shrubs_spacing, shrubs_rows, heightmap_size, coverage_range, coverage_alt)
 	
-	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size)
-	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size)
-	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size)
-	setup_shader(shrubs_sm, height_texture, normal_map, shrubs_spacing, shrubs_rows, heightmap_size)
+	water_setup(water_height)
 	
 	generate()
 
@@ -78,7 +85,7 @@ func generate():
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
 	var material = preload("res://Materials/ground_material.tres")
-	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 4.0)
+	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 5.0)
 	plane_mesh.material = material
 	
 	var surface = SurfaceTool.new()
@@ -94,6 +101,8 @@ func generate():
 		var vertex = data.get_vertex(i)
 		var y = get_noise_y(vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
 		vertex.y = y * height_multiplier
+		if y > 0.5:
+			print(y)
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		
@@ -114,7 +123,7 @@ func generate():
 	add_child(mesh)
 	
 
-func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size):
+func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size, coverage_range, coverage_alt):
 	material.set_shader_parameter("map_heightmap", height_texture)
 	material.set_shader_parameter("map_normalmap", normal_map)
 	material.set_shader_parameter("instance_spacing", spacing)
@@ -122,6 +131,8 @@ func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap
 	material.set_shader_parameter("map_heightmap_size", heightmap_size)
 	material.set_shader_parameter("__terrain_amplitude", height_multiplier)
 	material.set_shader_parameter("size_difference_of_world", scale_multiplier)
+	material.set_shader_parameter("_coverage_range", coverage_range)
+	material.set_shader_parameter("_coverage_altitude", coverage_alt)
 	
 func get_noise_y(x, z):
 	var value = image.get_pixel(x, z).r
@@ -155,3 +166,11 @@ func mul_colour(colour, val):
 	colour.g *= val
 	colour.b *= val
 	return colour
+	
+func water_setup(water_height):
+	water.position.y = water_height
+	var water_mesh = water.mesh
+	var mesh_scale = world_size * scale_multiplier * 4
+	water_mesh.size = Vector2(mesh_scale, mesh_scale)
+	var material = water.mesh.material
+	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 2.0)

@@ -219,11 +219,12 @@ expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the UV for tiling
 mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
 mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
 if (mirrored_uv.x < 1.0 / 200.0) {
-	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+	mirrored_uv.x = 1.0 / 200.0;
 }
 if (mirrored_uv.y < 1.0 / 200.0) {
-	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+	mirrored_uv.y = 1.0 / 200.0;
 }
+
 uv_out = mirrored_uv;"
 
 [resource]
@@ -279,11 +280,12 @@ void fragment() {
 		mirrored_uv.x = (mod(n_out60p0.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
 		mirrored_uv.y = (mod(n_out60p0.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
 		if (mirrored_uv.x < 1.0 / 200.0) {
-			mirrored_uv.x = 1.0 / 200.0 * 1.0;
+			mirrored_uv.x = 1.0 / 200.0;
 		}
 		if (mirrored_uv.y < 1.0 / 200.0) {
-			mirrored_uv.y = 1.0 / 200.0 * 1.0;
+			mirrored_uv.y = 1.0 / 200.0;
 		}
+		
 		n_out63p0 = mirrored_uv;
 	}
 
@@ -468,7 +470,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-1042.81, -475.922)
+graph_offset = Vector2(-4688.02, 2.32938)
 nodes/fragment/0/position = Vector2(-20, -320)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_31ncu")
 nodes/fragment/2/position = Vector2(-2260, -1980)
@@ -501,7 +503,7 @@ nodes/fragment/28/position = Vector2(-840, 220)
 nodes/fragment/29/node = SubResource("VisualShaderNodeMix_3r4vn")
 nodes/fragment/29/position = Vector2(-840, 900)
 nodes/fragment/30/node = SubResource("VisualShaderNodeFloatConstant_pe60l")
-nodes/fragment/30/position = Vector2(-4080, 840)
+nodes/fragment/30/position = Vector2(-4100, 860)
 nodes/fragment/33/node = SubResource("VisualShaderNodeUVFunc_es7d8")
 nodes/fragment/33/position = Vector2(-3380, 740)
 nodes/fragment/35/node = SubResource("VisualShaderNodeInput_iva6n")
@@ -575,10 +577,11 @@ nodes/fragment/63/expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the U
 mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
 mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
 if (mirrored_uv.x < 1.0 / 200.0) {
-	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+	mirrored_uv.x = 1.0 / 200.0;
 }
 if (mirrored_uv.y < 1.0 / 200.0) {
-	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+	mirrored_uv.y = 1.0 / 200.0;
 }
+
 uv_out = mirrored_uv;"
 nodes/fragment/connections = PackedInt32Array(5, 0, 27, 0, 25, 0, 27, 1, 4, 0, 28, 0, 26, 0, 28, 1, 22, 0, 29, 0, 24, 0, 29, 1, 21, 0, 11, 2, 21, 0, 27, 2, 21, 0, 28, 2, 33, 0, 20, 0, 2, 0, 11, 0, 23, 0, 11, 1, 37, 0, 36, 1, 36, 0, 2, 0, 36, 0, 23, 0, 39, 0, 40, 0, 40, 0, 36, 2, 35, 0, 45, 0, 42, 0, 44, 0, 43, 0, 44, 1, 21, 0, 44, 2, 21, 0, 29, 2, 44, 0, 46, 1, 11, 0, 46, 0, 36, 0, 5, 0, 36, 0, 25, 0, 45, 0, 47, 0, 45, 0, 48, 0, 36, 0, 4, 0, 36, 0, 26, 0, 45, 0, 50, 0, 45, 0, 49, 0, 36, 0, 22, 0, 36, 0, 24, 0, 45, 0, 52, 0, 45, 0, 51, 0, 21, 0, 53, 2, 47, 0, 53, 0, 48, 0, 53, 1, 27, 0, 54, 0, 53, 0, 54, 1, 41, 0, 54, 2, 21, 0, 55, 2, 21, 0, 56, 2, 50, 0, 56, 0, 49, 0, 56, 1, 41, 0, 57, 2, 41, 0, 58, 2, 28, 0, 57, 0, 56, 0, 57, 1, 52, 0, 55, 0, 51, 0, 55, 1, 29, 0, 58, 0, 55, 0, 58, 1, 30, 0, 59, 1, 14, 0, 59, 0, 45, 0, 43, 0, 45, 0, 42, 0, 41, 0, 46, 2, 35, 0, 33, 0, 63, 0, 39, 0, 60, 0, 63, 0, 63, 0, 41, 0, 46, 0, 0, 0, 54, 0, 0, 3, 57, 0, 0, 4, 58, 0, 0, 9, 35, 0, 60, 0, 14, 0, 60, 1, 14, 0, 45, 1, 60, 0, 36, 0, 20, 0, 21, 0, 58, 0, 0, 2)

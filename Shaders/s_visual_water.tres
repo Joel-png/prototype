@@ -1,0 +1,323 @@
+[gd_resource type="VisualShader" load_steps=27 format=3 uid="uid://clo8po1vj1foj"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_v8kh4"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_q7ikc"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_pd1hs"]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_i53xc"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_88ba7"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_5ol23"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+operator = 1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_tafcw"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kdqrw"]
+width = 1024
+as_normal_map = true
+noise = SubResource("FastNoiseLite_tafcw")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_kaurc"]
+output_port_for_preview = 0
+texture = SubResource("NoiseTexture2D_kdqrw")
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_0ul8w"]
+size = Vector2(472, 300)
+expression = "out_roughness = in_roughness * (1.0 - pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0)), amount));"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_3um28"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_kpu72"]
+input_name = "view"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_jx5o4"]
+parameter_name = "Roughness"
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_3unmg"]
+constant = 3.0
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_hur1y"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_hj8hy"]
+constant = 0.5
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_70bsd"]
+size = Vector2(660, 420)
+expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the UV for tiling
+mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+if (mirrored_uv.x < 1.0 / 200.0) {
+	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+}
+if (mirrored_uv.y < 1.0 / 200.0) {
+	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+}
+uv_out = mirrored_uv;"
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_2q4fs"]
+size = Vector2(660, 440)
+expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the UV for tiling
+mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+if (mirrored_uv.x < 1.0 / 200.0) {
+	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+}
+if (mirrored_uv.y < 1.0 / 200.0) {
+	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+}
+uv_out = mirrored_uv;"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_o4cfl"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_itbvv"]
+width = 1024
+height = 1024
+as_normal_map = true
+noise = SubResource("FastNoiseLite_o4cfl")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_1f01d"]
+texture = SubResource("NoiseTexture2D_itbvv")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_c1vit"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_16vj6"]
+parameter_name = "ColorParameter"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_eohll"]
+parameter_name = "uv_scale"
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_v77qw"]
+parameter_name = "movement_direction"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_phrir"]
+parameter_name = "movement_speed"
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_always, cull_back, diffuse_lambert, specular_schlick_ggx, fog_disabled;
+
+uniform vec4 ColorParameter : source_color;
+uniform float Roughness;
+uniform vec2 movement_direction;
+uniform float movement_speed;
+uniform sampler2D tex_frg_2;
+uniform sampler2D tex_frg_3;
+
+
+
+void fragment() {
+// ColorParameter:5
+	vec4 n_out5p0 = ColorParameter;
+
+
+// FloatConstant:24
+	float n_out24p0 = 3.000000;
+
+
+// Input:21
+	vec3 n_out21p0 = NORMAL;
+
+
+// Input:22
+	vec3 n_out22p0 = VIEW;
+
+
+// FloatParameter:23
+	float n_out23p0 = Roughness;
+
+
+	float n_out20p0;
+// Expression:20
+	n_out20p0 = 0.0;
+	{
+		n_out20p0 = n_out23p0 * (1.0 - pow((1.0 - clamp(dot(normalize(n_out21p0), normalize(n_out22p0)), 0.0, 1.0)), n_out24p0));
+	}
+
+
+// Input:15
+	vec2 n_out15p0 = UV;
+
+
+// Vector2Parameter:7
+	vec2 n_out7p0 = movement_direction;
+
+
+// Input:4
+	float n_out4p0 = TIME;
+
+
+// FloatParameter:8
+	float n_out8p0 = movement_speed;
+
+
+// FloatOp:17
+	float n_out17p0 = n_out4p0 * n_out8p0;
+
+
+// VectorOp:10
+	vec2 n_out10p0 = n_out7p0 * vec2(n_out17p0);
+
+
+// VectorOp:12
+	vec2 n_out12p0 = n_out15p0 + n_out10p0;
+
+
+	vec2 n_out28p0;
+// Expression:28
+	n_out28p0 = vec2(0.0, 0.0);
+	{
+		vec2 mirrored_uv = fract(n_out12p0);  // Scale the UV for tiling
+		mirrored_uv.x = (mod(n_out12p0.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+		mirrored_uv.y = (mod(n_out12p0.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+		if (mirrored_uv.x < 1.0 / 200.0) {
+			mirrored_uv.x = 1.0 / 200.0 * 1.0;
+		}
+		if (mirrored_uv.y < 1.0 / 200.0) {
+			mirrored_uv.y = 1.0 / 200.0 * 1.0;
+		}
+		n_out28p0 = mirrored_uv;
+	}
+
+
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, n_out28p0);
+
+
+// VectorOp:19
+	vec2 n_out19p0 = n_out15p0 - n_out10p0;
+
+
+	vec2 n_out27p0;
+// Expression:27
+	n_out27p0 = vec2(0.0, 0.0);
+	{
+		vec2 mirrored_uv = fract(n_out19p0);  // Scale the UV for tiling
+		mirrored_uv.x = (mod(n_out19p0.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+		mirrored_uv.y = (mod(n_out19p0.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+		if (mirrored_uv.x < 1.0 / 200.0) {
+			mirrored_uv.x = 1.0 / 200.0 * 1.0;
+		}
+		if (mirrored_uv.y < 1.0 / 200.0) {
+			mirrored_uv.y = 1.0 / 200.0 * 1.0;
+		}
+		n_out27p0 = mirrored_uv;
+	}
+
+
+// Texture2D:3
+	vec4 n_out3p0 = texture(tex_frg_3, n_out27p0);
+
+
+// VectorOp:18
+	vec3 n_out18p0 = vec3(n_out2p0.xyz) + vec3(n_out3p0.xyz);
+
+
+// FloatConstant:26
+	float n_out26p0 = 0.500000;
+
+
+// VectorOp:25
+	vec3 n_out25p0 = n_out18p0 * vec3(n_out26p0);
+
+
+// Output:0
+	ALBEDO = vec3(n_out5p0.xyz);
+	ROUGHNESS = n_out20p0;
+	NORMAL_MAP = n_out25p0;
+
+
+}
+"
+graph_offset = Vector2(-1900.04, 335.79)
+modes/depth_draw = 1
+flags/fog_disabled = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_kaurc")
+nodes/fragment/2/position = Vector2(-900, 240)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_1f01d")
+nodes/fragment/3/position = Vector2(-900, 540)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_c1vit")
+nodes/fragment/4/position = Vector2(-3000, 120)
+nodes/fragment/5/node = SubResource("VisualShaderNodeColorParameter_16vj6")
+nodes/fragment/5/position = Vector2(-320, 40)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatParameter_eohll")
+nodes/fragment/6/position = Vector2(-3420, -280)
+nodes/fragment/7/node = SubResource("VisualShaderNodeVec2Parameter_v77qw")
+nodes/fragment/7/position = Vector2(-3020, -140)
+nodes/fragment/8/node = SubResource("VisualShaderNodeFloatParameter_phrir")
+nodes/fragment/8/position = Vector2(-3000, 260)
+nodes/fragment/10/node = SubResource("VisualShaderNodeVectorOp_v8kh4")
+nodes/fragment/10/position = Vector2(-2400, -120)
+nodes/fragment/12/node = SubResource("VisualShaderNodeVectorOp_q7ikc")
+nodes/fragment/12/position = Vector2(-2060, -240)
+nodes/fragment/15/node = SubResource("VisualShaderNodeInput_pd1hs")
+nodes/fragment/15/position = Vector2(-3200, -420)
+nodes/fragment/17/node = SubResource("VisualShaderNodeFloatOp_i53xc")
+nodes/fragment/17/position = Vector2(-2680, 100)
+nodes/fragment/18/node = SubResource("VisualShaderNodeVectorOp_88ba7")
+nodes/fragment/18/position = Vector2(-620, 380)
+nodes/fragment/19/node = SubResource("VisualShaderNodeVectorOp_5ol23")
+nodes/fragment/19/position = Vector2(-2180, 140)
+nodes/fragment/20/node = SubResource("VisualShaderNodeExpression_0ul8w")
+nodes/fragment/20/position = Vector2(-340, 1040)
+nodes/fragment/20/size = Vector2(472, 300)
+nodes/fragment/20/input_ports = "0,0,amount;1,4,normal;2,4,view;3,0,in_roughness;"
+nodes/fragment/20/output_ports = "0,0,out_roughness;"
+nodes/fragment/20/expression = "out_roughness = in_roughness * (1.0 - pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0)), amount));"
+nodes/fragment/21/node = SubResource("VisualShaderNodeInput_3um28")
+nodes/fragment/21/position = Vector2(-920, 1260)
+nodes/fragment/22/node = SubResource("VisualShaderNodeInput_kpu72")
+nodes/fragment/22/position = Vector2(-920, 1340)
+nodes/fragment/23/node = SubResource("VisualShaderNodeFloatParameter_jx5o4")
+nodes/fragment/23/position = Vector2(-920, 1440)
+nodes/fragment/24/node = SubResource("VisualShaderNodeFloatConstant_3unmg")
+nodes/fragment/24/position = Vector2(-920, 1160)
+nodes/fragment/25/node = SubResource("VisualShaderNodeVectorOp_hur1y")
+nodes/fragment/25/position = Vector2(-340, 380)
+nodes/fragment/26/node = SubResource("VisualShaderNodeFloatConstant_hj8hy")
+nodes/fragment/26/position = Vector2(-560, 600)
+nodes/fragment/27/node = SubResource("VisualShaderNodeExpression_70bsd")
+nodes/fragment/27/position = Vector2(-1860, 440)
+nodes/fragment/27/size = Vector2(660, 420)
+nodes/fragment/27/input_ports = "0,3,uv_in;"
+nodes/fragment/27/output_ports = "0,3,uv_out;"
+nodes/fragment/27/expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the UV for tiling
+mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+if (mirrored_uv.x < 1.0 / 200.0) {
+	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+}
+if (mirrored_uv.y < 1.0 / 200.0) {
+	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+}
+uv_out = mirrored_uv;"
+nodes/fragment/28/node = SubResource("VisualShaderNodeExpression_2q4fs")
+nodes/fragment/28/position = Vector2(-1860, -20)
+nodes/fragment/28/size = Vector2(660, 440)
+nodes/fragment/28/input_ports = "0,3,uv_in;"
+nodes/fragment/28/output_ports = "0,3,uv_out;"
+nodes/fragment/28/expression = "vec2 mirrored_uv = fract(uv_in);  // Scale the UV for tiling
+mirrored_uv.x = (mod(uv_in.x * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.x : mirrored_uv.x;
+mirrored_uv.y = (mod(uv_in.y * 2.0, 2.0) > 1.0) ? 1.0 - mirrored_uv.y : mirrored_uv.y;
+if (mirrored_uv.x < 1.0 / 200.0) {
+	mirrored_uv.x = 1.0 / 200.0 * 1.0;
+}
+if (mirrored_uv.y < 1.0 / 200.0) {
+	mirrored_uv.y = 1.0 / 200.0 * 1.0;
+}
+uv_out = mirrored_uv;"
+nodes/fragment/connections = PackedInt32Array(5, 0, 0, 0, 10, 0, 12, 1, 7, 0, 10, 0, 8, 0, 17, 1, 4, 0, 17, 0, 17, 0, 10, 1, 2, 0, 18, 0, 3, 0, 18, 1, 15, 0, 12, 0, 10, 0, 19, 1, 15, 0, 19, 0, 21, 0, 20, 1, 22, 0, 20, 2, 20, 0, 0, 3, 23, 0, 20, 3, 24, 0, 20, 0, 26, 0, 25, 1, 18, 0, 25, 0, 25, 0, 0, 9, 19, 0, 27, 0, 27, 0, 3, 0, 12, 0, 28, 0, 28, 0, 2, 0)
