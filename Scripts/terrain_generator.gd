@@ -35,7 +35,7 @@ func setup():
 	
 	await noise_texture.changed
 	image = modify_noise(noise_texture)
-	#image.save_png("res://Assets/Test_noise.png")
+	image.save_png("res://Assets/image.png")
 	
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)
@@ -128,22 +128,30 @@ func get_noise_y(x, z):
 	return value
 
 func modify_noise(noise):
+	var edge_damp = floor(world_size / 5.0)
 	var new_image = noise.get_image()
-	var black = Color.BLACK
-	for x in range(world_size + 2):
-		new_image.set_pixel(x, 0, black)
-		new_image.set_pixel(x, 1, black)
-		
-		new_image.set_pixel(x, world_size + 0, black)
-		new_image.set_pixel(x, world_size + 1, black)
-		
-	for y in range(2, world_size):
-		new_image.set_pixel(0, y, black)
-		new_image.set_pixel(1, y, black)
-		
-		new_image.set_pixel(world_size + 0, y, black)
-		new_image.set_pixel(world_size + 1, y, black)
-		
-	
+	var colour
+	for i in range(edge_damp):
+		var colour_mul = i/edge_damp
+		for x in range(world_size + 2):
+			colour = mul_colour(new_image.get_pixel(x, i), colour_mul)
+			new_image.set_pixel(x, i, colour)
+			
+			colour = mul_colour(new_image.get_pixel(x, world_size + 1 - i), colour_mul)
+			new_image.set_pixel(x, world_size + 1 - i, colour)
+			
+		for y in range(1, world_size + 1):
+			colour = mul_colour(new_image.get_pixel(i, y), colour_mul)
+			new_image.set_pixel(i, y, colour)
+			
+			colour = mul_colour(new_image.get_pixel(world_size + 1 - i, y), colour_mul)
+			new_image.set_pixel(world_size + 1 - i, y, colour)
+			
 	return new_image
 	
+
+func mul_colour(colour, val):
+	colour.r *= val
+	colour.g *= val
+	colour.b *= val
+	return colour

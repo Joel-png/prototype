@@ -83,6 +83,7 @@ height = 0.2
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 0
 floor_constant_speed = true
+floor_max_angle = 1.309
 floor_snap_length = 0.3
 script = ExtResource("1_i527r")
 
