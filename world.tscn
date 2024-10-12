@@ -91,8 +91,8 @@ shader_parameter/instance_scale_randomize = 2.0
 shader_parameter/instance_pos_randomize = 2.5
 shader_parameter/instance_scale_min = 0.5
 shader_parameter/instance_scale_max = 1.0
-shader_parameter/_coverage_altitude = 1.025
-shader_parameter/_coverage_range = 4.8
+shader_parameter/_coverage_altitude = 1.9
+shader_parameter/_coverage_range = 114.155
 shader_parameter/_slope_coverage = 1000.0
 shader_parameter/clumping_strength = 60.0
 shader_parameter/terrain_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -324,7 +324,6 @@ noise_texture = SubResource("NoiseTexture2D_1mi5f")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 
 [node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122.574, 0, 135.286)
 extra_cull_margin = 500.0
 amount = 40000
 lifetime = 0.01
@@ -334,7 +333,6 @@ process_material = SubResource("ShaderMaterial_2f7kd")
 draw_pass_1 = SubResource("ArrayMesh_4ig01")
 
 [node name="GrassSpotParticle" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.8424, 0, 124.28)
 extra_cull_margin = 500.0
 amount = 10000
 lifetime = 0.01
@@ -344,7 +342,6 @@ process_material = SubResource("ShaderMaterial_xs7c2")
 draw_pass_1 = ExtResource("8_i2t62")
 
 [node name="ShrubParticle" type="GPUParticles3D" parent="TerrainGeneration"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.046, 0, 142.381)
 extra_cull_margin = 500.0
 amount = 400
 lifetime = 0.01
