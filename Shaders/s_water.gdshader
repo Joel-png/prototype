@@ -19,6 +19,9 @@ uniform vec2 movement_direction = vec2(0.1, 0.1);
 uniform float movement_strength = 0.1;
 uniform float uv_scale = 1.0;
 
+uniform sampler2D wave_offset_texture;
+uniform float wave_offset_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
+
 uniform sampler2D screen_texture: hint_screen_texture, repeat_disable, filter_nearest;
 uniform sampler2D depth_texture: hint_screen_texture, repeat_disable, filter_nearest;
 
@@ -26,9 +29,7 @@ uniform float depth_distance : hint_range(0.0, 20.0, 0.1) = 4.0;
 uniform float beers_law : hint_range(0.0, 20.0, 0.1) = 12.0;
 uniform float water_transparency : hint_range(0.0, 1.0, 0.01) = 0.05;
 
-void start() {
-	
-}
+
 float fresnel(float amount, vec3 normal, vec3 view) {
 	return pow((1.0 - clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0)), amount);
 }
@@ -62,13 +63,24 @@ void fragment() {
 	
 	float basic_fresnel = fresnel(3.0, NORMAL, VIEW);
 	vec2 uv = UV * uv_scale;
+	vec2 wave_uv = UV;
+	float wave_time = TIME * movement_strength;
+	wave_uv.x += sin(wave_time * 5.0 + PI / 4.0 * cos(wave_time)) / 10.0;
+	wave_uv.y += cos(wave_time * 5.0 + PI / 4.0 * sin(wave_time)) / 10.0;
+	float wave_offset = textureLod(wave_offset_texture, wave_uv, 0.0).r;
+	wave_offset *= wave_offset_strength;
+	uv += wave_offset;
 	vec2 uv_movement = movement_direction * TIME * movement_strength;
 	vec3 normalmap = texture(normalmap_a, fix_edge(uv + uv_movement)).rgb * normalmap_a_strength;
 	normalmap += texture(normalmap_b, fix_edge(uv - uv_movement)).rgb * normalmap_b_strength;
 	
+	float highlights = 0.0;
+	if (normalmap.r / 2.0 < 0.6) {
+		highlights = 0.0;
+	}
 	vec3 depth_colour = mix(secondary_colour, primary_colour, depth_blend).rgb;
 	vec3 final_colour = mix(depth_colour, screen, water_transparency);
-	ALBEDO = mix(final_colour, screen, depth_blend * (1.0 - basic_fresnel));
+	ALBEDO = mix(final_colour, screen, depth_blend * (1.0 - basic_fresnel)) + highlights;
 	ROUGHNESS = roughness * (1.0 - basic_fresnel);
 	SPECULAR = 1.0;
 	NORMAL_MAP = normalmap;

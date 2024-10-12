@@ -243,7 +243,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-1900.04, 335.79)
 modes/depth_draw = 1
 flags/fog_disabled = true
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_kaurc")

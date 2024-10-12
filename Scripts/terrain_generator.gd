@@ -101,8 +101,6 @@ func generate():
 		var vertex = data.get_vertex(i)
 		var y = get_noise_y(vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
 		vertex.y = y * height_multiplier
-		if y > 0.5:
-			print(y)
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		
