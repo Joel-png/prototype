@@ -270,7 +270,9 @@ blend_shape_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_kke3t"]
 lightmap_size_hint = Vector2i(42, 42)
 material = ExtResource("12_ulnk3")
-size = Vector2(8, 8)
+size = Vector2(50, 50)
+subdivide_width = 200
+subdivide_depth = 200
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
@@ -378,5 +380,5 @@ visible = false
 mesh = SubResource("PlaneMesh_kke3t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(16.8029, 0, 0, 0, 16.8029, 0, 0, 0, 16.8029, -100.227, 0, 0)
+transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, -2.53577, 0)
 mesh = SubResource("BoxMesh_isnlg")

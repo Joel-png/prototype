@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://ddo1y4minpeg2"]
+[gd_resource type="ShaderMaterial" load_steps=10 format=3 uid="uid://ddo1y4minpeg2"]
 
 [ext_resource type="Shader" path="res://Shaders/s_water.gdshader" id="1_bqpia"]
 
@@ -23,6 +23,16 @@ seamless = true
 as_normal_map = true
 noise = SubResource("FastNoiseLite_dbfuk")
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_50qkq"]
+noise_type = 2
+frequency = 0.075
+fractal_gain = 3.705
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u04x4"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_50qkq")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_5ty5a"]
 noise_type = 2
 frequency = 0.0237
@@ -37,18 +47,23 @@ noise = SubResource("FastNoiseLite_5ty5a")
 [resource]
 render_priority = 0
 shader = ExtResource("1_bqpia")
-shader_parameter/primary_colour = Color(1, 0.156863, 1, 1)
-shader_parameter/secondary_colour = Color(0, 0, 0, 1)
+shader_parameter/primary_colour = Color(0.265523, 0.123634, 0.594773, 1)
+shader_parameter/secondary_colour = Color(0.249256, 0.746376, 1, 1)
 shader_parameter/roughness = 0.145
 shader_parameter/normalmap_a_strength = 0.5
 shader_parameter/normalmap_b_strength = 0.5
 shader_parameter/movement_direction = Vector2(1, 1)
 shader_parameter/movement_strength = 0.025
-shader_parameter/uv_scale = 1.565
+shader_parameter/uv_scale = 1.0
 shader_parameter/wave_offset_strength = 0.05
-shader_parameter/depth_distance = 10.0
-shader_parameter/beers_law = 20.0
-shader_parameter/water_transparency = 0.45
+shader_parameter/height_scale = 0.2
+shader_parameter/edge_scale = 0.975
+shader_parameter/edge_colour = Color(1, 1, 1, 1)
+shader_parameter/time_scale = 0.04
+shader_parameter/depth_distance = 8.1
+shader_parameter/beers_law = 5.5
+shader_parameter/water_transparency = 0.24
 shader_parameter/normalmap_a = SubResource("NoiseTexture2D_rflw0")
 shader_parameter/normalmap_b = SubResource("NoiseTexture2D_yr1d5")
 shader_parameter/wave_offset_texture = SubResource("NoiseTexture2D_fcv8f")
+shader_parameter/wave_height = SubResource("NoiseTexture2D_u04x4")
