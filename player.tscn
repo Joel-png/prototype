@@ -81,7 +81,7 @@ radius = 0.1
 height = 0.2
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
-collision_layer = 0
+collision_layer = 2
 floor_constant_speed = true
 floor_max_angle = 1.309
 floor_snap_length = 0.3
@@ -118,6 +118,7 @@ metadata/_edit_use_anchors_ = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00139099)
 target_position = Vector3(0, 0, -100)
 hit_from_inside = true
+hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
