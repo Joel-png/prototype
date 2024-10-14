@@ -9,7 +9,7 @@ roughness = 0.43
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
 emission_energy_multiplier = 5.0
-emission_intensity = 1.0
+emission_intensity = 20.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ilj6r"]
 _surfaces = [{
@@ -33,6 +33,7 @@ metallic_specular = 1.0
 roughness = 0.5
 emission_enabled = true
 emission = Color(1, 0.176471, 0.294118, 1)
+emission_energy_multiplier = 5.0
 emission_intensity = 10.0
 clearcoat = 0.19
 anisotropy = 1.0
