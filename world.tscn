@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=38 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
 [ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
+[ext_resource type="PackedScene" uid="uid://c7ht64odpbsic" path="res://Assets/Entity/Enemy/Azathoth/azathoth.tscn" id="14_w7epn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -379,3 +380,6 @@ mesh = SubResource("PlaneMesh_kke3t")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, -2.53577, 0)
 mesh = SubResource("BoxMesh_isnlg")
+
+[node name="Azathoth" parent="." instance=ExtResource("14_w7epn")]
+transform = Transform3D(100, 0, 0, 0, 60.8097, 79.3863, 0, -79.3863, 60.8097, 0, 526.713, 308.656)

@@ -81,6 +81,7 @@ func _ready():
 		debug0.hide()
 		debug1.hide()
 	else:
+		marker.hide()
 		print()
 		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		#Engine.max_fps = 600
