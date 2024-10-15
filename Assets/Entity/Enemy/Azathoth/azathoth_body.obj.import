@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cq1sj2dwt63gx"
+path="res://.godot/imported/azathoth_body.obj-5bf5f6a2e5d7cb5c810535f1fab10102.mesh"
+
+[deps]
+
+files=["res://.godot/imported/azathoth_body.obj-5bf5f6a2e5d7cb5c810535f1fab10102.mesh"]
+
+source_file="res://Assets/Entity/Enemy/Azathoth/azathoth_body.obj"
+dest_files=["res://.godot/imported/azathoth_body.obj-5bf5f6a2e5d7cb5c810535f1fab10102.mesh", "res://.godot/imported/azathoth_body.obj-5bf5f6a2e5d7cb5c810535f1fab10102.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

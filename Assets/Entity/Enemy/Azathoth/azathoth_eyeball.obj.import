@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://4nk6kbvfjblg"
+path="res://.godot/imported/azathoth_eyeball.obj-339cbce5bdc24038b18250f102040c65.mesh"
+
+[deps]
+
+files=["res://.godot/imported/azathoth_eyeball.obj-339cbce5bdc24038b18250f102040c65.mesh"]
+
+source_file="res://Assets/Entity/Enemy/Azathoth/azathoth_eyeball.obj"
+dest_files=["res://.godot/imported/azathoth_eyeball.obj-339cbce5bdc24038b18250f102040c65.mesh", "res://.godot/imported/azathoth_eyeball.obj-339cbce5bdc24038b18250f102040c65.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
