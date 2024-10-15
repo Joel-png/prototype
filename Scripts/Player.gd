@@ -79,7 +79,7 @@ func _ready() -> void:
 	else:
 		marker.hide()
 		print()
-		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Engine.max_fps = 1000
 
 func _unhandled_input(event) -> void:

@@ -42,6 +42,7 @@ sdfgi_cascades = 1
 sdfgi_max_distance = 25.6
 fog_enabled = true
 fog_aerial_perspective = 0.932
+fog_sky_affect = 0.0
 fog_depth_begin = 0.0
 fog_depth_end = 116.0
 volumetric_fog_enabled = true
@@ -50,6 +51,7 @@ volumetric_fog_emission = Color(0.1333, 0.00298389, 0, 1)
 volumetric_fog_emission_energy = 0.0
 volumetric_fog_anisotropy = 0.46
 volumetric_fog_detail_spread = 6.0
+volumetric_fog_sky_affect = 0.735
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
 
