@@ -1,27 +1,27 @@
 extends CharacterBody3D
 
-const SENSITIVITY = 0.004
+const SENSITIVITY: float = 0.004
 
-const FALL_SPEED_MAX = 30
-const JUMP_VELOCITY = 15.0
+const FALL_SPEED_MAX: float = 30.0
+const JUMP_VELOCITY: float = 15.0
 
-const TARGET_LERP = .7
-var WALK_SPEED = 10.0
-var acc_speed = 10.0
-var too_fast_slow_down = 0.90
+const TARGET_LERP: float = 0.7
+var WALK_SPEED: float = 10.0
+var acc_speed: float = 10.0
+var too_fast_slow_down: float = 0.90
 
-var gravity = 9.8 * 4
+var gravity: float = 9.8 * 4
 
-var is_grappling = false
-var grapple_hook_position = Vector3.ZERO
-const GRAPPLE_RAY_MAX = 100.0
-const GRAPPLE_FORCE_MAX = 55.0
-const GRAPPLE_MIN_DIST = 5.0
+var is_grappling: bool = false
+var grapple_hook_position: Vector3 = Vector3.ZERO
+const GRAPPLE_RAY_MAX: float = 100.0
+const GRAPPLE_FORCE_MAX: float = 55.0
+const GRAPPLE_MIN_DIST: float = 5.0
 
-var input_dir = Vector2.ZERO
-var direction = Vector3.ZERO
+var input_dir: Vector2 = Vector2.ZERO
+var direction: Vector3 = Vector3.ZERO
 
-var current_max_speed : float = WALK_SPEED
+var current_max_speed: float = WALK_SPEED
 var rng = RandomNumberGenerator.new()
 
 
@@ -52,15 +52,13 @@ var grapple: Grapple
 var gun: Gun
 var shotgun: Shotgun
 var hotbar = []
-var hotbar_length = hotbar.size()
-var hotbar_selected = 0
-var hotbar_to_select = 0
-var is_player
-var is_focus = false
-var test_degree = [90, 90]
+var hotbar_length: int = hotbar.size()
+var hotbar_selected: int = 0
+var hotbar_to_select: int = 0
+var is_player: bool
+var is_focus: bool = false
 
-
-func _ready():
+func _ready() -> void:
 	grapple = grapple_scene.instantiate()
 	grapple.init(self)
 	shotgun = shotgun_scene.instantiate()
@@ -72,8 +70,6 @@ func _ready():
 	camera.current = is_player
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
-	#for object in hotbar:
-		#inventory.add_child(object)
 	
 	select_holdable(0)
 	
@@ -84,17 +80,16 @@ func _ready():
 		marker.hide()
 		print()
 		#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-		#Engine.max_fps = 600
-	
-	
-func _unhandled_input(event):
+		Engine.max_fps = 1000
+
+func _unhandled_input(event) -> void:
 	if is_focus:
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * SENSITIVITY)
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
-func _process(delta):
+func _process(delta: float) -> void:
 	is_player = is_multiplayer_authority()
 	
 	if is_player:
@@ -112,8 +107,8 @@ func _process(delta):
 		input_dir = Input.get_vector("left", "right", "up", "down")
 		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
 	#	transform.basis * 
-		var target_speed : Vector3 = direction * current_max_speed
-		var jumped = false
+		var target_speed: Vector3 = direction * current_max_speed
+		var jumped: bool = false
 		
 		if Input.is_action_pressed("jump") and is_on_floor():
 			jumped = true
@@ -137,7 +132,7 @@ func _process(delta):
 		#calculate dif between max and current speed
 		#ignore y axis
 		
-		var local_velocity = transform.basis.inverse() * velocity
+		var local_velocity: Vector3 = transform.basis.inverse() * velocity
 		
 		#only if bhopping or midair
 		if not (not jumped and is_on_floor()):
@@ -152,11 +147,11 @@ func _process(delta):
 				target_speed.x = local_velocity.x
 			if input_dir.y == 0:
 				target_speed.z = local_velocity.z
-		var speed_difference : Vector3 = target_speed - local_velocity
+		var speed_difference: Vector3 = target_speed - local_velocity
 		speed_difference.y = 0
 	 
 		#final force that will be applied to character
-		var movement = speed_difference * acc_speed
+		var movement: Vector3 = speed_difference * acc_speed
 		
 		if input_dir or (not jumped and is_on_floor()):
 			velocity = velocity + (transform.basis * movement) * delta
@@ -172,7 +167,7 @@ func _process(delta):
 		scale_marker(position.distance_to(player_manager.main_player_position))
 	holdable.end_action()
 	
-func hotbar_logic():
+func hotbar_logic() -> void:
 	if is_player:
 		for i in range(hotbar.size()):
 			if Input.is_action_pressed(str(i+1)):
@@ -185,7 +180,7 @@ func hotbar_logic():
 		
 
 @rpc("any_peer", "call_local")
-func select_holdable(item_to_hold):
+func select_holdable(item_to_hold: int) -> void:
 	if holdable:
 		holdable.deselect()
 	holdable = hotbar[item_to_hold]
@@ -193,49 +188,49 @@ func select_holdable(item_to_hold):
 	
 
 @rpc("any_peer", "call_local")
-func spawn_projectile(pos, rot, config):
+func spawn_projectile(pos: Vector3, rot: Vector3, config):
 	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	projectiles.add_child(p)
 	p._setup(pos, rot, config, camera.global_rotation)
 	return p
 
 @rpc("any_peer", "call_local")
-func shoot_animation():
+func shoot_animation() -> void:
 	holdable.muzzle.flash()
 	animation_player.stop()
 	animation_player.play("shoot")
 	
-func shoot(pos, _rot, config):
+func shoot(pos: Vector3, _rot: Vector3, config) -> void:
 	#[speed, firerate, bullet_spread_hor, bullet_spread_ver, bloom_hor, bloom_ver]
-	var bullet_spread_hor = config[2]
-	var bullet_spread_ver = config[3]
-	var bloom_hor = config[4]
-	var bloom_ver = config[5]
+	var bullet_spread_hor: int = config[2]
+	var bullet_spread_ver: int = config[3]
+	var bloom_hor: float = config[4]
+	var bloom_ver: float = config[5]
 	for _x in range(bullet_spread_hor):
 		for _y in range(bullet_spread_ver):
-			var bloom_y = deg_to_rad(calc_bloom(bloom_hor, bullet_spread_hor, _x))
-			var bloom_x = deg_to_rad(calc_bloom(bloom_ver, bullet_spread_ver, _y))
+			var bloom_y: float = deg_to_rad(calc_bloom(bloom_hor, bullet_spread_hor, _x))
+			var bloom_x: float = deg_to_rad(calc_bloom(bloom_ver, bullet_spread_ver, _y))
 			spawn_projectile.rpc(pos, get_what_look_at(), [config[0], bloom_x, bloom_y])
 	shoot_animation.rpc()
 
-func calc_bloom(bloom, proj_amount, i):
-	var bloom_inc = float(bloom * 2) / proj_amount
-	var lower_bloom = (-bloom) + bloom_inc * i
-	var upper_bloom = (-bloom) + bloom_inc * (i + 1)
+func calc_bloom(bloom: float, proj_amount: int, i) -> float:
+	var bloom_inc: float = float(bloom * 2) / float(proj_amount)
+	var lower_bloom: float = (-bloom) + bloom_inc * i
+	var upper_bloom: float = (-bloom) + bloom_inc * (i + 1)
 	#return rng.randf_range(lower_bloom, upper_bloom)
 	return (lower_bloom + upper_bloom) / 2
 	
-func get_what_look_at():
+func get_what_look_at() -> Vector3:
 	# if point to shoot at is too close bullets will go to the side | if point isn't in raycast
 	if camera_cast.get_collider():
 		if position.distance_to(camera_cast.get_collision_point()) > 2:
 			return camera_cast.get_collision_point()
-	var forward_direction = -camera_cast.global_transform.basis.z.normalized()
+	var forward_direction: Vector3 = -camera_cast.global_transform.basis.z.normalized()
 	return camera_cast.global_transform.origin + forward_direction * 100
 	
-func scale_marker(distance):
-	var max_distance = 15.0
-	var marker_scale = 1.0
+func scale_marker(distance: float) -> void:
+	var max_distance: float = 15.0
+	var marker_scale: float = 1.0
 	if distance > max_distance:
 		marker_scale = distance/max_distance
 		marker.scale = Vector3(marker_scale, marker_scale, marker_scale)

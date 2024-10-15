@@ -5,7 +5,7 @@ var players = {}
 @export var player_scene : PackedScene
 @onready var max_height = $"../TerrainGeneration"
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	spawn_function = spawn_player
 	if is_multiplayer_authority():
 		spawn(1)
@@ -21,6 +21,6 @@ func spawn_player(data):
 	#players[data].collision_mask = players.size()
 	return p
 	
-func remove_player(data):
+func remove_player(data) -> void:
 	players[data].queue_free()
 	players.erase(data)

@@ -1,25 +1,25 @@
 extends Holdable
 class_name Grapple
 
-const GRAPPLE_RAY_MAX = 100.0
-const GRAPPLE_FORCE_MAX = 80.0
-const GRAPPLE_MIN_DIST = 2.0
+const GRAPPLE_RAY_MAX: float = 100.0
+const GRAPPLE_FORCE_MAX: float = 80.0
+const GRAPPLE_MIN_DIST: float = 2.0
 
-var vertex_array : PackedVector3Array = []
-var index_array : PackedInt32Array = []
-var normal_array : PackedVector3Array = []
+var vertex_array: PackedVector3Array = []
+var index_array: PackedInt32Array = []
+var normal_array: PackedVector3Array = []
  
-var tangent_array : PackedVector3Array = []
-var uv_array : PackedVector2Array = []
-var rope_width = 0.04
-var resolution = 4
+var tangent_array: PackedVector3Array = []
+var uv_array: PackedVector2Array = []
+var rope_width: float = 0.04
+var resolution: int = 4
 
 @onready var grapple_point = $GrapplePoint
 @onready var grapple_mesh = $GrapplePoint/mesh
 
 var mesh = ImmediateMesh.new()
 
-func action(_delta):
+func action(_delta: float) -> void:
 	var grapple_raycast_hit = overseer.camera_cast.get_collider()
 	crosshair_info(grapple_raycast_hit)
 	
@@ -32,19 +32,19 @@ func action(_delta):
  
 	if overseer.is_grappling and Input.is_action_pressed("left_click"):
 		overseer.grapple_pivot.look_at(overseer.grapple_hook_position)
-		var grapple_direction = (overseer.grapple_hook_position - overseer.position).normalized()
+		var grapple_direction: Vector3 = (overseer.grapple_hook_position - overseer.position).normalized()
 		
 		if overseer.grapple_hook_position.distance_to(overseer.position) < GRAPPLE_MIN_DIST:
-			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX * max(0, overseer.grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
+			var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX * max(0, overseer.grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
 			overseer.velocity = grapple_target_speed
 		else:
-			var grapple_target_speed = grapple_direction * GRAPPLE_FORCE_MAX
+			var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX
 			overseer.velocity = grapple_target_speed
 			
 	if overseer.is_grappling and not Input.is_action_pressed("left_click"):
 		overseer.is_grappling = false
 
-func end_action():
+func end_action() -> void:
 	if overseer.is_grappling:
 		create_rope_mesh()
 		grapple_mesh.visible = true
@@ -52,10 +52,10 @@ func end_action():
 		grapple_mesh.visible = false
 	
 	
-func crosshair_info(ray_hit):
-	var string_for_crosshair = ""
+func crosshair_info(ray_hit) -> void:
+	var string_for_crosshair: String = ""
 	if ray_hit:
-		var meters_to_grapple = overseer.camera_cast.get_collision_point().distance_to(overseer.camera_cast.global_position)
+		var meters_to_grapple: float = overseer.camera_cast.get_collision_point().distance_to(overseer.camera_cast.global_position)
 		if int(meters_to_grapple * 10) % 10 == 0:
 			string_for_crosshair = str(floor(meters_to_grapple* 10)/10.0) + ".0m"
 		else:
@@ -65,7 +65,7 @@ func crosshair_info(ray_hit):
 	overseer.crosshair.display_crosshair_text(string_for_crosshair)
 
 @rpc("call_local")
-func create_rope_mesh():
+func create_rope_mesh() -> void:
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
 	points.append(overseer.grapple_hook_position - grapple_point.position)
@@ -128,15 +128,13 @@ func create_rope_mesh():
 	mesh.surface_end()
 	grapple_mesh.mesh = mesh
 
-func calculate_rope_normal():
+func calculate_rope_normal() -> void:
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
 	points.append(overseer.grapple_hook_position - grapple_point.position)
 	
 	normal_array.clear()
 	tangent_array.clear()
-	
-	
 	
 	for i in range(points.size()):
 		var tangent := Vector3(0,0,0)

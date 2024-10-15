@@ -1,18 +1,18 @@
 class_name TerrainGeneration
 extends Node3D
 
-var mesh : MeshInstance3D
-var world_size : int = 200
-var mesh_resolution : int = 1
-var scale_multiplier = 15
-var height_multiplier = 5 * scale_multiplier
+var mesh: MeshInstance3D
+var world_size: int = 200
+var mesh_resolution: int = 1
+var scale_multiplier: int = 15
+var height_multiplier: int = 5 * scale_multiplier
 
-var grass_scale = 7
+var grass_scale: int = 7
 
 
-@export var noise_texture : NoiseTexture2D
-@export var test_noise : NoiseTexture2D
-var terrain_seed = 0
+@export var noise_texture: NoiseTexture2D
+@export var test_noise: NoiseTexture2D
+var terrain_seed: int = 0
 var image: Image
 
 @onready var water = $Water
@@ -23,7 +23,7 @@ var image: Image
 @onready var rocks_small = $RockSmallParticle
 @onready var shrubs = $ShrubParticle
 
-func setup():
+func setup() -> void:
 	terrain_seed = world.terrain_seed
 	noise_texture.width = world_size + 2
 	noise_texture.height = world_size + 2
@@ -33,7 +33,6 @@ func setup():
 	var grass_spots_sm = grass_spots.process_material
 	var rock_small_sm = rocks_small.process_material
 	var shrubs_sm = shrubs.process_material
-	
 	
 	await noise_texture.changed
 	image = modify_noise(noise_texture)
@@ -50,26 +49,26 @@ func setup():
 	
 	normal_map.set_image(normal_image)
 	
-	var heightmap_scale = world_size + 2
-	var heightmap_size = Vector2(heightmap_scale, heightmap_scale)
-	var rows = 100 * grass_scale
-	var base_spacing = 0.25 # spacing at which is considered the default render distance for other spacings
-	var grass_clumps_spacing = 0.25
-	var grass_spots_spacing = 1.0
-	var rocks_small_spacing = 4.0
-	var shrubs_spacing = 10.0
-	var clumps_rows = floor(rows * (base_spacing / grass_clumps_spacing))
-	var spots_rows = floor(rows * (base_spacing / grass_spots_spacing))
-	var rocks_small_rows = floor(rows * (base_spacing / rocks_small_spacing))
-	var shrubs_rows = floor(rows * (base_spacing / shrubs_spacing))
+	var heightmap_scale: int = world_size + 2
+	var heightmap_size: Vector2 = Vector2(heightmap_scale, heightmap_scale)
+	var rows: int = 100 * grass_scale
+	var base_spacing: float = 0.25 # spacing at which is considered the default render distance for other spacings
+	var grass_clumps_spacing: float = 0.25
+	var grass_spots_spacing: float = 1.0
+	var rocks_small_spacing: float = 4.0
+	var shrubs_spacing: float = 10.0
+	var clumps_rows: int = floor(rows * (base_spacing / grass_clumps_spacing))
+	var spots_rows: int = floor(rows * (base_spacing / grass_spots_spacing))
+	var rocks_small_rows: int = floor(rows * (base_spacing / rocks_small_spacing))
+	var shrubs_rows: int = floor(rows * (base_spacing / shrubs_spacing))
 	print(rocks_small_rows)
 	grass_clumps.amount = clumps_rows*clumps_rows
 	grass_spots.amount = spots_rows*spots_rows
 	rocks_small.amount = rocks_small_rows*rocks_small_rows
 	shrubs.amount = shrubs_rows*shrubs_rows
-	var water_height = height_multiplier * 0.1
-	var coverage_range = height_multiplier
-	var coverage_alt = water_height + height_multiplier
+	var water_height: float = height_multiplier * 0.1
+	var coverage_range: float = height_multiplier
+	var coverage_alt: float = water_height + height_multiplier
 	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size, coverage_range, coverage_alt)
 	setup_shader(grass_spots_sm, height_texture, normal_map, grass_spots_spacing, spots_rows, heightmap_size, coverage_range, coverage_alt)
 	setup_shader(rock_small_sm, height_texture, normal_map, rocks_small_spacing, rocks_small_rows, heightmap_size, coverage_range, coverage_alt)
@@ -159,13 +158,13 @@ func modify_noise(noise):
 	return new_image
 	
 
-func mul_colour(colour, val):
+func mul_colour(colour: Color, val: float):
 	colour.r *= val
 	colour.g *= val
 	colour.b *= val
 	return colour
 	
-func water_setup(water_height):
+func water_setup(water_height: float):
 	water.position.y = water_height
 	var water_mesh = water.mesh
 	var mesh_scale = world_size * scale_multiplier * 4

@@ -1,14 +1,14 @@
 extends Node3D
 
-var terrain_seed = 0
+var terrain_seed: int = 0
 @onready var terrain_generator = $TerrainGeneration
 
-func _ready():
+func _ready() -> void:
 	if is_multiplayer_authority():
 		set_seed()
 		print(str(terrain_seed) + " world")
 	terrain_generator.setup()
 
-func set_seed():
+func set_seed() -> void:
 	terrain_seed = randi_range(0, 1000)
 	print(str(terrain_seed) + " set world seed")

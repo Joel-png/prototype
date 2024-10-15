@@ -5,9 +5,9 @@ extends Node3D
 @onready var rock_small = $"../TerrainGeneration/RockSmallParticle"
 @onready var shrubs = $"../TerrainGeneration/ShrubParticle"
 
-var main_player_position = Vector3(0.0, 0.0, 0.0)
+var main_player_position: Vector3 = Vector3(0.0, 0.0, 0.0)
 
-func update_grass(pos):
+func update_grass(pos: Vector3) -> void:
 	grass_clump.position = pos
 	grass_spot.position = pos
 	rock_small.position = pos

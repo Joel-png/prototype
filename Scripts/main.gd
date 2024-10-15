@@ -1,8 +1,8 @@
 extends Node3D
 
-var PORT = 9999
+var PORT: int = 9999
 var enet_peer = ENetMultiplayerPeer.new()
-var lobby_id = 0
+var lobby_id: int = 0
 var peer = SteamMultiplayerPeer.new()
 
 @onready var multiplayer_spawner = $MultiplayerSpawner
@@ -18,20 +18,20 @@ func spawn_level(data):
 	var a = (load(data) as PackedScene).instantiate()
 	return a
 	
-func _on_host_pressed():
+func _on_host_pressed() -> void:
 	peer.create_lobby(SteamMultiplayerPeer.LOBBY_TYPE_PUBLIC)
 	multiplayer.multiplayer_peer = peer
 	var world = multiplayer_spawner.spawn("res://world.tscn")
 	world.set_multiplayer_authority(1)
 	hide_menu()
 	
-func join_lobby(id):
+func join_lobby(id) -> void:
 	peer.connect_lobby(id)
 	multiplayer.multiplayer_peer = peer
 	lobby_id = id
 	hide_menu()
 	
-func _on_lobby_created(_connect, id):
+func _on_lobby_created(_connect, id) -> void:
 	if _connect:
 		lobby_id = id
 		#Steam.setLobbyData(lobby_id, "name", str("Joel test Lobby" + Steam.getPersonaName()))
@@ -39,12 +39,12 @@ func _on_lobby_created(_connect, id):
 		Steam.setLobbyJoinable(lobby_id, true)
 		print(lobby_id)
 
-func open_lobby_list():
+func open_lobby_list() -> void:
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	Steam.addRequestLobbyListStringFilter("name", "Joel test lobby", Steam.LOBBY_COMPARISON_EQUAL)
 	Steam.requestLobbyList()
 	
-func on_lobby_match_list(lobbies):
+func on_lobby_match_list(lobbies) -> void:
 	for lobby in lobbies:
 		var lobby_name = Steam.getLobbyData(lobby, "name")
 		var mem_count = Steam.getNumLobbyMembers(lobby)
@@ -57,14 +57,14 @@ func on_lobby_match_list(lobbies):
 		$LobbyContainer/Lobbies.add_child(but)
 
 
-func _on_refresh_pressed():
+func _on_refresh_pressed() -> void:
 	if $LobbyContainer/Lobbies.get_child_count() > 0:
 		for n in $LobbyContainer/Lobbies.get_children():
 			n.queue_free()
 	open_lobby_list()
 
 
-func _on_host_local_pressed():
+func _on_host_local_pressed() -> void:
 	enet_peer.create_server(PORT)
 	multiplayer.multiplayer_peer = enet_peer
 	var world = multiplayer_spawner.spawn("res://world.tscn")
@@ -78,7 +78,7 @@ func _on_join_local_pressed() -> void:
 	
 	hide_menu()
 	
-func hide_menu():
+func hide_menu() -> void:
 	$Host.hide()
 	$Refresh.hide()
 	$LobbyContainer/Lobbies.hide()
