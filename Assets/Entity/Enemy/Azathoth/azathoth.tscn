@@ -44,9 +44,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_w6rqi"]
-radius = 3.22994
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jf0uk"]
 albedo_color = Color(0.917647, 0, 0.223529, 1)
 metallic_specular = 1.0
@@ -106,25 +103,40 @@ blend_shape_mode = 0
 [sub_resource type="SphereShape3D" id="SphereShape3D_cls3i"]
 radius = 10.3094
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_w6rqi"]
+radius = 3.22994
+
 [node name="Azathoth" type="CharacterBody3D"]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 script = ExtResource("1_qist1")
 
-[node name="BodyMesh" type="MeshInstance3D" parent="."]
+[node name="Body" type="Node3D" parent="."]
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Body"]
 mesh = SubResource("ArrayMesh_kpplp")
+skeleton = NodePath("../..")
+
+[node name="Eye" type="Node3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.30993, -2.63835)
+
+[node name="EyeballMesh" type="MeshInstance3D" parent="Body/Eye"]
+mesh = SubResource("ArrayMesh_qcecu")
+
+[node name="DetectionArea" type="Area3D" parent="Body"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body/DetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.53011)
+shape = SubResource("SphereShape3D_cls3i")
 
 [node name="BodyCollision" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_w6rqi")
 
-[node name="Eye" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.30993, -2.63835)
+[node name="TimerMovement" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
 
-[node name="EyeballMesh" type="MeshInstance3D" parent="Eye"]
-mesh = SubResource("ArrayMesh_qcecu")
+[node name="TimerAttack" type="Timer" parent="."]
 
-[node name="DetectionArea" type="Area3D" parent="."]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
-shape = SubResource("SphereShape3D_cls3i")
+[connection signal="timeout" from="TimerMovement" to="." method="_on_timer_movement_timeout"]
