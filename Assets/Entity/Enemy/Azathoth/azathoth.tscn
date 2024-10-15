@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://c7ht64odpbsic"]
+[gd_scene load_steps=13 format=4 uid="uid://c7ht64odpbsic"]
 
 [ext_resource type="Script" path="res://Scripts/azathoth.gd" id="1_qist1"]
 
@@ -14,7 +14,7 @@ emission_intensity = 20.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0vmj1"]
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
-emission_intensity = 3.0
+emission_intensity = 2.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kpplp"]
 _surfaces = [{
@@ -106,6 +106,43 @@ radius = 10.3094
 [sub_resource type="SphereShape3D" id="SphereShape3D_w6rqi"]
 radius = 3.22994
 
+[sub_resource type="Animation" id="Animation_cj8u3"]
+resource_name = "idle_look_at"
+length = 15.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -2.64494, -6.32976), Vector3(3.5, -2.645, -5.594), Vector3(-3.5, -2.645, -5.594), Vector3(0, -2.645, -6.33)]
+}
+
+[sub_resource type="Animation" id="Animation_pn47r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -2.64494, -6.32976)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_olawb"]
+_data = {
+"RESET": SubResource("Animation_pn47r"),
+"idle_look_at": SubResource("Animation_cj8u3")
+}
+
 [node name="Azathoth" type="CharacterBody3D"]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 script = ExtResource("1_qist1")
@@ -134,9 +171,17 @@ shape = SubResource("SphereShape3D_cls3i")
 shape = SubResource("SphereShape3D_w6rqi")
 
 [node name="TimerMovement" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 10.0
 autostart = true
 
 [node name="TimerAttack" type="Timer" parent="."]
+
+[node name="IdleLookAt" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.64494, -6.32976)
+
+[node name="IdleLookAtAnimation" type="AnimationPlayer" parent="IdleLookAt"]
+libraries = {
+"": SubResource("AnimationLibrary_olawb")
+}
 
 [connection signal="timeout" from="TimerMovement" to="." method="_on_timer_movement_timeout"]

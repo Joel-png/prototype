@@ -7,6 +7,8 @@ var movement_amount: float = 20.0
 @onready var eye = $Body/Eye
 @onready var eye_mesh = $Body/Eye/EyeballMesh
 @onready var detection_area = $Body/DetectionArea
+@onready var idle_look_at = $IdleLookAt
+@onready var idle_look_at_animation = $IdleLookAt/IdleLookAtAnimation
 
 @onready var timer_movement = $TimerMovement
 @onready var timer_attack = $TimerAttack
@@ -18,7 +20,11 @@ func _process(delta: float) -> void:
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
 		lerp_angle_look_at(body, closets_player_position, delta, 0.5)
 		lerp_look_at(eye, closets_player_position, delta, 2.0)
-	
+	else:
+		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
+		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)
+		if not idle_look_at_animation.is_playing():
+			idle_look_at_animation.play("idle_look_at")
 	velocity += movement_direction * delta
 	velocity.x = clamp(velocity.x, -abs(movement_direction.x), abs(movement_direction.x))
 	velocity.z = clamp(velocity.z, -abs(movement_direction.z), abs(movement_direction.z))
@@ -31,7 +37,6 @@ func calc_movement() -> void:
 	var left_direction: Vector3 = global_transform.basis.x.normalized()
 	var total_direction = forward_direction + left_direction * direction_type
 	movement_direction = total_direction * movement_amount
-	print(movement_direction)
 
 func _on_timer_movement_timeout() -> void:
 	calc_movement()
