@@ -383,4 +383,4 @@ transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, 
 mesh = SubResource("BoxMesh_isnlg")
 
 [node name="Azathoth" parent="." instance=ExtResource("14_w7epn")]
-transform = Transform3D(42.5716, 0, 0, 0, 42.5716, 0, 0, 0, 42.5716, 0, 475.154, 502.055)
+transform = Transform3D(48.0668, 0, 0, 0, 48.0668, 0, 0, 0, 48.0668, 0, 407.977, 502.055)

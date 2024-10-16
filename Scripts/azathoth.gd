@@ -10,8 +10,13 @@ var movement_amount: float = 20.0
 @onready var idle_look_at = $IdleLookAt
 @onready var idle_look_at_animation = $IdleLookAt/IdleLookAtAnimation
 
+@onready var laser = $Body/Eye/EyeballMesh/Laser
+
 @onready var timer_movement = $TimerMovement
 @onready var timer_attack = $TimerAttack
+
+func _ready() -> void:
+	laser.parent_scale = scale.x
 
 func _process(delta: float) -> void:
 	if detection_area.has_overlapping_bodies():
@@ -19,7 +24,8 @@ func _process(delta: float) -> void:
 		var closests_player_index: int = get_closest_player_index(detected_players)
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
 		lerp_angle_look_at(body, closets_player_position, delta, 0.5)
-		lerp_look_at(eye, closets_player_position, delta, 2.0)
+		lerp_look_at(eye, closets_player_position, delta, 1.0)
+		laser.set_length()
 	else:
 		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
 		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)
@@ -35,7 +41,7 @@ func calc_movement() -> void:
 	var direction_type = randi_range(-1, 1)
 	var forward_direction: Vector3 = -global_transform.basis.z.normalized()
 	var left_direction: Vector3 = global_transform.basis.x.normalized()
-	var total_direction = forward_direction + left_direction * direction_type
+	var total_direction = forward_direction + 2 * left_direction * direction_type
 	movement_direction = total_direction * movement_amount
 
 func _on_timer_movement_timeout() -> void:
