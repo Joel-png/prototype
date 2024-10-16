@@ -2,11 +2,13 @@ extends CharacterBody3D
 
 var movement_direction: Vector3 = Vector3(0, 0, -1)
 var movement_amount: float = 20.0
+var attack_animations: Array = ["attack_0", "attack_1"]
 
 @onready var body = $Body
 @onready var eye = $Body/Eye
 @onready var eye_mesh = $Body/Eye/EyeballMesh
 @onready var detection_area = $Body/DetectionArea
+@onready var eyeball_attack_animation = $Body/Eye/EyeballMesh/EyeballAttackAnimation
 @onready var idle_look_at = $IdleLookAt
 @onready var idle_look_at_animation = $IdleLookAt/IdleLookAtAnimation
 
@@ -23,9 +25,13 @@ func _process(delta: float) -> void:
 		var detected_players: Array = detection_area.get_overlapping_bodies()
 		var closests_player_index: int = get_closest_player_index(detected_players)
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
-		lerp_angle_look_at(body, closets_player_position, delta, 0.5)
-		lerp_look_at(eye, closets_player_position, delta, 1.0)
-		laser.set_length()
+		lerp_angle_look_at(body, closets_player_position, delta, 0.2)
+		lerp_look_at(eye, closets_player_position, delta, 0.5)
+		
+		if not eyeball_attack_animation.is_playing():
+			var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
+			print("playing animation " + attack_animations[random_animation_number])
+			eyeball_attack_animation.play(attack_animations[random_animation_number])
 	else:
 		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
 		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)
@@ -46,7 +52,7 @@ func calc_movement() -> void:
 
 func _on_timer_movement_timeout() -> void:
 	calc_movement()
-	
+
 func lerp_angle_look_at(thing_looking, target_position: Vector3, delta: float, rotation_speed: float) -> void:
 	var direction: Vector3 = (target_position - position)
 	var direction_x_z: float = pow(pow(direction.x, 2) + pow(direction.z, 2), 0.5)
