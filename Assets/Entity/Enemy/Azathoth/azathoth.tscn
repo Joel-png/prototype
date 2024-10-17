@@ -271,6 +271,8 @@ wait_time = 10.0
 autostart = true
 
 [node name="TimerAttack" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
 
 [node name="IdleLookAt" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.64494, -6.32976)
@@ -281,3 +283,4 @@ libraries = {
 }
 
 [connection signal="timeout" from="TimerMovement" to="." method="_on_timer_movement_timeout"]
+[connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]

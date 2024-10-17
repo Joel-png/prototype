@@ -1,8 +1,8 @@
 extends Holdable
 class_name Grapple
 
-const GRAPPLE_RAY_MAX: float = 100.0
-const GRAPPLE_FORCE_MAX: float = 80.0
+const GRAPPLE_RAY_MAX: float = 500.0
+const GRAPPLE_FORCE_MAX: float = 150.0
 const GRAPPLE_MIN_DIST: float = 2.0
 
 var vertex_array: PackedVector3Array = []

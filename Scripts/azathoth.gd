@@ -3,6 +3,7 @@ extends CharacterBody3D
 var movement_direction: Vector3 = Vector3(0, 0, -1)
 var movement_amount: float = 20.0
 var attack_animations: Array = ["attack_0", "attack_1"]
+var currently_attacking: bool = false
 
 @onready var body = $Body
 @onready var eye = $Body/Eye
@@ -25,13 +26,10 @@ func _process(delta: float) -> void:
 		var detected_players: Array = detection_area.get_overlapping_bodies()
 		var closests_player_index: int = get_closest_player_index(detected_players)
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
-		lerp_angle_look_at(body, closets_player_position, delta, 0.2)
-		lerp_look_at(eye, closets_player_position, delta, 0.5)
+		lerp_angle_look_at(body, closets_player_position, delta, 0.1)
+		lerp_look_at(eye, closets_player_position, delta, 0.25)
 		
-		if not eyeball_attack_animation.is_playing():
-			var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
-			print("playing animation " + attack_animations[random_animation_number])
-			eyeball_attack_animation.play(attack_animations[random_animation_number])
+		
 	else:
 		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
 		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)
@@ -42,14 +40,29 @@ func _process(delta: float) -> void:
 	velocity.z = clamp(velocity.z, -abs(movement_direction.z), abs(movement_direction.z))
 	velocity *= 0.99
 	position += velocity * delta
+	if currently_attacking and not eyeball_attack_animation.is_playing():
+		currently_attacking = false
 
 func calc_movement() -> void:
 	var direction_type = randi_range(-1, 1)
+	if currently_attacking:
+		direction_type = 0
 	var forward_direction: Vector3 = -global_transform.basis.z.normalized()
 	var left_direction: Vector3 = global_transform.basis.x.normalized()
 	var total_direction = forward_direction + 2 * left_direction * direction_type
 	movement_direction = total_direction * movement_amount
 
+func attack():
+	if not eyeball_attack_animation.is_playing():
+		currently_attacking = true
+		calc_movement()
+		var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
+		print("playing animation " + attack_animations[random_animation_number])
+		eyeball_attack_animation.play(attack_animations[random_animation_number])
+
+func _on_timer_attack_timeout() -> void:
+	attack()
+	
 func _on_timer_movement_timeout() -> void:
 	calc_movement()
 

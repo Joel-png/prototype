@@ -14,7 +14,7 @@ var gravity: float = 9.8 * 4
 
 var is_grappling: bool = false
 var grapple_hook_position: Vector3 = Vector3.ZERO
-const GRAPPLE_RAY_MAX: float = 100.0
+const GRAPPLE_RAY_MAX: float = 500.0
 const GRAPPLE_FORCE_MAX: float = 55.0
 const GRAPPLE_MIN_DIST: float = 5.0
 

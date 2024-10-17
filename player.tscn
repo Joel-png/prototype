@@ -116,7 +116,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="camera_cast" type="RayCast3D" parent="PlayerHead/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00139099)
-target_position = Vector3(0, 0, -100)
+target_position = Vector3(0, 0, -10)
 hit_from_inside = true
 hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 1, 1)

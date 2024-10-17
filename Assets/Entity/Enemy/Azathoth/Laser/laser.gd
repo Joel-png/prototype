@@ -22,7 +22,6 @@ func stop_attack() -> void:
 	hide()
 
 func _process(_delta: float) -> void:
-	#print(visible)
 	if currently_attacking:
 		set_length()
 		if hit_area.has_overlapping_bodies():
