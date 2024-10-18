@@ -1,7 +1,8 @@
-[gd_scene load_steps=19 format=4 uid="uid://c7ht64odpbsic"]
+[gd_scene load_steps=20 format=4 uid="uid://c7ht64odpbsic"]
 
 [ext_resource type="Script" path="res://Scripts/azathoth.gd" id="1_qist1"]
 [ext_resource type="PackedScene" uid="uid://b5rxl6w1s1bkg" path="res://Assets/Entity/Enemy/Azathoth/Laser/laser.tscn" id="2_7yw3t"]
+[ext_resource type="PackedScene" uid="uid://tyaid71gn2fa" path="res://Assets/Entity/Enemy/tenticle.tscn" id="2_n1frg"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jn8h7"]
 metallic = 1.0
@@ -254,6 +255,11 @@ script = ExtResource("1_qist1")
 [node name="BodyMesh" type="MeshInstance3D" parent="Body"]
 mesh = SubResource("ArrayMesh_kpplp")
 skeleton = NodePath("../..")
+
+[node name="TenticleSegment" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(0.825834, -0.521762, 0.213924, 0.563621, 0.775929, -0.283312, -0.0181678, 0.354541, 0.934864, -1.32804, 2.20064, 0)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
 
 [node name="Eye" type="Node3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.30993, -2.63835)

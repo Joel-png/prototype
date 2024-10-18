@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://tyaid71gn2fa"]
+
+[ext_resource type="Script" path="res://Scripts/tenticle.gd" id="1_860cb"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kgxkt"]
+size = Vector3(1, 2, 1)
+
+[node name="TenticleSegment" type="Node3D"]
+script = ExtResource("1_860cb")
+
+[node name="TenticleMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_kgxkt")
+
+[node name="EndPivot" type="Node3D" parent="TenticleMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
