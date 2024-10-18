@@ -25,7 +25,7 @@ func _process(_delta: float) -> void:
 	if currently_attacking:
 		set_length()
 		if hit_area.has_overlapping_bodies():
-			print("HIT PLAYER")
+			pass
 
 func set_length() -> void:
 	if ray_cast.is_colliding():

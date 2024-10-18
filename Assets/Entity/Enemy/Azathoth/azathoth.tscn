@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://c7ht64odpbsic"]
+[gd_scene load_steps=19 format=4 uid="uid://c7ht64odpbsic"]
 
 [ext_resource type="Script" path="res://Scripts/azathoth.gd" id="1_qist1"]
 [ext_resource type="PackedScene" uid="uid://b5rxl6w1s1bkg" path="res://Assets/Entity/Enemy/Azathoth/Laser/laser.tscn" id="2_7yw3t"]
@@ -232,6 +232,20 @@ _data = {
 "idle_look_at": SubResource("Animation_cj8u3")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4qe3v"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Body:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Body/Eye:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
 [node name="Azathoth" type="CharacterBody3D"]
 script = ExtResource("1_qist1")
 
@@ -281,6 +295,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.64494, -6.32976)
 libraries = {
 "": SubResource("AnimationLibrary_olawb")
 }
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_4qe3v")
 
 [connection signal="timeout" from="TimerMovement" to="." method="_on_timer_movement_timeout"]
 [connection signal="timeout" from="TimerAttack" to="." method="_on_timer_attack_timeout"]

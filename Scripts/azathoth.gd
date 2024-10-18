@@ -28,8 +28,6 @@ func _process(delta: float) -> void:
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
 		lerp_angle_look_at(body, closets_player_position, delta, 0.1)
 		lerp_look_at(eye, closets_player_position, delta, 0.25)
-		
-		
 	else:
 		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
 		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)
@@ -52,19 +50,21 @@ func calc_movement() -> void:
 	var total_direction = forward_direction + 2 * left_direction * direction_type
 	movement_direction = total_direction * movement_amount
 
-func attack():
+@rpc("any_peer", "call_local")
+func attack(attack_number: int):
 	if not eyeball_attack_animation.is_playing():
 		currently_attacking = true
 		calc_movement()
-		var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
-		print("playing animation " + attack_animations[random_animation_number])
-		eyeball_attack_animation.play(attack_animations[random_animation_number])
+		eyeball_attack_animation.play(attack_animations[attack_number])
 
 func _on_timer_attack_timeout() -> void:
-	attack()
+	if is_multiplayer_authority():
+		var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
+		attack.rpc(random_animation_number)
 	
 func _on_timer_movement_timeout() -> void:
-	calc_movement()
+	if is_multiplayer_authority():
+		calc_movement()
 
 func lerp_angle_look_at(thing_looking, target_position: Vector3, delta: float, rotation_speed: float) -> void:
 	var direction: Vector3 = (target_position - position)

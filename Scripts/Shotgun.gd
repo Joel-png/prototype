@@ -28,10 +28,10 @@ func action(delta: float):
 		action_cooldown -= delta
 	if ammo == 0 and reload_cooldown <= 0:
 		reload_cooldown = reload_length
-		print("reloading")
+
 	if reload_cooldown > 0:
 		reload_cooldown -= delta
 	if reload_cooldown <= 0 and ammo == 0:
 		ammo = max_ammo
-		print("reloaded")
+
 	

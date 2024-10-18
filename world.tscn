@@ -13,7 +13,7 @@
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
 [ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
-[ext_resource type="PackedScene" uid="uid://c7ht64odpbsic" path="res://Assets/Entity/Enemy/Azathoth/azathoth.tscn" id="14_w7epn"]
+[ext_resource type="Script" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(0.325347, 0.338933, 0.621227, 1)
@@ -40,17 +40,20 @@ sdfgi_read_sky_light = false
 sdfgi_bounce_feedback = 0.0
 sdfgi_cascades = 1
 sdfgi_max_distance = 25.6
-fog_enabled = true
 fog_aerial_perspective = 0.932
 fog_sky_affect = 0.0
 fog_depth_begin = 0.0
 fog_depth_end = 116.0
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.036
 volumetric_fog_emission = Color(0.1333, 0.00298389, 0, 1)
 volumetric_fog_emission_energy = 0.0
 volumetric_fog_anisotropy = 0.46
 volumetric_fog_detail_spread = 6.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
+properties/0/path = NodePath(".:terrain_seed")
+properties/0/spawn = true
+properties/0/replication_mode = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
 
@@ -276,11 +279,6 @@ size = Vector2(50, 50)
 subdivide_width = 200
 subdivide_depth = 200
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
-properties/0/path = NodePath(".:terrain_seed")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_jcq1b"]
 size = Vector2(10, 10)
 
@@ -317,6 +315,9 @@ script = ExtResource("3_6oj04")
 spawn_path = NodePath("../Players")
 script = ExtResource("3_lu5lj")
 player_scene = ExtResource("2_6vsb2")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_iuys2")
 
 [node name="Projectiles" type="Node3D" parent="."]
 
@@ -364,9 +365,6 @@ draw_pass_1 = SubResource("ArrayMesh_8yg87")
 [node name="Water" type="CSGMesh3D" parent="TerrainGeneration"]
 mesh = SubResource("PlaneMesh_kke3t")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_iuys2")
-
 [node name="PreviewGround" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.3838, 21.5855, 0)
 visible = false
@@ -382,5 +380,8 @@ mesh = SubResource("PlaneMesh_kke3t")
 transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, -2.53577, 0)
 mesh = SubResource("BoxMesh_isnlg")
 
-[node name="Azathoth" parent="." instance=ExtResource("14_w7epn")]
-transform = Transform3D(250, 0, 0, 0, 250, 0, 0, 0, 250, 0, 1076.4, 1868.81)
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Enemies")
+script = ExtResource("15_34crx")

@@ -51,8 +51,6 @@ func _setup(start_pos: Vector3, look_to: Vector3, config, rot: Vector3) -> void:
 		trail_particles.process_material.emission_shape_offset.z = -mesh_offset
 	trail_particles.fixed_fps = Engine.get_frames_per_second()
 	particle_amount_ratio = min(speed/10000.0, 1)
-	#trail_particles.amount_ratio = particle_amount_ratio
-	#print(particle_amount_ratio)
 
 func _process(delta: float) -> void:
 	#if Input.is_action_just_pressed("right_click"):

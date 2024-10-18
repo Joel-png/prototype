@@ -37,7 +37,7 @@ func _on_lobby_created(_connect, id) -> void:
 		#Steam.setLobbyData(lobby_id, "name", str("Joel test Lobby" + Steam.getPersonaName()))
 		Steam.setLobbyData(lobby_id, "name", str("Joel test lobby"))
 		Steam.setLobbyJoinable(lobby_id, true)
-		print(lobby_id)
+		print("Lobby created with id: " + str(lobby_id))
 
 func open_lobby_list() -> void:
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)

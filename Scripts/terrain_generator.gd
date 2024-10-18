@@ -28,7 +28,7 @@ func setup() -> void:
 	noise_texture.width = world_size + 2
 	noise_texture.height = world_size + 2
 	noise_texture.noise.seed = terrain_seed
-	print(str(terrain_seed) + "is seed")
+	print("Generating world with seed: " + str(terrain_seed))
 	var grass_clumps_sm = grass_clumps.process_material
 	var grass_spots_sm = grass_spots.process_material
 	var rock_small_sm = rocks_small.process_material
@@ -61,7 +61,6 @@ func setup() -> void:
 	var spots_rows: int = floor(rows * (base_spacing / grass_spots_spacing))
 	var rocks_small_rows: int = floor(rows * (base_spacing / rocks_small_spacing))
 	var shrubs_rows: int = floor(rows * (base_spacing / shrubs_spacing))
-	print(rocks_small_rows)
 	grass_clumps.amount = clumps_rows*clumps_rows
 	grass_spots.amount = spots_rows*spots_rows
 	rocks_small.amount = rocks_small_rows*rocks_small_rows
