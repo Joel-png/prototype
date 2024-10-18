@@ -257,7 +257,32 @@ mesh = SubResource("ArrayMesh_kpplp")
 skeleton = NodePath("../..")
 
 [node name="TenticleSegment" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
-transform = Transform3D(0.825834, -0.521762, 0.213924, 0.563621, 0.775929, -0.283312, -0.0181678, 0.354541, 0.934864, -1.32804, 2.20064, 0)
+transform = Transform3D(0.793763, -0.563429, 0.229102, 0.607955, 0.746223, -0.271185, -0.0181678, 0.354541, 0.934864, -1.32804, 2.20064, 0)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
+
+[node name="TenticleSegment2" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(0.793371, 0.563765, -0.229634, -0.608449, 0.746033, -0.2706, 0.0187596, 0.354407, 0.934903, 1.328, 2.201, 0)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
+
+[node name="TenticleSegment3" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(1, 0, 0, 0, 0.767836, -0.640646, 0, 0.640646, 0.767836, 0, 2.88938, 0)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
+
+[node name="TenticleSegment4" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(-0.436862, -0.202318, 0.13498, 0.236035, -0.419598, 0.135, 0.0586489, 0.181673, 0.46212, -1.84579, -1.64093, -1.18185)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
+
+[node name="TenticleSegment5" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(-0.436862, -0.202318, 0.13498, 0.236035, -0.419598, 0.135, 0.0586489, 0.181673, 0.46212, -1.84579, -1.6209, -1.64198)
+tenticle_material = SubResource("StandardMaterial3D_0vmj1")
+length = 5
+
+[node name="TenticleSegment6" parent="Body/BodyMesh" instance=ExtResource("2_n1frg")]
+transform = Transform3D(-0.436862, -0.202318, 0.13498, 0.236035, -0.419598, 0.135, 0.0586489, 0.181673, 0.46212, -1.37018, -2.15106, -1.45384)
 tenticle_material = SubResource("StandardMaterial3D_0vmj1")
 length = 5
 
