@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 		var closests_player_index: int = get_closest_player_index(detected_players)
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
 		lerp_angle_look_at(body, closets_player_position, delta, 0.1)
-		lerp_look_at(eye, closets_player_position, delta, 0.25)
+		lerp_look_at(eye, closets_player_position, delta, 0.2)
 	else:
 		body.rotation.x = lerp_angle(body.rotation.x, 0, 0.5 * delta)
 		lerp_look_at(eye, idle_look_at.global_position, delta, 2.0)

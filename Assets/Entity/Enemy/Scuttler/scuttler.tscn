@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4jkxnxnjk1i4"]
+
+[ext_resource type="PackedScene" uid="uid://dgl5cn62l452q" path="res://Assets/Entity/Enemy/Scuttler/scuttler.glb" id="1_ey24c"]
+
+[node name="scuttler" instance=ExtResource("1_ey24c")]
+
+[node name="Skeleton3D" parent="BaseArmature_001" index="0"]
+bones/1/scale = Vector3(1, 1, 1)
+bones/2/rotation = Quaternion(0.229385, -0.0408745, -0.447591, 0.86335)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/rotation = Quaternion(-0.124324, 0.0122786, -0.0373764, 0.991462)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.141859, -6.00483e-08, 0.474891, 0.868536)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.231968, 0.026342, 0.448443, 0.862784)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(-0.119673, 0.0140695, 0.0423913, 0.991808)
+bones/7/rotation = Quaternion(-0.13175, -1.20497e-07, -0.483003, 0.86565)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(0.00358272, 1.76902e-07, 0.00323585, 0.999988)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(4.79965e-09, 9.28619e-12, -0.00159342, 0.999999)
+bones/11/rotation = Quaternion(-0.63999, 0.29467, -0.29467, 0.645564)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/rotation = Quaternion(0.468272, 0.863797, 0.183513, -0.0300001)
+bones/13/rotation = Quaternion(-0.118775, -0.137724, -0.0524001, 0.981926)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(0.141859, -6.43374e-08, -0.474891, 0.868536)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.451112, 0.535319, -0.226732, 0.677144)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/scale = Vector3(1, 1, 1)
+bones/19/scale = Vector3(1, 1, 1)
+
+[node name="IKGuideL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="1"]
+root_bone = &"UpperLeg.L"
+tip_bone = &"GuideFoot.L"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerGuideL")
+
+[node name="IKFrontL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="2"]
+root_bone = &"FrontLeg.L.001"
+tip_bone = &"FrontFoot.L"
+use_magnet = true
+target_node = NodePath("../../MarkerFrontL")
+
+[node name="IKBackL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="3"]
+root_bone = &"BackLeg.L.001"
+tip_bone = &"BackFoot.L"
+use_magnet = true
+target_node = NodePath("../../MarkerBackL")
+
+[node name="IKGuideR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="4"]
+root_bone = &"UpperLeg.R"
+tip_bone = &"GuideFoot.R"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerGuideR")
+
+[node name="IKFrontR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="5"]
+root_bone = &"FrontLeg.R.001"
+tip_bone = &"FrontFoot.R"
+use_magnet = true
+target_node = NodePath("../../MarkerFrontR")
+
+[node name="IKBackR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="6"]
+root_bone = &"BackLeg.R.001"
+tip_bone = &"BackFoot.R"
+use_magnet = true
+target_node = NodePath("../../MarkerBackR")
+
+[node name="MarkerGuideL" type="Marker3D" parent="BaseArmature_001" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.688541, -0.551165, -3.11875)
+
+[node name="MarkerFrontL" type="Marker3D" parent="BaseArmature_001" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.16843, -3.12277)
+
+[node name="MarkerBackL" type="Marker3D" parent="BaseArmature_001" index="3"]
+
+[node name="MarkerGuideR" type="Marker3D" parent="BaseArmature_001" index="4"]
+
+[node name="MarkerFrontR" type="Marker3D" parent="BaseArmature_001" index="5"]
+
+[node name="MarkerBackR" type="Marker3D" parent="BaseArmature_001" index="6"]

@@ -44,6 +44,5 @@ func create_tenticle_segments(segments: int):
 	segment.rotation_multiplier = rotation_multiplier
 	segment.tenticle_material = tenticle_material
 	var size = size_decrease
-	print(size)
 	segment.scale = Vector3(size, 1, size)
 	end_pivot.add_child(segment)

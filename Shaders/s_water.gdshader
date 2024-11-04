@@ -102,14 +102,14 @@ void fragment() {
 	
 	if (shallow_enough(depth_blend + wave_offset, wave_offset) && real_depth > 0.0) {
 		ALBEDO = edge_colour.rgb;
-		ROUGHNESS = 1.0;
+		//ROUGHNESS = 1.0;
 		NORMAL_MAP = vec3(0.0, 1.0, 0.0);
 	} else {
 		ROUGHNESS = roughness * (1.0 - basic_fresnel);
-		NORMAL_MAP = normalmap;
+		//NORMAL_MAP = normalmap;
 		ALBEDO = final_colour;
 	}
-	
+	NORMAL_MAP = normalmap;
 	SPECULAR = 1.0;
 	
 }
