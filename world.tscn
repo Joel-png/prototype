@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=39 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
 [ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
+[ext_resource type="PackedScene" uid="uid://d4jkxnxnjk1i4" path="res://Assets/Entity/Enemy/Scuttler/scuttler.tscn" id="14_pkj14"]
 [ext_resource type="Script" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
@@ -383,6 +384,9 @@ transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, 
 mesh = SubResource("BoxMesh_isnlg")
 
 [node name="Enemies" type="Node3D" parent="."]
+
+[node name="scuttler" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.44085, 0)
 
 [node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../Enemies")
