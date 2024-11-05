@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://d4jkxnxnjk1i4"]
+[gd_scene load_steps=18 format=4 uid="uid://d4jkxnxnjk1i4"]
 
 [ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="2_5xe81"]
 [ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_as2l2"]
@@ -168,6 +168,43 @@ radius = 77.1988
 radius = 1.06352
 height = 2.77512
 
+[sub_resource type="Animation" id="Animation_k7g0y"]
+resource_name = "scuttler_walk"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BaseArmature_001/Skeleton3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.2),
+"transitions": PackedFloat32Array(1, 0.125, 4.2871),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.1, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gs1b6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BaseArmature_001/Skeleton3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.2, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n2raj"]
+_data = {
+"RESET": SubResource("Animation_gs1b6"),
+"scuttler_walk": SubResource("Animation_k7g0y")
+}
+
 [node name="scuttler" type="CharacterBody3D"]
 collision_layer = 0
 floor_constant_speed = true
@@ -178,6 +215,7 @@ script = ExtResource("2_as2l2")
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="BaseArmature_001"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
 bones/0/name = "Body"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
@@ -337,6 +375,22 @@ bones/21/scale = Vector3(1, 1, 1)
 mesh = SubResource("ArrayMesh_k4jtc")
 skin = SubResource("Skin_yxs0c")
 
+[node name="Eye" type="Node3D" parent="BaseArmature_001/Skeleton3D/FullBody"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Eyeball" type="MeshInstance3D" parent="BaseArmature_001/Skeleton3D/FullBody/Eye"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("ArrayMesh_jnim4")
+skeleton = NodePath("../../../..")
+
+[node name="DetectionArea" type="Area3D" parent="BaseArmature_001/Skeleton3D/FullBody/Eye"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BaseArmature_001/Skeleton3D/FullBody/Eye/DetectionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -62.8142)
+shape = SubResource("SphereShape3D_dkxec")
+
 [node name="IKGuideL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D"]
 root_bone = &"UpperLeg.L"
 tip_bone = &"GuideFoot.L"
@@ -391,6 +445,7 @@ top_level = true
 script = ExtResource("4_j46wp")
 step_target = NodePath("../StepTargets/GuideL/MarkerGuideLStep")
 adjacent_target = NodePath("../MarkerGuideR")
+play_step_animation = true
 
 [node name="MarkerFrontL" type="Marker3D" parent="BaseArmature_001" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -1.5, -1)
@@ -414,6 +469,7 @@ top_level = true
 script = ExtResource("4_j46wp")
 step_target = NodePath("../StepTargets/GuideR/MarkerGuideRStep")
 adjacent_target = NodePath("../MarkerGuideL")
+play_step_animation = true
 
 [node name="MarkerFrontR" type="Marker3D" parent="BaseArmature_001" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -1.5, -1)
@@ -433,7 +489,6 @@ opposite_target = NodePath("../MarkerFrontL")
 
 [node name="StepTargets" type="Node3D" parent="BaseArmature_001"]
 script = ExtResource("5_yovo7")
-offset = 40.0
 
 [node name="GuideL" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
@@ -489,21 +544,11 @@ step_target = NodePath("MarkerBackRStep")
 [node name="MarkerBackRStep" type="Marker3D" parent="BaseArmature_001/StepTargets/BackR"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.19209e-07, -4, 0)
 
-[node name="Eye" type="Node3D" parent="."]
-
-[node name="Eyeball" type="MeshInstance3D" parent="Eye"]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
-mesh = SubResource("ArrayMesh_jnim4")
-skeleton = NodePath("../../BaseArmature_001")
-
-[node name="DetectionArea" type="Area3D" parent="Eye"]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Eye/DetectionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -62.8142)
-shape = SubResource("SphereShape3D_dkxec")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.444492, 0)
 shape = SubResource("CapsuleShape3D_fh7bv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n2raj")
+}

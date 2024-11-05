@@ -5,7 +5,9 @@ extends Marker3D
 
 @export var adjacent_target: Node3D
 @export var opposite_target: Node3D
+@export var play_step_animation: bool = false
 
+@onready var animation_player = $"../../AnimationPlayer"
 var is_stepping: bool = false
 var adjacent_is_stepping: bool = false
 var adjacent_distance: float = 0.0
@@ -28,7 +30,15 @@ func step():
 	var half_way = (global_position + step_target.global_position) / 2
 	is_stepping = true
 	
+	
+	
 	var t = get_tree().create_tween()
 	t.tween_property(self, "global_position", half_way + owner.basis.y, 0.1)
 	t.tween_property(self, "global_position", target_pos, 0.1)
-	t.tween_callback(func(): is_stepping = false)
+	if play_step_animation:
+		t.tween_callback(func(): 
+			is_stepping = false
+			animation_player.play("RESET")
+			animation_player.play("scuttler_walk"))
+	else:
+		t.tween_callback(func(): is_stepping = false)

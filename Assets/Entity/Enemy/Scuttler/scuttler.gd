@@ -1,11 +1,11 @@
 extends CharacterBody3D
 
-var move_speed: float = 5.0
+var move_speed: float = 20.0
 var turn_speed: float = 1.0
 var ground_offset: float = 1.5
 
-@onready var detection_area = $Eye/DetectionArea
-@onready var eye = $Eye
+@onready var detection_area = $BaseArmature_001/Skeleton3D/FullBody/Eye/DetectionArea
+@onready var eye = $BaseArmature_001/Skeleton3D/FullBody/Eye
 
 @onready var fl_leg = $BaseArmature_001/Skeleton3D/IKFrontL
 @onready var bl_leg = $BaseArmature_001/Skeleton3D/IKBackL
@@ -14,17 +14,18 @@ var ground_offset: float = 1.5
 
 func _process(delta: float) -> void:
 	if not is_on_floor():
-		velocity.y -= 4.0 * delta
+		velocity.y -= 9.8 * 4 * delta
 	else:
 		var forward_direction = -transform.basis.z
 		velocity = forward_direction * move_speed * delta * 100.0
+		
 	
 	if detection_area.has_overlapping_bodies():
 		var detected_players: Array = detection_area.get_overlapping_bodies()
 		var closests_player_index: int = get_closest_player_index(detected_players)
 		var closets_player_position: Vector3 = detected_players[closests_player_index].position
-		lerp_angle_look_at(self, closets_player_position, delta, 0.7)
-		lerp_look_at(eye, closets_player_position, delta, 0.8)
+		lerp_angle_look_at(self, closets_player_position, delta, 0.9)
+		lerp_look_at(eye, closets_player_position, delta, 0.95)
 		
 	move_and_slide()
 
