@@ -460,7 +460,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -1.5, 1)
 top_level = true
 script = ExtResource("4_j46wp")
 step_target = NodePath("../StepTargets/BackL/MarkerBackLStep")
-adjacent_target = NodePath("../MarkerFrontL")
+adjacent_target = NodePath("../MarkerBackR")
 opposite_target = NodePath("../MarkerFrontR")
 
 [node name="MarkerGuideR" type="Marker3D" parent="BaseArmature_001" node_paths=PackedStringArray("step_target", "adjacent_target")]
@@ -476,7 +476,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -1.5, -1)
 top_level = true
 script = ExtResource("4_j46wp")
 step_target = NodePath("../StepTargets/FrontR/MarkerFrontRStep")
-adjacent_target = NodePath("../MarkerBackR")
+adjacent_target = NodePath("../MarkerFrontL")
 opposite_target = NodePath("../MarkerBackL")
 
 [node name="MarkerBackR" type="Marker3D" parent="BaseArmature_001" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
@@ -491,7 +491,7 @@ opposite_target = NodePath("../MarkerFrontL")
 script = ExtResource("5_yovo7")
 
 [node name="GuideL" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -4)
 target_position = Vector3(0, -10, 0)
 script = ExtResource("4_vekia")
 step_target = NodePath("MarkerGuideLStep")
@@ -518,7 +518,7 @@ step_target = NodePath("MarkerBackLStep")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -4, 0)
 
 [node name="GuideR" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 4)
 target_position = Vector3(0, -10, 0)
 script = ExtResource("4_vekia")
 step_target = NodePath("MarkerGuideRStep")
@@ -552,3 +552,7 @@ shape = SubResource("CapsuleShape3D_fh7bv")
 libraries = {
 "": SubResource("AnimationLibrary_n2raj")
 }
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
