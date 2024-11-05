@@ -1,0 +1,277 @@
+[gd_scene load_steps=12 format=4 uid="uid://c8stw2jq1herj"]
+
+[ext_resource type="PackedScene" uid="uid://dgl5cn62l452q" path="res://Assets/Entity/Enemy/Scuttler/scuttler.glb" id="1_b7ers"]
+[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_yv11b"]
+[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="3_3xwo8"]
+[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_target.gd" id="4_cdrft"]
+[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_step_container.gd" id="5_ortoq"]
+[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ray.gd" id="6_5bjwb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sh1ni"]
+albedo_color = Color(0.917647, 0, 0.223529, 1)
+metallic_specular = 1.0
+roughness = 0.5
+emission_enabled = true
+emission = Color(1, 0.176471, 0.294118, 1)
+emission_energy_multiplier = 5.0
+emission_intensity = 10.0
+clearcoat = 0.19
+anisotropy = 1.0
+heightmap_scale = -6.586
+subsurf_scatter_strength = 0.74
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rh14n"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8thv8"]
+metallic = 1.0
+metallic_specular = 1.0
+roughness = 0.43
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 5.0
+emission_intensity = 20.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_jnim4"]
+_surfaces = [{
+"aabb": AABB(-0.236975, -0.236975, -1.04729, 0.47395, 0.47395, 0.450755),
+"attribute_data": PackedByteArray("LjrX64su///oItfrdFHX69FFr9cWXa/XXPTX67no//8W3dfr0MXX6y26//+KrtfrRZfX66KL////f9frFl2v19FFr9d0UYjDiy6v10UXr9foIojDueiv13PRr9cW3YjDLbqv1+iir9eKrojDoouv11x0r9f/f4jDdFGIw9FFr9cuOojD6CKIw0UXr9eiC4jDFt2Iw3PRr9fQxYjDiq6Iw+iir9dFl4jD/3+Iw1x0r9e5aIjD0UVgr4suYK8uOjmbRRdgrwAAYK+iCzmbc9Fgry26YK/QxTmb6KJgr6KLYK9FlzmbXHRgrxZdYK+5aDmb/385m7loOZtcdBGHXHRgr7loOZv/fzmbootgr1x0YK//fzmbiq45m0WXOZvoohGH6KJgr0WXOZuKrjmbLbpgr+iiYK+KrjmbFt05m9DFOZtz0RGHc9Fgr9DFOZsW3Tmbuehgr3PRYK8W3Tmb6CI5m6ILOZtFFxGHRRdgr6ILOZvoIjmbiy5gr0UXYK/oIjmbdFE5my46OZvRRRGH0UVgry46OZt0UTmbFl1gr9FFYK90UTmbXHRgr7loiMMWXWCv/3+Iw7loiMNcdGCvootgr/9/iMNcdGCv6KJgr0WXiMOii2Cviq6Iw0WXiMPoomCvLbpgr4quiMPoomCvc9Fgr9DFiMMtumCvFt2Iw9DFiMNz0WCvuehgrxbdiMNz0WCvRRdgr6ILiMMAAGCv6CKIw6ILiMNFF2Cviy5gr+giiMNFF2Cv0UVgry46iMOLLmCvdFGIwy46iMPRRWCvFl1gr3RRiMPRRWCvRZeIw/9/iMOii2Cvoouv1/9/iMNFl4jD6KKv16KLr9dFl4jD0MWIw4quiMMtumCvLbqv14quiMPQxYjDc9Gv1y26r9fQxYjDXPSIwxbdiMO56GCvueiv1xbdiMNc9IjD//+v17nor9dc9IjDLjqIw+giiMOLLmCviy6v1+giiMMuOojD0UWv14sur9cuOojDuWiIw3RRiMMWXWCvFl2v13RRiMO5aIjDXHSv1xZdr9e5aIjDoouv1/9/1+tcdK/XRZfX6/9/1+uii6/X6KKv10WX1+uii6/XLbqv14qu1+vooq/X0MXX64qu1+stuq/Xc9Gv19DF1+stuq/Xueiv1xbd1+tz0a/XXPTX6xbd1+u56K/X//+v11z01+u56K/XuWjX6xZdr9dcdK/XdFHX6xZdr9e5aNfrFl3//3RR1+u5aNfriy6v1+gi1+tFF6/XLjrX6+gi1+uLLq/X0UWv1y461+uLLq/X"),
+"format": 34896613399,
+"index_count": 240,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEAQgBDAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwBkAGUAZgBnAGgAaQBqAGsAbABtAG4AbwBwAHEAcgBzAHQAdQB2AHcAeAB5AHoAewB8AH0AfgB/AIAAgQCCAIMAhACFAIYAhwCIAIkAigCLAIwAjQCOAI8AkACRAJIAkwCUAJUAlgCXAJgAmQCaAJsAnACdAJ4AnwCgAKEAogCjAKQApQCmAKcAqACpAKoAqwCsAK0ArgCvALAAsQCyALMAtAC1ALYAtwC4ALkAugC7ALwAvQC+AL8AwADBAMIAwwDEAMUAxgDHAMgAyQDKAMsAzADNAM4AzwDQANEA0gDTANQA1QDWANcA2ADZANoA2wDcAN0A3gDfAOAA4QDiAOMA5ADlAOYA5wDoAOkA6gDrAOwA7QDuAO8A"),
+"material": SubResource("StandardMaterial3D_sh1ni"),
+"name": "inner_eye",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 240,
+"vertex_data": PackedByteArray("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")
+}, {
+"aabb": AABB(-0.073228, -0.124586, -1.07147, 0.146456, 0.230565, 0.0479721),
+"attribute_data": PackedByteArray("oS66PqOwVz/A6KI+/YhDP4J00T79iEM/gnTRPv2IQz/A6KI+/YhDP6Euuj5WYS8/oS66PlZhLz+CdNE+/YhDP6Euuj5WYS8/gnTRPv2IQz/A6KI+/YhDP6Euuj5WYS8/wOiiPv2IQz+hLro+VmEvP4J00T79iEM/oS66PqOwVz+CdNE+/YhDP6Euuj6jsFc/oS66PqOwVz/A6KI+/YhDP6Euuj6jsFc/wOiiPv2IQz+hLro+VmEvP8Dooj79iEM/gnTRPv2IQz+CdNE+/YhDP8Dooj79iEM/oS66PqOwVz8="),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACAAHAAkACgALAAwADAALAA0ADgAPABAAEAAPABEAEgATABQAFAATABUAFgAXABgAGQAaABsA"),
+"material": SubResource("StandardMaterial3D_rh14n"),
+"name": "iris",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 28,
+"vertex_data": PackedByteArray("AAAAABwJlL3rc4e/heomPVd2QbvVJYm/heomvVd2QbvVJYm/heomvVd2QbvVJYm/heomPVd2QbvVJYm/AAAAAHh6ZT0fMYi/AAAAAIUL2T3SVYS/kPiVvQAAAACZDYa/AAAAAHh6ZT0fMYi/heomvVd2QbvVJYm/kPiVPQAAAACZDYa/AAAAAIUL2T3SVYS/heomPVd2QbvVJYm/AAAAAHh6ZT0fMYi/kPiVvQAAAACZDYa/AAAAAPIm/73iAYO/heomvVd2QbvVJYm/AAAAABwJlL3rc4e/AAAAAPIm/73iAYO/kPiVPQAAAACZDYa/AAAAABwJlL3rc4e/heomPVd2QbvVJYm/AAAAAIUL2T3SVYS/kPiVPQAAAACZDYa/kPiVvQAAAACZDYa/kPiVvQAAAACZDYa/kPiVPQAAAACZDYa/AAAAAPIm/73iAYO/eOsAAAAA/7946wAAAAD/v3jrAAAAAP+/nPH//wAA/7+c8f//AAD/v5zx//8AAP+/qyF+2f///7+rIX7Z////v6shftn///+/qyF+2f///79T3n7Z////v1Peftn///+/U95+2f///79T3n7Z////v20iuin///+/bSK6Kf///79tIrop////v20iuin///+/kd26Kf///7+R3bop////v5Hduin///+/kd26Kf///7//f51xAAD/P/9/nXEAAP8//3+dcQAA/z//f4aUAAD/P/9/hpQAAP8//3+GlAAA/z8=")
+}, {
+"aabb": AABB(-1, -1, -0.951058, 2, 2, 1.90212),
+"attribute_data": PackedByteArray("LjrX64su///oItfrdFHX69FFr9cWXa/XXPTX67no//8W3dfr0MXX6y26//+KrtfrRZfX66KL////f9frFl2v19FFr9d0UYjDiy6v10UXr9foIojDueiv13PRr9cW3YjDLbqv1+iir9eKrojDoouv11x0r9f/f4jDdFGIw9FFr9cuOojD6CKIw0UXr9eiC4jDFt2Iw3PRr9fQxYjDiq6Iw+iir9dFl4jD/3+Iw1x0r9e5aIjD0UVgr4suYK8uOjmbRRdgrwAAYK+iCzmbc9Fgry26YK/QxTmb6KJgr6KLYK9FlzmbXHRgrxZdYK+5aDmb/385m7loOZtcdBGHXHRgr7loOZv/fzmbootgr1x0YK//fzmbiq45m0WXOZvoohGH6KJgr0WXOZuKrjmbLbpgr+iiYK+KrjmbFt05m9DFOZtz0RGHc9Fgr9DFOZsW3Tmbuehgr3PRYK8W3Tmb6CI5m6ILOZtFFxGHRRdgr6ILOZvoIjmbiy5gr0UXYK/oIjmbdFE5my46OZvRRRGH0UVgry46OZt0UTmbFl1gr9FFYK90UTmbXHRgr7loiMMWXWCv/3+Iw7loiMNcdGCvootgr/9/iMNcdGCv6KJgr0WXiMOii2Cviq6Iw0WXiMPoomCvLbpgr4quiMPoomCvc9Fgr9DFiMMtumCvFt2Iw9DFiMNz0WCvuehgrxbdiMNz0WCvRRdgr6ILiMMAAGCv6CKIw6ILiMNFF2Cviy5gr+giiMNFF2Cv0UVgry46iMOLLmCvdFGIwy46iMPRRWCvFl1gr3RRiMPRRWCvRZeIw/9/iMOii2Cvoouv1/9/iMNFl4jD6KKv16KLr9dFl4jD0MWIw4quiMMtumCvLbqv14quiMPQxYjDc9Gv1y26r9fQxYjDXPSIwxbdiMO56GCvueiv1xbdiMNc9IjD//+v17nor9dc9IjDLjqIw+giiMOLLmCviy6v1+giiMMuOojD0UWv14sur9cuOojDuWiIw3RRiMMWXWCvFl2v13RRiMO5aIjDXHSv1xZdr9e5aIjDoouv1/9/1+tcdK/XRZfX6/9/1+uii6/X6KKv10WX1+uii6/XLbqv14qu1+vooq/X0MXX64qu1+stuq/Xc9Gv19DF1+stuq/Xueiv1xbd1+tz0a/XXPTX6xbd1+u56K/X//+v11z01+u56K/XuWjX6xZdr9dcdK/XdFHX6xZdr9e5aNfrFl3//3RR1+u5aNfriy6v1+gi1+tFF6/XLjrX6+gi1+uLLq/X0UWv1y461+uLLq/X"),
+"format": 34896613399,
+"index_count": 240,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsADAANAA4ADwAQABEAEgATABQAFQAWABcAGAAZABoAGwAcAB0AHgAfACAAIQAiACMAJAAlACYAJwAoACkAKgArACwALQAuAC8AMAAxADIAMwA0ADUANgA3ADgAOQA6ADsAPAA9AD4APwBAAEEAQgBDAEQARQBGAEcASABJAEoASwBMAE0ATgBPAFAAUQBSAFMAVABVAFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwBkAGUAZgBnAGgAaQBqAGsAbABtAG4AbwBwAHEAcgBzAHQAdQB2AHcAeAB5AHoAewB8AH0AfgB/AIAAgQCCAIMAhACFAIYAhwCIAIkAigCLAIwAjQCOAI8AkACRAJIAkwCUAJUAlgCXAJgAmQCaAJsAnACdAJ4AnwCgAKEAogCjAKQApQCmAKcAqACpAKoAqwCsAK0ArgCvALAAsQCyALMAtAC1ALYAtwC4ALkAugC7ALwAvQC+AL8AwADBAMIAwwDEAMUAxgDHAMgAyQDKAMsAzADNAM4AzwDQANEA0gDTANQA1QDWANcA2ADZANoA2wDcAN0A3gDfAOAA4QDiAOMA5ADlAOYA5wDoAOkA6gDrAOwA7QDuAO8A"),
+"material": SubResource("StandardMaterial3D_8thv8"),
+"name": "outer_eye",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 240,
+"vertex_data": PackedByteArray("jacdE8FGPdf/fwAA/3891/+/HRPclT3XjacdE8FG5vRKw8FGnB7m9P9/tDyDDeb0/78dE9yVnrf/fwAA/3+et/9/HRPAxp63/38dE8DGnrf/fwAA/3+et/8/HRPclZ63/z8dE9yVPdf/fwAA/38913FYHRPBRj3X/3+0PIMNgfVKw8FGnB6B9Y2n/38AAIH1jOe0PJ5cbMPh7MFGMqVsw////3//f2zD/7+0PJ7cHJX/f8FGX/gclY2n/3///xyV/z+0PJ7cD6cdE8FGMqUPp3IY/38azw+nchi0PJ5cN9i0PMFGnB432HIY/3/kMDfYjaf/fwAAc+ZKw8FGnB5z5ozn/3/kMHPm////f/9/arPh7MFGMqVqs4zn/38az2qzjaf/f///IIX/f8FGX/gghXFY/3///yCFchj/fxrParMdE8FGMqVqswAA/3//f2qzchj/f+Qwc+a0PMFGnB5z5nFY/38AAHPm/79Kw2AjON3h7D25zFo43f+/4ewiajjdjOdKw2Cj37BKwz25YuHfsI2n4ew9ud+w/39Kw3vydqC0PD25YuF2oHFY4ew9uXagchhKw2CjnsQdEz25zFqexP8/4ewiap7E/z9Kw2AjQfP/fz25nwdB8/9/4ew+OUHz/z/h7CJqOuv/f+HsPjk66/9/////fzrr/z9Kw2AjIOn/f+HsPjkg6f8/4ewiaiDpHRM9ucxaON3/P0rDYCM43f8/4ewiajjdcVjh7D25QMX/P+HsImpAxf9/////f0DFchhKw2Cj4r3/P+HsImrivXFY4ew9ueK9tDw9uWLh37ByGErDYKPfsHFY4ew9ud+wjafh7D25PbJxWOHsPbk9sv9/////fz2y/39Kw3vyaqVxWOHsPblqpY2n4ew9uWqlSsM9uWLhdqD/f0rDe/J2oI2n4ew9uXag/7/h7CJqQMWNp+HsPblAxf9/////f0DFjOdKw2Cj4r2Np+HsPbnivf+/4ewiauK94ew9ucxansSM50rDYKOexP+/4ewiap7E/3/h7D45Ouv/v+HsImo66/9/////fzrr/79Kw2AjIOn/v+HsImog6f9/4ew+OSDp/389uZ8HQfP/v0rDYCNB8/9/4ew+OUHz/z9Kw2AjUvFxWP9/AABS8f9/PbmfB1Lxchj/f+QwhOZxWP9/AACE5v8/SsNgI4TmHRM9ucxaYdxyGP9/5DBh3P8/SsNgI2HcchhKw2CjT78AAP9//39Pvx0TPbnMWk+/chj/fxrPsrMAAP9//3+ys3IYSsNgo7KztDw9uWLh/6pyGP9/Gs//qnIYSsNgo/+q/39Kw3vyYpJxWP9///9ikrQ8Pbli4WKSjaf/f///r4dxWP9///+vh/9/SsN78q+HSsM9uWLhYpKNp/9///9ikv9/SsN78mKSjOdKw2Cj/6qM5/9/Gs//qkrDPbli4f+q////f/9/srOM5/9/Gs+ys4znSsNgo7Kz4ew9ucxaT7////9//39Pv4znSsNgo0+//79Kw2AjYdyM5/9/5DBh3OHsPbnMWmHcjaf/fwAAhOaM5/9/5DCE5v+/SsNgI4Tm/389uZ8HUvGNp/9/AABS8f+/SsNgI1LxAAD/f/9/6sxyGP9/5DDqzB0TPbnMWurMchi0PJ5cDs1yGP9/5DAOzQAA/3//fw7NHRPBRjKlbMNyGLQ8nlxswwAA/3//f2zDcVj/f///FppyGP9/Gs8WmrQ8Pbli4Raa/z+0PJ7csJpyGP9/Gs+wmnFY/3///7Ca/3/BRl/4HJX/P7Q8ntwclXFY/3///xyVjOf/fxrPFpqNp/9///8WmkrDPbli4Raa/7+0PJ7csJqNp/9///+wmozn/38az7Ca4ezBRjKlD6f/v7Q8ntwPp4zn/38azw+njOf/f+Qw6sz///9//3/qzOHsPbnMWurMjOe0PJ5cDs3///9//38OzYzn/3/kMA7NSsPBRpweN9iM57Q8nlw32Izn/3/kMDfYcVj/fwAA//+Np/9/AAD///9/PbmfB////3+0PIMN//+Np/9/AAD//3FY/38AAP//tDzBRpwegfX/f7Q8gw2B9XFY/38AAIH1chi0PJ5cmttxWB0TwUaa27Q8wUacHprb/z8dE9yVx9JxWB0TwUbH0nIYtDyeXMfSHRPBRjKlK8b/Px0T3JUrxnIYtDyeXCvG/z+0PJ7ciK//Px0T3JWIrx0TwUYypYiv/38dE8DG0az/Px0T3JXRrP8/tDye3NGs/3/BRl/4HqH/fx0TwMYeof8/tDye3B6h/7+0PJ7cHqH/fx0TwMYeof9/wUZf+B6h/78dE9yV0az/fx0TwMbRrP+/tDye3NGs4ezBRjKliK//vx0T3JWIr/+/tDye3IivcVgdE8FG5vT/f7Q8gw3m9LQ8wUacHub0jacdE8FG////f7Q8gw3//3FYHRPBRv///38AAP9///+Npx0TwUb//3FYHRPBRv//jOe0PJ5cK8b/vx0T3JUrxuHswUYypSvGjacdE8FGx9L/vx0T3JXH0ozntDyeXMfSSsPBRpwemtuNpx0TwUaa24zntDyeXJrbW2JvRltib0ZbYm9GZYLbJWWC2yVlgtslOTgYXzk4GF85OBhf5yA5uOcgObjnIDm4kDlb4pA5W+KQOVviYIUmGGCFJhhghSYYiHe3H4h3tx+Id7cfI1MdSyNTHUsjUx1LaVi/2WlYv9lpWL/ZomKD76Jig++iYoPvk33eCZN93gmTfd4JVnatEFZ2rRBWdq0QAAD/fwAA/38AAP9/UW9V9lFvVfZRb1X2IXaT/SF2k/0hdpP9QqzmCEKs5ghCrOYIa8XTJWvF0yVrxdMlxN47p8TeO6fE3junLKJbyCyiW8gsolvIdIyC1HSMgtR0jILUM48CwjOPAsIzjwLCbIxUzWyMVM1sjFTN5oi80+aIvNPmiLzTg66vr4Our6+Drq+vDajXug2o17oNqNe60qWTutKlk7rSpZO6////f////3////9/////f////3////9/wtjEXsLYxF7C2MReT9CELk/QhC5P0IQuJsUNKCbFDSgmxQ0oorcsIqK3LCKitywi/L0zD/y9Mw/8vTMPqrJsDKqybAyqsmwMfKt0DHyrdAx8q3QMvYpU5b2KVOW9ilTlfoO88X6DvPF+g7zxwoB36cKAd+nCgHfpLJgE3yyYBN8smATfnI1+6JyNfuicjX7o4ZOp0uGTqdLhk6nSt9F8wLfRfMC30XzA////f////3////9/gr+3UYK/t1GCv7dRVK3iE1St4hNUreITf5ecDX+XnA1/l5wN+aAtGPmgLRj5oC0Yh5bCAIeWwgCHlsIAQo5/A0KOfwNCjn8Dqpq9CqqavQqqmr0KSYVu80mFbvNJhW7zBW5u+AVubvgFbm74SGCI90hgiPdIYIj3wZPR5cGT0eXBk9HlWlwX5VpcF+VaXBfl4jQj0+I0I9PiNCPTLZrCEy2awhMtmsITGGWkIxhlpCMYZaQjv1mWJ79Zlie/WZYnkIxJBZCMSQWQjEkFbnj6EW54+hFuePoRg29dHYNvXR2Db10d/39n+P9/Z/j/f2f4EIv//xCL//8Qi///JZid+iWYnfolmJ36AU+y6QFPsukBT7LpC0Uw5wtFMOcLRTDnCknL6gpJy+oKScvq9j09y/Y9Pcv2PT3Lbipqv24qar9uKmq/tx9Lu7cfS7u3H0u7SztHYEs7R2BLO0dgaj+QVWo/kFVqP5BVPksJQj5LCUI+SwlC26WY/dulmP3bpZj9War//1mq//9Zqv//FrX//xa1//8Wtf//zGr0Nsxq9DbMavQ2MGfzOjBn8zowZ/M6s2n+MLNp/jCzaf4w")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dkxec"]
+radius = 77.1988
+
+[node name="scuttler" instance=ExtResource("1_b7ers")]
+script = ExtResource("2_yv11b")
+
+[node name="BaseArmature_001" parent="." index="0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="BaseArmature_001" index="0"]
+bones/1/scale = Vector3(1, 1, 1)
+bones/2/rotation = Quaternion(0.229385, -0.0408745, -0.447591, 0.86335)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/rotation = Quaternion(-0.124324, 0.0122786, -0.0373764, 0.991462)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.141859, -6.00483e-08, 0.474891, 0.868536)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.231968, 0.026342, 0.448443, 0.862784)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(-0.119673, 0.0140695, 0.0423913, 0.991808)
+bones/7/rotation = Quaternion(-0.13175, -1.20497e-07, -0.483003, 0.86565)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(0.00358272, 1.76902e-07, 0.00323585, 0.999988)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(4.79965e-09, 9.28619e-12, -0.00159342, 0.999999)
+bones/11/rotation = Quaternion(-0.63999, 0.29467, -0.29467, 0.645564)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/rotation = Quaternion(0.468272, 0.863797, 0.183513, -0.0300001)
+bones/13/rotation = Quaternion(-0.118775, -0.137724, -0.0524001, 0.981926)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(0.141859, -6.43374e-08, -0.474891, 0.868536)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.451112, 0.535319, -0.226732, 0.677144)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/scale = Vector3(1, 1, 1)
+bones/19/scale = Vector3(1, 1, 1)
+
+[node name="IKGuideL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="1"]
+root_bone = &"UpperLeg.L"
+tip_bone = &"GuideFoot.L"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerGuideL")
+script = ExtResource("3_3xwo8")
+
+[node name="IKFrontL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="2"]
+root_bone = &"FrontLeg.L.001"
+tip_bone = &"FrontFoot.L"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerFrontL")
+script = ExtResource("3_3xwo8")
+
+[node name="IKBackL" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="3"]
+root_bone = &"BackLeg.L.001"
+tip_bone = &"BackFoot.L"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerBackL")
+script = ExtResource("3_3xwo8")
+
+[node name="IKGuideR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="4"]
+root_bone = &"UpperLeg.R"
+tip_bone = &"GuideFoot.R"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerGuideR")
+script = ExtResource("3_3xwo8")
+
+[node name="IKFrontR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="5"]
+root_bone = &"FrontLeg.R.001"
+tip_bone = &"FrontFoot.R"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerFrontR")
+script = ExtResource("3_3xwo8")
+
+[node name="IKBackR" type="SkeletonIK3D" parent="BaseArmature_001/Skeleton3D" index="6"]
+root_bone = &"BackLeg.R.001"
+tip_bone = &"BackFoot.R"
+use_magnet = true
+magnet = Vector3(0, 40, 0)
+target_node = NodePath("../../MarkerBackR")
+script = ExtResource("3_3xwo8")
+
+[node name="MarkerGuideL" type="Marker3D" parent="BaseArmature_001" index="1" node_paths=PackedStringArray("step_target", "adjacent_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1.5, 0)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/GuideL/MarkerGuideLStep")
+adjacent_target = NodePath("../MarkerGuideR")
+
+[node name="MarkerFrontL" type="Marker3D" parent="BaseArmature_001" index="2" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -1.5, -1)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/FrontL/MarkerFrontLStep")
+adjacent_target = NodePath("../MarkerBackL")
+opposite_target = NodePath("../MarkerBackR")
+
+[node name="MarkerBackL" type="Marker3D" parent="BaseArmature_001" index="3" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -1.5, 1)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/BackL/MarkerBackLStep")
+adjacent_target = NodePath("../MarkerFrontL")
+opposite_target = NodePath("../MarkerFrontR")
+
+[node name="MarkerGuideR" type="Marker3D" parent="BaseArmature_001" index="4" node_paths=PackedStringArray("step_target", "adjacent_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -1.5, 0)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/GuideR/MarkerGuideRStep")
+adjacent_target = NodePath("../MarkerGuideL")
+
+[node name="MarkerFrontR" type="Marker3D" parent="BaseArmature_001" index="5" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -1.5, -1)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/FrontR/MarkerFrontRStep")
+adjacent_target = NodePath("../MarkerBackR")
+opposite_target = NodePath("../MarkerBackL")
+
+[node name="MarkerBackR" type="Marker3D" parent="BaseArmature_001" index="6" node_paths=PackedStringArray("step_target", "adjacent_target", "opposite_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -1.5, 1)
+top_level = true
+script = ExtResource("4_cdrft")
+step_target = NodePath("../StepTargets/BackR/MarkerBackRStep")
+adjacent_target = NodePath("../MarkerFrontR")
+opposite_target = NodePath("../MarkerFrontL")
+
+[node name="StepTargets" type="Node3D" parent="BaseArmature_001" index="7"]
+script = ExtResource("5_ortoq")
+offset = 40.0
+
+[node name="GuideL" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="0" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerGuideLStep")
+
+[node name="MarkerGuideLStep" type="Marker3D" parent="BaseArmature_001/StepTargets/GuideL" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1.31134e-07, -4, 0)
+
+[node name="FrontL" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="1" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.5, -2.5)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerFrontLStep")
+
+[node name="MarkerFrontLStep" type="Marker3D" parent="BaseArmature_001/StepTargets/FrontL" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -4, 0)
+
+[node name="BackL" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="2" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.5, -2.5)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerBackLStep")
+
+[node name="MarkerBackLStep" type="Marker3D" parent="BaseArmature_001/StepTargets/BackL" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -4, 0)
+
+[node name="GuideR" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="3" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 3)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerGuideRStep")
+
+[node name="MarkerGuideRStep" type="Marker3D" parent="BaseArmature_001/StepTargets/GuideR" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.31134e-07, -4, 0)
+
+[node name="FrontR" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="4" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.5, 2.5)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerFrontRStep")
+
+[node name="MarkerFrontRStep" type="Marker3D" parent="BaseArmature_001/StepTargets/FrontR" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.19209e-07, -4, 0)
+
+[node name="BackR" type="RayCast3D" parent="BaseArmature_001/StepTargets" index="5" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.5, 2.5)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("6_5bjwb")
+step_target = NodePath("MarkerBackRStep")
+
+[node name="MarkerBackRStep" type="Marker3D" parent="BaseArmature_001/StepTargets/BackR" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.19209e-07, -4, 0)
+
+[node name="Eye" type="Node3D" parent="." index="1"]
+
+[node name="Eyeball" type="MeshInstance3D" parent="Eye" index="0"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = SubResource("ArrayMesh_jnim4")
+skeleton = NodePath("../../BaseArmature_001")
+
+[node name="DetectionArea" type="Area3D" parent="Eye" index="1"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Eye/DetectionArea" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -62.8142)
+shape = SubResource("SphereShape3D_dkxec")
