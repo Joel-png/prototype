@@ -5,12 +5,17 @@ var distance_to_attack: float = 50.0
 var turn_speed: float = 1.0
 var ground_offset: float = 1.5
 var last_seen_player
+
 var attacking: bool = false
+var attack_charge_time: float = 2.0
+var state: String = "search"
+
+var flank_direction: int = 1
 
 @onready var detection_area = $BaseArmature_001/Skeleton3D/FullBody/Eye/DetectionArea
 @onready var eye = $BaseArmature_001/Skeleton3D/FullBody/Eye
 
-@onready var attack_timer = $AttackTimer
+@onready var action_timer = $ActionTimer
 
 @onready var fl_leg = $BaseArmature_001/Skeleton3D/IKFrontL
 @onready var bl_leg = $BaseArmature_001/Skeleton3D/IKBackL
@@ -21,8 +26,7 @@ func _process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= 9.8 * 4 * delta
 	
-	#follow if not attacking
-	if not attacking:
+	if state == "search":
 		if detection_area.has_overlapping_bodies():
 			var detected_players: Array = detection_area.get_overlapping_bodies()
 			var closests_player_index: int = get_closest_player_index(detected_players)
@@ -31,34 +35,70 @@ func _process(delta: float) -> void:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
-			set_vel(move_speed * delta)
+			set_vel(move_speed * delta, -transform.basis.z)
 		elif last_seen_player:
 			var closest_player_position: Vector3 = last_seen_player.position
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
-			set_vel(move_speed * 3.0 * delta)
+			set_vel(move_speed * 3.0 * delta, -transform.basis.z)
 			
 		#close to play start attack
 		if last_seen_player:
 			var distance_to_player = last_seen_player.position.distance_to(global_position)
 			if distance_to_player < distance_to_attack:
-				attacking = true
-				attack_timer.start()
-				print("attacking")
-				
-	else:
-		set_vel(move_speed * 3.0 * delta)
-		if attack_timer.is_stopped():
-			attacking = false
-			print("stopped attacking")
-		
+				if randi_range(0, 1) == 0:
+					switch_state("attack")
+				else:
+					switch_state("flank")
+	
+	elif state == "attack":
+		if action_timer.time_left > action_timer.wait_time - attack_charge_time:
+			velocity.x *= 0.5
+			velocity.z *= 0.5
+			var closest_player_position: Vector3 = last_seen_player.position
+			lerp_angle_look_at(closest_player_position, delta, 8.0)
+			lerp_look_at(eye, closest_player_position, delta, 0.95)
+		else:
+			set_vel(move_speed * 3.0 * delta, -transform.basis.z)
+		if action_timer.is_stopped():
+			switch_state("search")
+			
+	elif state == "flank":
+		var closest_player_position: Vector3 = last_seen_player.position
+		lerp_angle_look_at(closest_player_position, delta, 8.0)
+		lerp_look_at(eye, closest_player_position, delta, 0.95)
+		set_vel(move_speed * delta, flank_direction * transform.basis.x)
+		if action_timer.is_stopped():
+			switch_state("attack")
 	move_and_slide()
 
-func set_vel(move_amount):
+func switch_state(change_state: String):
+	if change_state == "search":
+		state = change_state
+	elif change_state == "attack":
+		attack_charge_time = randf_range(0.75, 1.0)
+		action_timer.wait_time = randf_range(2.0, 3.0)
+		action_timer.start()
+		state = change_state
+	elif change_state == "flank":
+		var rand_sign = -1 if randf() < 0.5 else 1
+		flank_direction = rand_sign
+		action_timer.wait_time = randf_range(3.0, 5.0)
+		action_timer.start()
+		state = change_state
+	else:
+		print("invalid state: " + change_state)
+		
+func set_vel(move_amount, direction):
 	if is_on_floor():
-		var forward_direction = -transform.basis.z
-		velocity = forward_direction * move_amount * 100.0
+		velocity = direction * move_amount * 100.0
+
+func get_angle_to_lookat_position(target_position):
+	var direction: Vector3 = (target_position - position)
+	var angle_yaw: float = -atan2(direction.z, direction.x) - PI/2.0
+	var angle = abs(rotation.y - lerp_angle(rotation.y, angle_yaw, 1.0))
+	return angle
 
 func lerp_angle_look_at(target_position: Vector3, delta: float, rotation_speed: float) -> void:
 	var direction: Vector3 = (target_position - position)

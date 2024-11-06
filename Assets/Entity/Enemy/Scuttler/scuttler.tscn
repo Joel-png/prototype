@@ -165,8 +165,23 @@ blend_shape_mode = 0
 radius = 77.1988
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fh7bv"]
-radius = 1.06352
-height = 2.77512
+radius = 0.990145
+height = 1.98029
+
+[sub_resource type="Animation" id="Animation_gs1b6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BaseArmature_001/Skeleton3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.2, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_k7g0y"]
 resource_name = "scuttler_walk"
@@ -182,21 +197,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 0.125, 4.2871),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, -0.1, 0), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_gs1b6"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BaseArmature_001/Skeleton3D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -0.2, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n2raj"]
@@ -491,7 +491,7 @@ opposite_target = NodePath("../MarkerFrontL")
 script = ExtResource("5_yovo7")
 
 [node name="GuideL" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
 target_position = Vector3(0, -10, 0)
 script = ExtResource("4_vekia")
 step_target = NodePath("MarkerGuideLStep")
@@ -518,7 +518,7 @@ step_target = NodePath("MarkerBackLStep")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -4, 0)
 
 [node name="GuideR" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 3)
 target_position = Vector3(0, -10, 0)
 script = ExtResource("4_vekia")
 step_target = NodePath("MarkerGuideRStep")
@@ -545,7 +545,7 @@ step_target = NodePath("MarkerBackRStep")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1.19209e-07, -4, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.444492, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.213673, 0)
 shape = SubResource("CapsuleShape3D_fh7bv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -553,6 +553,6 @@ libraries = {
 "": SubResource("AnimationLibrary_n2raj")
 }
 
-[node name="AttackTimer" type="Timer" parent="."]
+[node name="ActionTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
