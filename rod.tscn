@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyalckmpd84sl"]
+
+[ext_resource type="Script" path="res://rod.gd" id="1_fbgki"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_o1qp4"]
+
+[node name="Rod" type="Node3D"]
+transform = Transform3D(0.266419, 0, 0, 0, 0.248642, 0.0956887, 0, -0.0956887, 0.248642, 0, 0, 0)
+script = ExtResource("1_fbgki")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.140176, 0, 0, 0, 1.43106, 0, 0, 0, 0.141392, 0, 0.667468, 0)
+mesh = SubResource("BoxMesh_o1qp4")

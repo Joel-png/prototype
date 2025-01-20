@@ -4,8 +4,8 @@ extends Node3D
 var mesh: MeshInstance3D
 var world_size: int = 400
 var mesh_resolution: int = 1
-var scale_multiplier: int = 40
-var height_multiplier: int = 7 * scale_multiplier
+var scale_multiplier: int = 8
+var height_multiplier: int = 3 * scale_multiplier
 
 var grass_scale: int = 7
 
@@ -65,7 +65,7 @@ func setup() -> void:
 	grass_spots.amount = spots_rows*spots_rows
 	rocks_small.amount = rocks_small_rows*rocks_small_rows
 	shrubs.amount = shrubs_rows*shrubs_rows
-	var water_height: float = height_multiplier * 0.1
+	var water_height: float = height_multiplier * 0.3
 	var coverage_range: float = height_multiplier
 	var coverage_alt: float = water_height + height_multiplier
 	setup_shader(grass_clumps_sm, height_texture, normal_map, grass_clumps_spacing, clumps_rows, heightmap_size, coverage_range, coverage_alt)

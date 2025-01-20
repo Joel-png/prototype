@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=40 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -34,24 +34,33 @@ background_mode = 2
 background_energy_multiplier = 0.1
 background_intensity = 3.0
 sky = SubResource("Sky_tug5e")
+ambient_light_source = 1
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.99
+ambient_light_energy = 0.0
+reflected_light_source = 1
 tonemap_mode = 2
 sdfgi_read_sky_light = false
 sdfgi_bounce_feedback = 0.0
 sdfgi_cascades = 1
 sdfgi_max_distance = 25.6
-fog_enabled = true
+fog_light_color = Color(1, 1, 1, 1)
+fog_light_energy = 0.0
+fog_sun_scatter = 0.25
 fog_aerial_perspective = 0.932
-fog_sky_affect = 0.0
+fog_height = 2613.67
+fog_height_density = 0.004
+fog_depth_curve = 7.46423
 fog_depth_begin = 0.0
-fog_depth_end = 116.0
+fog_depth_end = 860.8
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.036
+volumetric_fog_density = 0.1364
+volumetric_fog_albedo = Color(0.310617, 0.310617, 0.310617, 1)
 volumetric_fog_emission = Color(0.1333, 0.00298389, 0, 1)
-volumetric_fog_emission_energy = 0.0
-volumetric_fog_anisotropy = 0.46
+volumetric_fog_anisotropy = 0.65
 volumetric_fog_detail_spread = 6.0
+volumetric_fog_ambient_inject = 0.04
+volumetric_fog_sky_affect = 0.835
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
@@ -59,6 +68,8 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
+noise_type = 0
+frequency = 0.02
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1mi5f"]
 width = 51
@@ -290,16 +301,20 @@ render_priority = 0
 shader = ExtResource("12_3c5pl")
 shader_parameter/uv_scale = 1.725
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oitm3"]
+render_priority = 0
+shader = ExtResource("12_3c5pl")
+shader_parameter/uv_scale = null
+
 [sub_resource type="BoxMesh" id="BoxMesh_isnlg"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_5i068")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.900996, -0.390441, -0.189108, -0.431738, 0.849714, 0.302637, 0.0425262, 0.35432, -0.934157, 0, 0, 0)
-light_intensity_lux = 4545.45
+transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.424815, 0.882435, 0.202092, 0.087971, 0.26242, -0.960935, 0, 0, 0)
+light_intensity_lux = 1000.0
 light_temperature = 4000.0
-light_color = Color(0.495005, 0.293684, 0.353005, 1)
 light_energy = 0.001
 light_indirect_energy = 0.0
 shadow_enabled = true
@@ -381,6 +396,7 @@ mesh = SubResource("PlaneMesh_kke3t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, -2.53577, 0)
+material_override = SubResource("ShaderMaterial_oitm3")
 mesh = SubResource("BoxMesh_isnlg")
 
 [node name="Enemies" type="Node3D" parent="."]

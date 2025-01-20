@@ -64,59 +64,59 @@ void start() {
 	pos.z = float(INDEX);
 	pos.x = mod(pos.z, instance_rows);
 	pos.z = (pos.z - pos.x) / instance_rows;
-	
+
 	// center the emitter
 	pos.x -= instance_rows * 0.5;
 	pos.z -= instance_rows * 0.5;
-	
+
 	// apply instance spacing
 	pos *= instance_spacing;
-	
+
 	// center on position of emitter
 	pos.x += EMISSION_TRANSFORM[3][0] - mod(EMISSION_TRANSFORM[3][0], instance_spacing);
 	pos.z += EMISSION_TRANSFORM[3][2] - mod(EMISSION_TRANSFORM[3][2], instance_spacing);
-	
-	// add noise 
+
+	// add noise
 	vec3 noise = vec3(get_noise(pos.xz));
 	pos.x += (noise.z - 0.5) * instance_spacing * instance_pos_randomize;
 	pos.z -= (noise.x - 0.5) * instance_spacing * instance_pos_randomize;
 
 	// apply height
-	pos.y = get_height(pos.xz);	
+	pos.y = get_height(pos.xz);
 	float y2 = get_height(pos.xz + vec2(1.0, 0.0));
 	float y3 = get_height(pos.xz + vec2(0.0, 1.0));
 	float y4 = get_clumps(pos.xz);
-	
+
 	// hide parts from steep areas
 	if (abs(y2 - pos.y) > _slope_coverage) {
 		pos.y = -10000.0;
 	} else if (abs(y3 - pos.y) > _slope_coverage) {
 		pos.y = -10000.0;
-	}	
+	}
 	if (abs(pos.y) < _coverage_altitude-_coverage_range) {
 		pos.y = -10000.0;
-	} 	
+	}
 	if (abs(pos.y) > _coverage_altitude+_coverage_range) {
 		pos.y = -10000.0;
-	} 	
-	
+	}
+
 	// clumping
 	vec3 clumps = texture(map_clumpmap, pos.zx).rgb;
 	if (abs(y4) < clumping_strength) {
 		pos.y = -10000.0;
 	}
-	
+
 	// rotate transform
 	vec3 tex_scale = vec3(1.0) ;
 
 	vec3 base_scale = vec3(mix(instance_scale_min, instance_scale_max, noise.x)*instance_scale_x,mix(instance_scale_min, instance_scale_max, noise.y)*instance_scale_y,mix(instance_scale_min, instance_scale_max, noise.z)*instance_scale_z );
 	base_scale *= base_scale*instance_scale_randomize;
 	base_scale = sign(base_scale) * max(abs(base_scale), 0.1);
-	
+
 	// update transform
 	pos.x += cos( noise.x * instance_pos_randomize) * base_scale.x  ;
-	pos.z += sin( noise.z * instance_pos_randomize) * base_scale.z ; 
-	
+	pos.z += sin( noise.z * instance_pos_randomize) * base_scale.z ;
+
 	if (instance_orient_to_normal == true && false) {
 		//// Get the normal at the current position
 		//vec3 normal = get_normal(pos.xz);
@@ -144,17 +144,17 @@ void start() {
 		TRANSFORM[1].xyz = vec3(0.0);
 		TRANSFORM[2].xyz = vec3(0.0);
 	}
-	
-	// finalize transform positioning and scaling including randomizations	
+
+	// finalize transform positioning and scaling including randomizations
 	TRANSFORM[3][0] = pos.x;
 	TRANSFORM[3][1] = pos.y - height_offset;
 	TRANSFORM[3][2] = pos.z;
-	
+
 	TRANSFORM[0][0] = cos(noise.x * instance_rot_randomize) * base_scale.x;
 	TRANSFORM[0][2] = -sin(noise.x * instance_rot_randomize) * base_scale.x;
 	TRANSFORM[2][0] = sin(noise.z * instance_rot_randomize) * base_scale.z;
 	TRANSFORM[2][2] = cos(noise.z * instance_rot_randomize) * base_scale.z;
-	
+
 	TRANSFORM[0][0] = base_scale.x;
 	TRANSFORM[1][1] = base_scale.y;
 	TRANSFORM[2][2] = base_scale.z;

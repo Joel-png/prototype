@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	velocity.x = clamp(velocity.x, -abs(movement_direction.x), abs(movement_direction.x))
 	velocity.z = clamp(velocity.z, -abs(movement_direction.z), abs(movement_direction.z))
 	velocity *= 0.99
-	position += velocity * delta
+	#position += velocity * delta
 	if currently_attacking and not eyeball_attack_animation.is_playing():
 		currently_attacking = false
 
@@ -60,7 +60,7 @@ func attack(attack_number: int):
 func _on_timer_attack_timeout() -> void:
 	if is_multiplayer_authority():
 		var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
-		attack.rpc(random_animation_number)
+		#attack.rpc(random_animation_number)
 	
 func _on_timer_movement_timeout() -> void:
 	if is_multiplayer_authority():
