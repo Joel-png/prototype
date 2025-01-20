@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
-			set_vel(move_speed * 3.0 * delta, -transform.basis.z)
+			set_vel(move_speed * 3.0, -transform.basis.z)
 			
 		#close to play start attack
 		if last_seen_player:
@@ -60,7 +60,7 @@ func _process(delta: float) -> void:
 			lerp_angle_look_at(closest_player_position, delta, 8.0)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 		else:
-			set_vel(move_speed * 3.0 * delta, -transform.basis.z)
+			set_vel(move_speed * 3.0, -transform.basis.z)
 		if action_timer.is_stopped():
 			switch_state("search")
 			
@@ -68,7 +68,7 @@ func _process(delta: float) -> void:
 		var closest_player_position: Vector3 = last_seen_player.position
 		lerp_angle_look_at(closest_player_position, delta, 8.0)
 		lerp_look_at(eye, closest_player_position, delta, 0.95)
-		set_vel(move_speed * delta, flank_direction * transform.basis.x)
+		set_vel(move_speed, flank_direction * transform.basis.x)
 		if action_timer.is_stopped():
 			switch_state("attack")
 	move_and_slide()
@@ -92,7 +92,7 @@ func switch_state(change_state: String):
 		
 func set_vel(move_amount, direction):
 	if is_on_floor():
-		velocity = direction * move_amount * 100.0
+		velocity = direction * move_amount
 
 func get_angle_to_lookat_position(target_position):
 	var direction: Vector3 = (target_position - position)

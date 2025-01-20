@@ -5,7 +5,7 @@ var mesh: MeshInstance3D
 var world_size: int = 400
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
-var height_multiplier: int = 3 * scale_multiplier
+var height_multiplier: int = 4 * scale_multiplier
 
 var grass_scale: int = 7
 
@@ -82,7 +82,8 @@ func generate():
 	plane_mesh.size = Vector2(world_size + 1, world_size + 1)
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
-	var material = preload("res://Materials/ground_material.tres")
+	#var material = preload("res://Materials/ground_material.tres")
+	var material = preload("res://Materials/sand_material.tres")
 	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 5.0)
 	plane_mesh.material = material
 	
