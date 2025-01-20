@@ -47,8 +47,8 @@ noise = SubResource("FastNoiseLite_5ty5a")
 [resource]
 render_priority = 0
 shader = ExtResource("1_bqpia")
-shader_parameter/primary_colour = Color(0.265523, 0.123634, 0.594773, 1)
-shader_parameter/secondary_colour = Color(0.249256, 0.746376, 1, 1)
+shader_parameter/primary_colour = Color(0.46348, 0.202044, 0.263599, 1)
+shader_parameter/secondary_colour = Color(0.298825, 0.693046, 0.456259, 1)
 shader_parameter/roughness = 0.145
 shader_parameter/normalmap_a_strength = 0.5
 shader_parameter/normalmap_b_strength = 0.5

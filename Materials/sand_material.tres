@@ -1,16 +1,20 @@
-[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://dkfljf0w8mh4r"]
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://dkfljf0w8mh4r"]
+
+[ext_resource type="FastNoiseLite" uid="uid://bmyyailayvrul" path="res://Materials/sand_noise.tres" id="1_la84d"]
 
 [sub_resource type="Shader" id="Shader_tpoux"]
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
 
 uniform vec4 sand_color: source_color; // Sand base color
-uniform float grain_scale : hint_range(0.1, 200.0) = 2.0; // Scale of the sand grains
+uniform float grain_scale : hint_range(0.1, 1000.0) = 2.0; // Scale of the sand grains
 uniform float roughness : hint_range(0.0, 1.0) = 0.8; // Surface roughness
 uniform float metallic : hint_range(0.0, 1.0) = 0.0; // Metallic factor
 uniform float specular_power : hint_range(0.0, 1.0) = 0.0;
 uniform float specular_strength : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 specular_color : source_color;
+uniform sampler2D normal_texture; // Noise texture for grains
+uniform sampler2D no_map_normal_texture; // Noise texture for grains
 uniform sampler2D noise_texture; // Noise texture for grains
 
 
@@ -22,53 +26,77 @@ void fragment() {
 	vec2 uv = UV * grain_scale;
     
     vec3 base_color = sand_color.rgb;
-	vec3 normal = texture(noise_texture, uv).rgb * 2.0 - 1.0;
+	vec3 normalnormal = normalize(NORMAL + texture(normal_texture, uv).rgb * 2.0 - 1.0);
+	vec3 normal = texture(normal_texture, uv).rgb * 2.0 - 1.0;
 	vec3 perturbed_normal = normalize(NORMAL + normal * 1.0);
 	float normal_view_dot = dot(normal, VIEW);
+	float nomap_normal_view_dot = dot(texture(no_map_normal_texture, uv).rgb * 2.0 - 1.0, VIEW);
 	
-	float rim = pow(1.0 - normal_view_dot, rim_width) * rim_intensity;
+	float rim = max(0.0, (1.0 - nomap_normal_view_dot) * 1.5);
+	rim = pow(rim, rim_width) * rim_intensity;
+	rim = smoothstep(0.1, 0.2, rim);
 
     // Apply noise for sand grains
     float grain = texture(noise_texture, uv).r;
 
     // Adjust grain intensity
-    grain = smoothstep(0.5, 0.9, grain); // Creates a soft grain pattern
+    grain = smoothstep(0.4, 1.0, grain); // Creates a soft grain pattern
 
     // Combine base color with grain effect
-	vec3 final_color = (base_color + rim * rim_color.rgb) * (0.3 + 0.2 * grain);
+	vec3 final_color = (base_color + rim * rim_color.rgb) * (0.7 * grain);
 
     // Set material properties
     ALBEDO = final_color;
     ROUGHNESS = roughness;
     METALLIC = metallic;
 	//SPECULAR = texture(noise_texture, uv).r * 0.1 * rim;
-	NORMAL = perturbed_normal;
+	NORMAL = normalnormal;
 }
 "
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_rba8b"]
-noise_type = 0
-frequency = 0.8973
-fractal_type = 3
-fractal_gain = 1.57
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cm0qb"]
+noise_type = 2
+frequency = 0.0568
+fractal_type = 0
+cellular_distance_function = 1
+cellular_jitter = 1.09
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a8cvq"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_725mp"]
 width = 1024
 height = 1024
+invert = true
 generate_mipmaps = false
-noise = SubResource("FastNoiseLite_rba8b")
+seamless_blend_skirt = 0.0
+as_normal_map = true
+bump_strength = 32.0
+noise = SubResource("FastNoiseLite_cm0qb")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cqun7"]
+width = 1024
+height = 1024
+bump_strength = 32.0
+noise = ExtResource("1_la84d")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k643h"]
+width = 1024
+height = 1024
+as_normal_map = true
+bump_strength = 32.0
+noise = ExtResource("1_la84d")
 
 [resource]
 render_priority = 0
 shader = SubResource("Shader_tpoux")
-shader_parameter/sand_color = Color(1, 1, 1, 1)
-shader_parameter/grain_scale = 0.755
-shader_parameter/roughness = 0.371
+shader_parameter/sand_color = Color(0.808998, 0.808998, 0.808998, 1)
+shader_parameter/grain_scale = 400.0
+shader_parameter/roughness = 0.0
 shader_parameter/metallic = 0.0
-shader_parameter/specular_power = 0.64
-shader_parameter/specular_strength = 0.142
+shader_parameter/specular_power = 0.0
+shader_parameter/specular_strength = 0.0
 shader_parameter/specular_color = Color(1, 1, 1, 1)
-shader_parameter/rim_color = Color(0.955963, 0.955963, 0.955963, 1)
-shader_parameter/rim_intensity = 0.323
-shader_parameter/rim_width = 5.0
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_a8cvq")
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/rim_intensity = 0.269
+shader_parameter/rim_width = 1.129
+shader_parameter/normal_texture = SubResource("NoiseTexture2D_k643h")
+shader_parameter/no_map_normal_texture = SubResource("NoiseTexture2D_725mp")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_cqun7")

@@ -19,7 +19,7 @@
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(1, 1, 1, 1)
-sky_horizon_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(0.194246, 0.220189, 0.37414, 1)
 sky_curve = 2.85409
 sky_energy_multiplier = 0.2
 ground_bottom_color = Color(0, 0, 0, 1)
@@ -40,7 +40,7 @@ sky = SubResource("Sky_tug5e")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.99
-ambient_light_energy = 0.05
+ambient_light_energy = 0.0
 reflected_light_source = 1
 tonemap_mode = 2
 sdfgi_read_sky_light = false
@@ -50,20 +50,20 @@ sdfgi_max_distance = 25.6
 fog_enabled = true
 fog_light_color = Color(1, 1, 1, 1)
 fog_light_energy = 0.0
-fog_sun_scatter = 0.05
+fog_sun_scatter = 0.01
 fog_aerial_perspective = 0.932
 fog_height = 2613.67
-fog_height_density = 0.0004
+fog_height_density = 0.0002
 fog_depth_curve = 7.46423
 fog_depth_begin = 0.0
 fog_depth_end = 860.8
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.0
-volumetric_fog_albedo = Color(0.310617, 0.310617, 0.310617, 1)
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0.201527, 0.201527, 0.201527, 1)
+volumetric_fog_emission = Color(0.0728426, 0.0728426, 0.0728426, 1)
 volumetric_fog_anisotropy = 0.65
 volumetric_fog_detail_spread = 6.0
-volumetric_fog_ambient_inject = 0.04
-volumetric_fog_sky_affect = 0.835
+volumetric_fog_ambient_inject = 0.36
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
