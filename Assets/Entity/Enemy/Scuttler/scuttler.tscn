@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://d4jkxnxnjk1i4"]
+[gd_scene load_steps=19 format=4 uid="uid://d4jkxnxnjk1i4"]
 
 [ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="2_5xe81"]
 [ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_as2l2"]
@@ -163,6 +163,10 @@ blend_shape_mode = 0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dkxec"]
 radius = 77.1988
+
+[sub_resource type="Curve" id="Curve_ekmkv"]
+_data = [Vector2(0.235955, 33.6264), 0.0, 0.0, 0, 0]
+point_count = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fh7bv"]
 radius = 0.990145
@@ -489,6 +493,7 @@ opposite_target = NodePath("../MarkerFrontL")
 
 [node name="StepTargets" type="Node3D" parent="BaseArmature_001"]
 script = ExtResource("5_yovo7")
+curve = SubResource("Curve_ekmkv")
 
 [node name="GuideL" type="RayCast3D" parent="BaseArmature_001/StepTargets" node_paths=PackedStringArray("step_target")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
@@ -554,5 +559,6 @@ libraries = {
 }
 
 [node name="ActionTimer" type="Timer" parent="."]
+process_callback = 0
 wait_time = 2.0
 one_shot = true

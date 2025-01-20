@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var move_speed: float = 30.0
+var move_speed: float = 20.0
 var distance_to_attack: float = 50.0
 var turn_speed: float = 1.0
 var ground_offset: float = 1.5
@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
-			set_vel(move_speed * delta, -transform.basis.z)
+			set_vel(move_speed, -transform.basis.z)
 		elif last_seen_player:
 			var closest_player_position: Vector3 = last_seen_player.position
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
@@ -74,6 +74,7 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 func switch_state(change_state: String):
+	print(change_state)
 	if change_state == "search":
 		state = change_state
 	elif change_state == "attack":
