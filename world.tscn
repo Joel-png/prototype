@@ -58,7 +58,7 @@ fog_depth_curve = 7.46423
 fog_depth_begin = 0.0
 fog_depth_end = 860.8
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.01
+volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.201527, 0.201527, 0.201527, 1)
 volumetric_fog_emission = Color(0.0728426, 0.0728426, 0.0728426, 1)
 volumetric_fog_anisotropy = 0.65
@@ -395,7 +395,7 @@ visible = false
 mesh = SubResource("PlaneMesh_kke3t")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -0.604966, -2.53577, 0)
+transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -55.876, 16.028, 0)
 material_override = SubResource("ShaderMaterial_oitm3")
 mesh = SubResource("BoxMesh_isnlg")
 

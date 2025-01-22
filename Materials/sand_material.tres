@@ -1,6 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://dkfljf0w8mh4r"]
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://dkfljf0w8mh4r"]
 
 [ext_resource type="FastNoiseLite" uid="uid://bmyyailayvrul" path="res://Materials/sand_noise.tres" id="1_la84d"]
+[ext_resource type="Texture2D" uid="uid://bae66k7lp0aed" path="res://Materials/hurlnoise.png" id="1_n7dya"]
 
 [sub_resource type="Shader" id="Shader_tpoux"]
 code = "shader_type spatial;
@@ -10,17 +11,39 @@ uniform vec4 sand_color: source_color; // Sand base color
 uniform float grain_scale : hint_range(0.1, 1000.0) = 2.0; // Scale of the sand grains
 uniform float roughness : hint_range(0.0, 1.0) = 0.8; // Surface roughness
 uniform float metallic : hint_range(0.0, 1.0) = 0.0; // Metallic factor
-uniform float specular_power : hint_range(0.0, 1.0) = 0.0;
-uniform float specular_strength : hint_range(0.0, 1.0) = 0.0;
-uniform vec4 specular_color : source_color;
-uniform sampler2D normal_texture; // Noise texture for grains
-uniform sampler2D no_map_normal_texture; // Noise texture for grains
+uniform float specular : hint_range(0.0, 1.0) = 0.0; // Specular factor
+uniform float glitter_offset : hint_range(0.0, 1.0) = 0.0;
+uniform float glitter_multiply : hint_range(0.0, 10.0) = 0.0;
+uniform float glitter_movement : hint_range(0.0, 1.0) = 0.0;
+uniform sampler2D normal_texture;
+uniform sampler2D no_map_normal_texture;
 uniform sampler2D noise_texture; // Noise texture for grains
+uniform sampler2D glitter_texture;
 
 
 uniform vec4 rim_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // Color of the rim light
 uniform float rim_intensity : hint_range(0.0, 5.0) = 1.5; // Intensity of the rim light
 uniform float rim_width : hint_range(0.0, 5.0) = 1.0; // Width of the rim light
+
+varying float glitter_light;
+
+vec3 rgb2hsv(vec3 colorin)	{
+	vec3 c = vec3(colorin.xyz);
+	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+	float d = q.x - min(q.w, q.y);
+	float e = 1.0e-10;
+	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+
+vec3 hsv2rgb(vec3 colorin)	{
+	vec3 c = colorin;
+	vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
 
 void fragment() {
 	vec2 uv = UV * grain_scale;
@@ -28,9 +51,22 @@ void fragment() {
     vec3 base_color = sand_color.rgb;
 	vec3 normalnormal = normalize(NORMAL + texture(normal_texture, uv).rgb * 2.0 - 1.0);
 	vec3 normal = texture(normal_texture, uv).rgb * 2.0 - 1.0;
-	vec3 perturbed_normal = normalize(NORMAL + normal * 1.0);
-	float normal_view_dot = dot(normal, VIEW);
-	float nomap_normal_view_dot = dot(texture(no_map_normal_texture, uv).rgb * 2.0 - 1.0, VIEW);
+	//vec3 perturbed_normal = normalize(NORMAL + normal * 1.0);
+	float normal_view_dot = dot(normal, 1.0 - normalize(VIEW));
+	float nomap_normal_view_dot = dot(texture(no_map_normal_texture, uv).rgb * 2.0 - 1.0, normalize(VIEW));
+	
+	vec3 glitter = texture(glitter_texture, uv * 16.0).rgb;
+	
+	float hueShift = TIME * glitter_movement;
+	vec3 hsv = rgb2hsv(glitter);
+	hsv.x += hueShift;
+	hsv.x = (mod(hsv.x, 1.0));
+	vec3 newColor = hsv2rgb(hsv);
+	
+	glitter = normalize((newColor - glitter_offset)) * glitter_multiply;
+	float glitter_amount = glitter.r; //dot(glitter, 1.0 - normalize(VIEW));
+	glitter_amount = clamp(glitter_amount, 0.0, 1.0);
+	
 	
 	float rim = max(0.0, (1.0 - nomap_normal_view_dot) * 1.5);
 	rim = pow(rim, rim_width) * rim_intensity;
@@ -49,9 +85,11 @@ void fragment() {
     ALBEDO = final_color;
     ROUGHNESS = roughness;
     METALLIC = metallic;
-	//SPECULAR = texture(noise_texture, uv).r * 0.1 * rim;
-	NORMAL = normalnormal;
+	SPECULAR = specular;
+	NORMAL = normalnormal;// * glitter_amount;
+	EMISSION = vec3(1.0) * glitter_amount;//vec3(1.0) * glitter_amount * ;//vec3(1.0) * glitter_amount;
 }
+
 "
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cm0qb"]
@@ -87,16 +125,18 @@ noise = ExtResource("1_la84d")
 [resource]
 render_priority = 0
 shader = SubResource("Shader_tpoux")
-shader_parameter/sand_color = Color(0.808998, 0.808998, 0.808998, 1)
+shader_parameter/sand_color = Color(1, 1, 1, 1)
 shader_parameter/grain_scale = 400.0
 shader_parameter/roughness = 0.0
 shader_parameter/metallic = 0.0
-shader_parameter/specular_power = 0.0
-shader_parameter/specular_strength = 0.0
-shader_parameter/specular_color = Color(1, 1, 1, 1)
+shader_parameter/specular = 1.0
+shader_parameter/glitter_offset = 0.95
+shader_parameter/glitter_multiply = 1.097
+shader_parameter/glitter_movement = 0.056
 shader_parameter/rim_color = Color(1, 1, 1, 1)
 shader_parameter/rim_intensity = 0.269
-shader_parameter/rim_width = 1.129
+shader_parameter/rim_width = 2.646
 shader_parameter/normal_texture = SubResource("NoiseTexture2D_k643h")
 shader_parameter/no_map_normal_texture = SubResource("NoiseTexture2D_725mp")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_cqun7")
+shader_parameter/glitter_texture = ExtResource("1_n7dya")
