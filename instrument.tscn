@@ -1,0 +1,112 @@
+[gd_scene load_steps=36 format=3 uid="uid://5gvc6artnuki"]
+
+[ext_resource type="Script" path="res://Scripts/instrument.gd" id="1_n745x"]
+[ext_resource type="Script" path="res://Scripts/audioLibrary.gd" id="2_367ri"]
+[ext_resource type="Script" path="res://Scripts/soundEffect.gd" id="3_j27bb"]
+[ext_resource type="AudioStream" uid="uid://c3qjl0rxme8lx" path="res://Sounds/Instruments/Piano/pianoc6.mp3" id="4_4gydj"]
+[ext_resource type="AudioStream" uid="uid://gsylevs56i1" path="res://Sounds/Instruments/Piano/pianoc7.mp3" id="4_jybss"]
+[ext_resource type="AudioStream" uid="uid://5qnvcam5sqv5" path="res://Sounds/Instruments/Piano/pianod6.mp3" id="5_4or5k"]
+[ext_resource type="AudioStream" uid="uid://d1m628datvndu" path="res://Sounds/Instruments/Piano/pianoe6.mp3" id="6_gmit3"]
+[ext_resource type="AudioStream" uid="uid://c5j728xrrudbi" path="res://Sounds/Instruments/Piano/pianof6.mp3" id="7_dxdkr"]
+[ext_resource type="AudioStream" uid="uid://dqqmmntd1ejit" path="res://Sounds/Instruments/Piano/pianog6.mp3" id="8_d064h"]
+[ext_resource type="AudioStream" uid="uid://c028k4jmisd6y" path="res://Sounds/Instruments/Piano/pianoa6.mp3" id="9_1qf1s"]
+[ext_resource type="AudioStream" uid="uid://bofm26dvtet5f" path="res://Sounds/Instruments/Piano/pianob6.mp3" id="10_dokok"]
+[ext_resource type="AudioStream" uid="uid://30g2m07a0cd5" path="res://Sounds/Instruments/Piano/pianod7.mp3" id="12_vgejy"]
+[ext_resource type="AudioStream" uid="uid://buvvd2d0hs34f" path="res://Sounds/Instruments/Piano/pianoe7.mp3" id="13_rcidf"]
+[ext_resource type="AudioStream" uid="uid://dbs4djmcp8h63" path="res://Sounds/Instruments/Piano/pianof7.mp3" id="14_ysrvi"]
+[ext_resource type="AudioStream" uid="uid://bd54avccuksqy" path="res://Sounds/Instruments/Piano/pianog7.mp3" id="15_g433k"]
+[ext_resource type="AudioStream" uid="uid://bjgnpnes4wvjo" path="res://Sounds/Instruments/Piano/pianoa7.mp3" id="16_k5rg5"]
+[ext_resource type="AudioStream" uid="uid://b0ur6i7gphn14" path="res://Sounds/Instruments/Piano/pianob7.mp3" id="17_l4w6v"]
+[ext_resource type="AudioStream" uid="uid://bdgtut6f3508l" path="res://Sounds/Instruments/Piano/pianoc8.mp3" id="18_47dex"]
+
+[sub_resource type="Resource" id="Resource_fesrt"]
+script = ExtResource("3_j27bb")
+tag = "c6"
+stream = ExtResource("4_4gydj")
+
+[sub_resource type="Resource" id="Resource_ku7e0"]
+script = ExtResource("3_j27bb")
+tag = "d6"
+stream = ExtResource("5_4or5k")
+
+[sub_resource type="Resource" id="Resource_b0wvr"]
+script = ExtResource("3_j27bb")
+tag = "e6"
+stream = ExtResource("6_gmit3")
+
+[sub_resource type="Resource" id="Resource_mty7i"]
+script = ExtResource("3_j27bb")
+tag = "f6"
+stream = ExtResource("7_dxdkr")
+
+[sub_resource type="Resource" id="Resource_pwx4s"]
+script = ExtResource("3_j27bb")
+tag = "g6"
+stream = ExtResource("8_d064h")
+
+[sub_resource type="Resource" id="Resource_4db0t"]
+script = ExtResource("3_j27bb")
+tag = "a6"
+stream = ExtResource("9_1qf1s")
+
+[sub_resource type="Resource" id="Resource_eby4d"]
+script = ExtResource("3_j27bb")
+tag = "b6"
+stream = ExtResource("10_dokok")
+
+[sub_resource type="Resource" id="Resource_0ncj0"]
+script = ExtResource("3_j27bb")
+tag = "c7"
+stream = ExtResource("4_jybss")
+
+[sub_resource type="Resource" id="Resource_6xj3y"]
+script = ExtResource("3_j27bb")
+tag = "d7"
+stream = ExtResource("12_vgejy")
+
+[sub_resource type="Resource" id="Resource_o12dy"]
+script = ExtResource("3_j27bb")
+tag = "e7"
+stream = ExtResource("13_rcidf")
+
+[sub_resource type="Resource" id="Resource_8jes8"]
+script = ExtResource("3_j27bb")
+tag = "f7"
+stream = ExtResource("14_ysrvi")
+
+[sub_resource type="Resource" id="Resource_jlkpl"]
+script = ExtResource("3_j27bb")
+tag = "g7"
+stream = ExtResource("15_g433k")
+
+[sub_resource type="Resource" id="Resource_225an"]
+script = ExtResource("3_j27bb")
+tag = "a7"
+stream = ExtResource("16_k5rg5")
+
+[sub_resource type="Resource" id="Resource_1nsht"]
+script = ExtResource("3_j27bb")
+tag = "b7"
+stream = ExtResource("17_l4w6v")
+
+[sub_resource type="Resource" id="Resource_odpyy"]
+script = ExtResource("3_j27bb")
+tag = "c8"
+stream = ExtResource("18_47dex")
+
+[sub_resource type="Resource" id="Resource_w4063"]
+script = ExtResource("2_367ri")
+sound_effects = Array[ExtResource("3_j27bb")]([SubResource("Resource_fesrt"), SubResource("Resource_ku7e0"), SubResource("Resource_b0wvr"), SubResource("Resource_mty7i"), SubResource("Resource_pwx4s"), SubResource("Resource_4db0t"), SubResource("Resource_eby4d"), SubResource("Resource_0ncj0"), SubResource("Resource_6xj3y"), SubResource("Resource_o12dy"), SubResource("Resource_8jes8"), SubResource("Resource_jlkpl"), SubResource("Resource_225an"), SubResource("Resource_1nsht"), SubResource("Resource_odpyy")])
+
+[sub_resource type="Curve" id="Curve_5gl1s"]
+_data = [Vector2(0.00561798, 0.032967), 0.0, 0.326007, 0, 0, Vector2(1, 1), 1.39921, 0.0, 0, 0]
+point_count = 2
+
+[node name="Instrument" type="Node3D"]
+script = ExtResource("1_n745x")
+audio_library = SubResource("Resource_w4063")
+audio_dropoff_curve = SubResource("Curve_5gl1s")
+
+[node name="AudioStreamers" type="Node3D" parent="."]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="AudioStreamers"]

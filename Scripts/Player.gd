@@ -38,6 +38,7 @@ var rng = RandomNumberGenerator.new()
 @onready var shotgun_scene = preload("res://shotgun.tscn")
 @onready var gun_scene = preload("res://gun.tscn")
 @onready var rod_scene = preload("res://rod.tscn")
+@onready var instrument_scene = preload("res://instrument.tscn")
 
 @onready var marker = $Marker
 @onready var player_manager = $".."
@@ -53,6 +54,7 @@ var grapple: Grapple
 var gun: Gun
 var shotgun: Shotgun
 var rod: Rod
+var instrument: Instrument
 var hotbar = []
 var hotbar_length: int = hotbar.size()
 var hotbar_selected: int = 0
@@ -69,7 +71,9 @@ func _ready() -> void:
 	gun.init(self)
 	rod = rod_scene.instantiate()
 	rod.init(self)
-	hotbar = [rod, shotgun, grapple]
+	instrument = instrument_scene.instantiate()
+	instrument.init(self)
+	hotbar = [instrument, shotgun, grapple]
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
