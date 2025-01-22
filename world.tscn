@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=41 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -16,6 +16,11 @@
 [ext_resource type="Material" uid="uid://dkfljf0w8mh4r" path="res://Materials/sand_material.tres" id="13_gaw3q"]
 [ext_resource type="PackedScene" uid="uid://d4jkxnxnjk1i4" path="res://Assets/Entity/Enemy/Scuttler/scuttler.tscn" id="14_pkj14"]
 [ext_resource type="Script" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
+
+[sub_resource type="Curve" id="Curve_sq6ro"]
+max_value = 0.3
+_data = [Vector2(0, 0.0131868), 0.0, 0.0, 0, 0, Vector2(1, 0.141758), 0.251491, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -50,8 +55,8 @@ sdfgi_max_distance = 25.6
 fog_enabled = true
 fog_light_color = Color(1, 1, 1, 1)
 fog_light_energy = 0.0
-fog_sun_scatter = 0.01
 fog_aerial_perspective = 0.932
+fog_sky_affect = 0.0
 fog_height = 2613.67
 fog_height_density = 0.0002
 fog_depth_curve = 7.46423
@@ -61,7 +66,7 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.201527, 0.201527, 0.201527, 1)
 volumetric_fog_emission = Color(0.0728426, 0.0728426, 0.0728426, 1)
-volumetric_fog_anisotropy = 0.65
+volumetric_fog_anisotropy = 0.9
 volumetric_fog_detail_spread = 6.0
 volumetric_fog_ambient_inject = 0.36
 
@@ -69,6 +74,9 @@ volumetric_fog_ambient_inject = 0.36
 properties/0/path = NodePath(".:terrain_seed")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath(".:fog")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_xhuuh"]
 noise_type = 0
@@ -308,6 +316,7 @@ shader_parameter/uv_scale = null
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_5i068")
+fog_curve = SubResource("Curve_sq6ro")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.424815, 0.882435, 0.202092, 0.087971, 0.26242, -0.960935, 0, 0, 0)
