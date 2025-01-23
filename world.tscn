@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=40 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -11,7 +11,6 @@
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Texture2D" uid="uid://bp2pxfrb4qf0x" path="res://Assets/normalmap.png" id="8_pbu1x"]
 [ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
-[ext_resource type="Material" uid="uid://b4oalo4y6jh65" path="res://Materials/branch_shader_material.tres" id="12_n4txx"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
 [ext_resource type="Material" uid="uid://dkfljf0w8mh4r" path="res://Materials/sand_material.tres" id="13_gaw3q"]
 [ext_resource type="PackedScene" uid="uid://d4jkxnxnjk1i4" path="res://Assets/Entity/Enemy/Scuttler/scuttler.tscn" id="14_pkj14"]
@@ -235,7 +234,6 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 216,
 "index_data": PackedByteArray("AAABAAIAAgABAAMABAAFAAYABgAFAAcACAAJAAoACgAJAAsADAANAA4ADgANAA8AEAARABIAEgARABMAFAAVABYAFgAVABcAGAAZABoAGgAZABsAHAAdAB4AHgAdAB8AIAAhACIAIgAhACMAJAAlACYAJgAlACcAKAApACoAKgApACsALAAtAC4ALgAtAC8AMAAxADIAMgAxADMANAA1ADYANgA1ADcAOAA5ADoAOgA5ADsAPAA9AD4APgA9AD8AQABBAEIAQgBBAEMARABFAEYARgBFAEcASABJAEoASgBJAEsATABNAE4ATgBNAE8AUABRAFIAUgBRAFMAVABVAFYAVgBVAFcAWABZAFoAWgBZAFsAXABdAF4AXgBdAF8AYABhAGIAYgBhAGMAZABlAGYAZgBlAGcAaABpAGoAagBpAGsAbABtAG4AbgBtAG8AcABxAHIAcgBxAHMAdAB1AHYAdgB1AHcAeAB5AHoAegB5AHsAfAB9AH4AfgB9AH8AgACBAIIAggCBAIMAhACFAIYAhgCFAIcAiACJAIoAigCJAIsAjACNAI4AjgCNAI8A"),
-"material": ExtResource("12_n4txx"),
 "name": "Branch",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),

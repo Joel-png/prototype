@@ -2,9 +2,10 @@
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_b2x7b"]
 resource_name = "Reverb"
+room_size = 0.5
 
 [resource]
-bus/0/volume_db = -0.328256
+bus/0/volume_db = 0.265018
 bus/1/name = &"Instruments"
 bus/1/solo = false
 bus/1/mute = false

@@ -44,6 +44,8 @@ var rng = RandomNumberGenerator.new()
 @onready var player_manager = $".."
 
 #inventory
+@onready var grapple_spawner = $MSGrapple
+@onready var instrument_spawner = $MSInstrument
 @onready var inventory = $PlayerHead/Camera3D/Inventory
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
@@ -63,31 +65,27 @@ var is_player: bool
 var is_focus: bool = false
 
 func _ready() -> void:
-	grapple = grapple_scene.instantiate()
-	grapple.init(self)
-	shotgun = shotgun_scene.instantiate()
-	shotgun.init(self)
-	gun = gun_scene.instantiate()
-	gun.init(self)
-	rod = rod_scene.instantiate()
-	rod.init(self)
-	instrument = instrument_scene.instantiate()
-	instrument.init(self)
-	hotbar = [instrument, shotgun, grapple]
+	hotbar = []
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera_cast.set_target_position(Vector3(0, 0, -1 * GRAPPLE_RAY_MAX))
 	
-	select_holdable(0)
-	
 	if !is_player:
 		debug0.hide()
 		debug1.hide()
 	else:
+		var auth = get_multiplayer_authority()
+		spawn_item(instrument_spawner.spawn(auth))
+		spawn_item(grapple_spawner.spawn(auth))
 		marker.hide()
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Engine.max_fps = 1000
+		select_holdable(0)
+
+func spawn_item(item) -> void:
+	hotbar.append(item)
+	item.deselect.rpc()
 
 func _unhandled_input(event) -> void:
 	if is_focus:
@@ -109,7 +107,8 @@ func _process(delta: float) -> void:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				is_focus = true
 			
-		#holdable.action(delta)
+		if holdable:
+			holdable.action(delta)
 		# movement
 		input_dir = Input.get_vector("left", "right", "up", "down")
 		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
@@ -163,7 +162,7 @@ func _process(delta: float) -> void:
 		if input_dir or (not jumped and is_on_floor()):
 			velocity = velocity + (transform.basis * movement) * delta
 		move_and_slide()
-		holdable.action(delta)
+		#holdable.action(delta)
 		debug0.text = str(rad_to_deg(camera.rotation.x)) + "\n " + str(velocity) + "\n " + str(global_position)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 		
@@ -172,7 +171,8 @@ func _process(delta: float) -> void:
 		player_manager.main_player_position = position
 	else:
 		scale_marker(position.distance_to(player_manager.main_player_position))
-	holdable.end_action()
+	if holdable:
+		holdable.end_action()
 	
 func hotbar_logic() -> void:
 	if is_player:
@@ -182,16 +182,17 @@ func hotbar_logic() -> void:
 					hotbar_to_select = i
 			
 	if hotbar_to_select != hotbar_selected:
-		select_holdable.rpc(hotbar_to_select)
+		select_holdable(hotbar_to_select)
 		hotbar_selected = hotbar_to_select
 		
 
-@rpc("any_peer", "call_local")
+#@rpc("any_peer", "call_local")
 func select_holdable(item_to_hold: int) -> void:
 	if holdable:
-		holdable.deselect()
+		holdable.deselect.rpc()
+	print(hotbar)
 	holdable = hotbar[item_to_hold]
-	holdable.select()
+	holdable.select.rpc()
 	
 
 @rpc("any_peer", "call_local")

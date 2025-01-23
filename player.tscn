@@ -1,7 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=15 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
+[ext_resource type="Script" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
+[ext_resource type="Script" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
+[ext_resource type="Script" path="res://Scripts/inventory.gd" id="4_op6ry"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -96,6 +99,14 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_tfnp7")
 
+[node name="MSInstrument" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+script = ExtResource("2_scgbr")
+
+[node name="MSGrapple" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+script = ExtResource("3_0l2rs")
+
 [node name="PlayerHead" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)
 
@@ -123,6 +134,7 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.998166, -0.0605433, 0, 0.0605433, 0.998166, 0.471, -0.201, -0.538)
+script = ExtResource("4_op6ry")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead/Camera3D/Inventory"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 4.72592e-09, 0, -4.72592e-09, 0.1, 0, 0, 0)

@@ -19,6 +19,9 @@ var resolution: int = 4
 
 var mesh = ImmediateMesh.new()
 
+func _ready() -> void:
+	overseer = get_parent().player
+
 func action(_delta: float) -> void:
 	var grapple_raycast_hit = overseer.camera_cast.get_collider()
 	crosshair_info(grapple_raycast_hit)
@@ -46,12 +49,19 @@ func action(_delta: float) -> void:
 
 func end_action() -> void:
 	if overseer.is_grappling:
-		create_rope_mesh()
-		grapple_mesh.visible = true
+		show_mesh.rpc()
 	else:
-		grapple_mesh.visible = false
+		hide_mesh.rpc()
 	
-	
+@rpc("any_peer", "call_local")
+func show_mesh() -> void:
+	create_rope_mesh()
+	grapple_mesh.visible = true
+
+@rpc("any_peer", "call_local")
+func hide_mesh() -> void:
+	grapple_mesh.visible = false
+
 func crosshair_info(ray_hit) -> void:
 	var string_for_crosshair: String = ""
 	if ray_hit:
@@ -64,7 +74,6 @@ func crosshair_info(ray_hit) -> void:
 		string_for_crosshair = "|-----|"
 	overseer.crosshair.display_crosshair_text(string_for_crosshair)
 
-@rpc("call_local")
 func create_rope_mesh() -> void:
 	var points : PackedVector3Array = []
 	points.append(grapple_point.global_position - grapple_point.position)
