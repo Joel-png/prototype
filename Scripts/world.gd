@@ -22,10 +22,8 @@ func _process(delta: float) -> void:
 	if is_multiplayer_authority():
 		if Input.is_action_pressed("right_arrow"):
 			fog -= 0.001
-			print(fog)
 		if Input.is_action_pressed("left_arrow"):
 			fog += 0.001
-			print(fog)
 		fog = clamp(fog, 0.01, 0.99)
 	environment.get_environment().volumetric_fog_density = fog_curve.sample(fog)
 	

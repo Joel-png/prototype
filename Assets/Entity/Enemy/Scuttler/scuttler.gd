@@ -74,7 +74,6 @@ func _process(delta: float) -> void:
 	move_and_slide()
 
 func switch_state(change_state: String):
-	print(change_state)
 	if change_state == "search":
 		state = change_state
 	elif change_state == "attack":
@@ -115,7 +114,8 @@ func lerp_angle_look_at(target_position: Vector3, delta: float, rotation_speed: 
 
 func lerp_look_at(thing_looking, target_position: Vector3, delta: float, rotation_speed: float) -> void:
 	var old_rotation: Vector3 = thing_looking.rotation
-	thing_looking.look_at(target_position)
+	if not Vector3.UP.cross(target_position - global_transform.origin).is_zero_approx():
+		thing_looking.look_at(target_position)
 	var new_rotation: Vector3 = thing_looking.rotation
 	thing_looking.rotation = old_rotation
 	thing_looking.rotate_y(((new_rotation.y - old_rotation.y) * delta * rotation_speed))
