@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://opeswkewbdxj"]
 
-[ext_resource type="Script" path="res://Scripts/grimoire.gd" id="1_ehey0"]
+[ext_resource type="Script" uid="uid://b40dt5nq18exy" path="res://Scripts/grimoire.gd" id="1_ehey0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_38rkq"]
 size = Vector3(0.5, 0.1, 1)

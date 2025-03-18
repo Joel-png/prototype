@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=4 uid="uid://c7ht64odpbsic"]
 
-[ext_resource type="Script" path="res://Scripts/azathoth.gd" id="1_qist1"]
+[ext_resource type="Script" uid="uid://m0oe661ra4xr" path="res://Scripts/azathoth.gd" id="1_qist1"]
 [ext_resource type="PackedScene" uid="uid://b5rxl6w1s1bkg" path="res://Assets/Entity/Enemy/Azathoth/Laser/laser.tscn" id="2_7yw3t"]
 [ext_resource type="PackedScene" uid="uid://tyaid71gn2fa" path="res://Assets/Entity/Enemy/tenticle.tscn" id="2_n1frg"]
 
@@ -185,9 +185,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gsp1s"]
 _data = {
-"RESET": SubResource("Animation_4o7yq"),
-"attack_0": SubResource("Animation_i1ad7"),
-"attack_1": SubResource("Animation_0vpvb")
+&"RESET": SubResource("Animation_4o7yq"),
+&"attack_0": SubResource("Animation_i1ad7"),
+&"attack_1": SubResource("Animation_0vpvb")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cls3i"]
@@ -229,8 +229,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_olawb"]
 _data = {
-"RESET": SubResource("Animation_pn47r"),
-"idle_look_at": SubResource("Animation_cj8u3")
+&"RESET": SubResource("Animation_pn47r"),
+&"idle_look_at": SubResource("Animation_cj8u3")
 }
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4qe3v"]
@@ -297,7 +297,7 @@ transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 
 
 [node name="EyeballAttackAnimation" type="AnimationPlayer" parent="Body/Eye/EyeballMesh"]
 libraries = {
-"": SubResource("AnimationLibrary_gsp1s")
+&"": SubResource("AnimationLibrary_gsp1s")
 }
 
 [node name="DetectionArea" type="Area3D" parent="Body"]
@@ -324,7 +324,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.64494, -6.32976)
 
 [node name="IdleLookAtAnimation" type="AnimationPlayer" parent="IdleLookAt"]
 libraries = {
-"": SubResource("AnimationLibrary_olawb")
+&"": SubResource("AnimationLibrary_olawb")
 }
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]

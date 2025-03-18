@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://tyaid71gn2fa"]
 
-[ext_resource type="Script" path="res://Scripts/tenticle.gd" id="1_860cb"]
+[ext_resource type="Script" uid="uid://bk0kckov2m7hv" path="res://Scripts/tenticle.gd" id="1_860cb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_kgxkt"]
 size = Vector3(1, 2, 1)

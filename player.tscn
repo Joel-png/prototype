@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://dqvqvqgmttuvl"]
 
-[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_i527r"]
+[ext_resource type="Script" uid="uid://0yl2v46tthnx" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
-[ext_resource type="Script" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
-[ext_resource type="Script" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
-[ext_resource type="Script" path="res://Scripts/multiplayer_grimoire_spawner.gd" id="4_ffd3l"]
-[ext_resource type="Script" path="res://Scripts/inventory.gd" id="4_op6ry"]
+[ext_resource type="Script" uid="uid://csuo7j5nt6c15" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
+[ext_resource type="Script" uid="uid://xp82srsev433" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
+[ext_resource type="Script" uid="uid://bji5o0dx0m3i2" path="res://Scripts/multiplayer_grimoire_spawner.gd" id="4_ffd3l"]
+[ext_resource type="Script" uid="uid://bwbo181mpenja" path="res://Scripts/inventory.gd" id="4_op6ry"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -67,8 +67,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dln08"]
 _data = {
-"RESET": SubResource("Animation_8jv3a"),
-"shoot": SubResource("Animation_itsju")
+&"RESET": SubResource("Animation_8jv3a"),
+&"shoot": SubResource("Animation_itsju")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b3jbe"]
@@ -154,7 +154,7 @@ replication_config = SubResource("SceneReplicationConfig_504ej")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_dln08")
+&"": SubResource("AnimationLibrary_dln08")
 }
 
 [node name="Marker" type="MeshInstance3D" parent="."]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b2g0rqo5jkx7r"]
 
-[ext_resource type="Script" path="res://Scripts/Grapple.gd" id="1_4geut"]
+[ext_resource type="Script" uid="uid://nx21pvispj7m" path="res://Scripts/Grapple.gd" id="1_4geut"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cwjq0"]
 

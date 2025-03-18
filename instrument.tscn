@@ -1,8 +1,8 @@
 [gd_scene load_steps=36 format=3 uid="uid://5gvc6artnuki"]
 
-[ext_resource type="Script" path="res://Scripts/instrument.gd" id="1_n745x"]
-[ext_resource type="Script" path="res://Scripts/audioLibrary.gd" id="2_367ri"]
-[ext_resource type="Script" path="res://Scripts/soundEffect.gd" id="3_j27bb"]
+[ext_resource type="Script" uid="uid://b6cqwceg28kej" path="res://Scripts/instrument.gd" id="1_n745x"]
+[ext_resource type="Script" uid="uid://qccir8p5qr7r" path="res://Scripts/audioLibrary.gd" id="2_367ri"]
+[ext_resource type="Script" uid="uid://cfshwjnffwp6e" path="res://Scripts/soundEffect.gd" id="3_j27bb"]
 [ext_resource type="AudioStream" uid="uid://c3qjl0rxme8lx" path="res://Sounds/Instruments/Piano/pianoc6.mp3" id="4_4gydj"]
 [ext_resource type="AudioStream" uid="uid://gsylevs56i1" path="res://Sounds/Instruments/Piano/pianoc7.mp3" id="4_jybss"]
 [ext_resource type="AudioStream" uid="uid://5qnvcam5sqv5" path="res://Sounds/Instruments/Piano/pianod6.mp3" id="5_4or5k"]

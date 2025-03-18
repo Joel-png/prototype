@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=3 uid="uid://dh4murj2utxni"]
 
-[ext_resource type="Script" path="res://Scripts/projectile.gd" id="1_7ls1k"]
+[ext_resource type="Script" uid="uid://ewc15vktn0vq" path="res://Scripts/projectile.gd" id="1_7ls1k"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rqv5v"]
 cull_mode = 2

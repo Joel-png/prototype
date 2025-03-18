@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=4 uid="uid://c8stw2jq1herj"]
 
 [ext_resource type="PackedScene" uid="uid://dgl5cn62l452q" path="res://Assets/Entity/Enemy/Scuttler/scuttler.glb" id="1_b7ers"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_yv11b"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="3_3xwo8"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_target.gd" id="4_cdrft"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_step_container.gd" id="5_ortoq"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ray.gd" id="6_5bjwb"]
+[ext_resource type="Script" uid="uid://cigsea4ymag1a" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_yv11b"]
+[ext_resource type="Script" uid="uid://dyo2pb3vhx1r2" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="3_3xwo8"]
+[ext_resource type="Script" uid="uid://cntaatstatinu" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_target.gd" id="4_cdrft"]
+[ext_resource type="Script" uid="uid://c3oqa3hmajt6a" path="res://Assets/Entity/Enemy/Scuttler/scuttler_step_container.gd" id="5_ortoq"]
+[ext_resource type="Script" uid="uid://cargsk1mb84b" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ray.gd" id="6_5bjwb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sh1ni"]
 albedo_color = Color(0.917647, 0, 0.223529, 1)

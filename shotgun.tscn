@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b7a7od8pghued"]
 
-[ext_resource type="Script" path="res://Scripts/Shotgun.gd" id="1_fkpy2"]
+[ext_resource type="Script" uid="uid://bshbjwfjlveh7" path="res://Scripts/Shotgun.gd" id="1_fkpy2"]
 [ext_resource type="PackedScene" uid="uid://dtt4jrtcoa8dx" path="res://muzzle.tscn" id="3_3yn27"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_psf4i"]

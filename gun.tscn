@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dsjmofcc0y8yw"]
 
-[ext_resource type="Script" path="res://Scripts/gun.gd" id="1_byhcj"]
+[ext_resource type="Script" uid="uid://buxjyv72g81nm" path="res://Scripts/gun.gd" id="1_byhcj"]
 [ext_resource type="PackedScene" uid="uid://dtt4jrtcoa8dx" path="res://muzzle.tscn" id="2_h7h2f"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_5aisj"]

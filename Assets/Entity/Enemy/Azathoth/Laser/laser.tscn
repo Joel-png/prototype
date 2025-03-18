@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=4 uid="uid://b5rxl6w1s1bkg"]
 
 [ext_resource type="Shader" uid="uid://ipb88xucxfg2" path="res://Assets/Entity/Enemy/Azathoth/Laser/s_beam.tres" id="1_c6o37"]
-[ext_resource type="Script" path="res://Assets/Entity/Enemy/Azathoth/Laser/laser.gd" id="1_cj5pn"]
+[ext_resource type="Script" uid="uid://cakm80lya8fpp" path="res://Assets/Entity/Enemy/Azathoth/Laser/laser.gd" id="1_cj5pn"]
 [ext_resource type="Shader" uid="uid://x2casf3qvev6" path="res://Assets/Entity/Enemy/Azathoth/Laser/s_dish.tres" id="2_dt3y5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eu8ry"]
@@ -32,7 +32,7 @@ render_priority = 0
 shader = ExtResource("1_c6o37")
 shader_parameter/ColorParameter = Color(0.937255, 0.937255, 0.937255, 1)
 shader_parameter/TexturePower = 0.1
-shader_parameter/EdgeFade = null
+shader_parameter/EdgeFade = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_61olh"]
 _surfaces = [{

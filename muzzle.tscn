@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dtt4jrtcoa8dx"]
 
-[ext_resource type="Script" path="res://Scripts/muzzle.gd" id="1_b2s1o"]
+[ext_resource type="Script" uid="uid://trx3ecpa3u7" path="res://Scripts/muzzle.gd" id="1_b2s1o"]
 [ext_resource type="Shader" uid="uid://cn7k7ynk8vub3" path="res://Shaders/s_muzzle_flash.tres" id="1_crgce"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b8u8i"]
@@ -59,8 +59,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_blcma"]
 _data = {
-"RESET": SubResource("Animation_544jh"),
-"flash": SubResource("Animation_hviwh")
+&"RESET": SubResource("Animation_544jh"),
+&"flash": SubResource("Animation_hviwh")
 }
 
 [node name="Muzzle" type="Node3D"]
@@ -81,5 +81,5 @@ draw_pass_1 = SubResource("QuadMesh_qpdxg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_blcma")
+&"": SubResource("AnimationLibrary_blcma")
 }
