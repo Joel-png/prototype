@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://opeswkewbdxj"]
+
+[ext_resource type="Script" path="res://Scripts/grimoire.gd" id="1_ehey0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_38rkq"]
+size = Vector3(0.5, 0.1, 1)
+
+[node name="Grimoire" type="Node3D"]
+script = ExtResource("1_ehey0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_38rkq")

@@ -46,6 +46,7 @@ var rng = RandomNumberGenerator.new()
 #inventory
 @onready var grapple_spawner = $MSGrapple
 @onready var instrument_spawner = $MSInstrument
+@onready var grimoire_spawner = $MSGrimoire
 @onready var inventory = $PlayerHead/Camera3D/Inventory
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
@@ -78,6 +79,7 @@ func _ready() -> void:
 		var auth = get_multiplayer_authority()
 		spawn_item(instrument_spawner.spawn(auth))
 		spawn_item(grapple_spawner.spawn(auth))
+		spawn_item(grimoire_spawner.spawn(auth))
 		marker.hide()
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Engine.max_fps = 1000

@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=16 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
 [ext_resource type="Script" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
 [ext_resource type="Script" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
+[ext_resource type="Script" path="res://Scripts/multiplayer_grimoire_spawner.gd" id="4_ffd3l"]
 [ext_resource type="Script" path="res://Scripts/inventory.gd" id="4_op6ry"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
@@ -106,6 +107,10 @@ script = ExtResource("2_scgbr")
 [node name="MSGrapple" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
 script = ExtResource("3_0l2rs")
+
+[node name="MSGrimoire" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+script = ExtResource("4_ffd3l")
 
 [node name="PlayerHead" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)

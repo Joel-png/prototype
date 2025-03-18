@@ -78,11 +78,11 @@ void fragment() {
 	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	float depth_texture_y = world.y / world.w;
 	float vertex_y = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).y;
-	
+
 	float real_depth = (vertex_y - depth_texture_y) / depth_distance;
 	float depth_blend = clamp(real_depth, 0.0, 1.0);
 	depth_blend = exp(-depth_blend * beers_law);
-	
+
 	float basic_fresnel = fresnel(3.0, NORMAL, VIEW);
 	vec2 uv = UV * uv_scale / 4.0;
 	vec2 wave_uv = UV;
@@ -95,11 +95,11 @@ void fragment() {
 	vec2 uv_movement = movement_direction * TIME * movement_strength;
 	vec3 normalmap = texture(normalmap_a, fix_edge(uv + uv_movement)).rgb * normalmap_a_strength;
 	normalmap += texture(normalmap_b, fix_edge(uv - uv_movement)).rgb * normalmap_b_strength;
-	
+
 	vec3 depth_colour = mix(primary_colour, secondary_colour, depth_blend).rgb;
 	vec3 final_colour = mix(depth_colour, screen, water_transparency);
 	final_colour = mix(final_colour, screen, depth_blend * (1.0 - basic_fresnel));
-	
+
 	if (shallow_enough(depth_blend + wave_offset, wave_offset) && real_depth > 0.0) {
 		ALBEDO = edge_colour.rgb;
 		//ROUGHNESS = 1.0;
@@ -111,7 +111,7 @@ void fragment() {
 	}
 	NORMAL_MAP = normalmap;
 	SPECULAR = 1.0;
-	
+
 }
 
 
