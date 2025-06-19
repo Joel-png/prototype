@@ -24,6 +24,9 @@ var direction: Vector3 = Vector3.ZERO
 var current_max_speed: float = WALK_SPEED
 var rng = RandomNumberGenerator.new()
 
+var noise_level = 0.0
+var noise_decrease = 1.0
+var noise_increase = 2.0
 
 
 @onready var head = $PlayerHead
@@ -88,6 +91,11 @@ func _ready() -> void:
 func spawn_item(item) -> void:
 	hotbar.append(item)
 	item.deselect.rpc()
+	
+func calc_noise(delta):
+	if noise_level > 0.0:
+		noise_level -= noise_decrease * delta + noise_level * 0.5 * delta
+		noise_level = max(0, noise_level)
 
 func _unhandled_input(event) -> void:
 	if is_focus:
@@ -100,6 +108,7 @@ func _process(delta: float) -> void:
 	is_player = is_multiplayer_authority()
 	
 	if is_player:
+		calc_noise(delta)
 		hotbar_logic()
 		if Input.is_action_just_pressed("Escape"):
 			if is_focus:
@@ -114,6 +123,7 @@ func _process(delta: float) -> void:
 		# movement
 		input_dir = Input.get_vector("left", "right", "up", "down")
 		direction = Vector3(input_dir.x, 0, input_dir.y).normalized()
+		
 	#	transform.basis * 
 		var target_speed: Vector3 = direction * current_max_speed
 		var jumped: bool = false
@@ -130,7 +140,6 @@ func _process(delta: float) -> void:
 		if not is_on_floor():
 			velocity.y -= gravity * delta
 		
-			
 		if not input_dir and not jumped and is_on_floor():
 			target_speed.x = 0.0
 			target_speed.z = 0.0
@@ -163,9 +172,14 @@ func _process(delta: float) -> void:
 		
 		if input_dir or (not jumped and is_on_floor()):
 			velocity = velocity + (transform.basis * movement) * delta
+		
+		var moving_amount = Vector3(0, 0, 0).distance_to(velocity)
+		if moving_amount > 0.01:
+			var delta_calc = moving_amount * delta
+			noise_level += noise_increase * delta_calc
 		move_and_slide()
 		#holdable.action(delta)
-		debug0.text = str(rad_to_deg(camera.rotation.x)) + "\n " + str(velocity) + "\n " + str(global_position)
+		debug0.text = str(moving_amount) + "\n " + str(velocity) + "\n " + str(noise_level)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
 		
 		get_parent_node_3d().update_grass(position)

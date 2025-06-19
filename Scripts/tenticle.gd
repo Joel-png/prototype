@@ -29,7 +29,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var time: int = Time.get_ticks_msec()
 	rotation.x = base_rotation.x + cos(float(time) * rotation_speed.x + random_rotation_offset.x) * rotation_multiplier.x
 	rotation.y = base_rotation.y + sin(float(time) * rotation_speed.y + random_rotation_offset.y) * rotation_multiplier.y

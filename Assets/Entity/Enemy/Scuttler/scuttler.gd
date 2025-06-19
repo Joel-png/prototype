@@ -5,15 +5,18 @@ var distance_to_attack: float = 50.0
 var turn_speed: float = 1.0
 var ground_offset: float = 1.5
 var last_seen_player
+var path_data
 
 var attacking: bool = false
 var attack_charge_time: float = 2.0
 var state: String = "search"
 
 var flank_direction: int = 1
+var closest_player_position = Vector3(0.0, 0.0, 0.0)
 
 @onready var detection_area = $BaseArmature_001/Skeleton3D/FullBody/Eye/DetectionArea
 @onready var eye = $BaseArmature_001/Skeleton3D/FullBody/Eye
+@onready var pather = $Pather
 
 @onready var action_timer = $ActionTimer
 
@@ -22,30 +25,29 @@ var flank_direction: int = 1
 @onready var fr_leg = $BaseArmature_001/Skeleton3D/IKFrontR
 @onready var br_leg = $BaseArmature_001/Skeleton3D/IKBackR
 
+
 func _process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= 9.8 * 4 * delta
-	
+	path_data = pather.find_position()
+	var found_player = path_data[0]
+	if found_player:
+		closest_player_position = path_data[1]
 	if state == "search":
-		if detection_area.has_overlapping_bodies():
-			var detected_players: Array = detection_area.get_overlapping_bodies()
-			var closests_player_index: int = get_closest_player_index(detected_players)
-			var closest_player_position: Vector3 = detected_players[closests_player_index].position
-			last_seen_player = detected_players[closests_player_index]
+		if !found_player:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
 			set_vel(move_speed, -transform.basis.z)
-		elif last_seen_player:
-			var closest_player_position: Vector3 = last_seen_player.position
+		elif found_player:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
 			set_vel(move_speed * 3.0, -transform.basis.z)
 			
 		#close to play start attack
-		if last_seen_player:
-			var distance_to_player = last_seen_player.position.distance_to(global_position)
+		if found_player:
+			var distance_to_player = closest_player_position.distance_to(global_position)
 			if distance_to_player < distance_to_attack:
 				if randi_range(0, 1) == 0:
 					switch_state("attack")
@@ -56,7 +58,6 @@ func _process(delta: float) -> void:
 		if action_timer.time_left > action_timer.wait_time - attack_charge_time:
 			velocity.x *= 0.5
 			velocity.z *= 0.5
-			var closest_player_position: Vector3 = last_seen_player.position
 			lerp_angle_look_at(closest_player_position, delta, 8.0)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 		else:
@@ -65,7 +66,6 @@ func _process(delta: float) -> void:
 			switch_state("search")
 			
 	elif state == "flank":
-		var closest_player_position: Vector3 = last_seen_player.position
 		lerp_angle_look_at(closest_player_position, delta, 8.0)
 		lerp_look_at(eye, closest_player_position, delta, 0.95)
 		set_vel(move_speed, flank_direction * transform.basis.x)
@@ -121,14 +121,3 @@ func lerp_look_at(thing_looking, target_position: Vector3, delta: float, rotatio
 	thing_looking.rotate_y(((new_rotation.y - old_rotation.y) * delta * rotation_speed))
 	thing_looking.rotate_x(((new_rotation.x - old_rotation.x) * delta * rotation_speed))
 	thing_looking.rotation.z = 0
-	
-func get_closest_player_index(players):
-	var overlapping_bodies: Array = players
-	var closests_body_distance: float = position.distance_to(overlapping_bodies[0].position)
-	var closests_body_index: int = 0
-	for body_index in range(1, overlapping_bodies.size()):
-		var distance_to_player: float = position.distance_to(overlapping_bodies[body_index].position)
-		if distance_to_player < closests_body_distance:
-			closests_body_distance = distance_to_player
-			closests_body_index = body_index
-	return closests_body_index

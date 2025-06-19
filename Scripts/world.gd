@@ -18,7 +18,7 @@ func _ready() -> void:
 func set_seed() -> void:
 	terrain_seed = randi_range(0, 1000)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		if Input.is_action_pressed("right_arrow"):
 			fog -= 0.001

@@ -45,7 +45,7 @@ func play_sound_effect_from_library(_tag: String, i: int) -> void:
 		var polyphonic_stream_playback = audio_streamers[i].get_stream_playback()
 		polyphonic_stream_playback.play_stream(audio_stream)
 
-func do_all_keys(delta: float) -> void:
+func do_all_keys(_delta: float) -> void:
 	for i in range(0, inputs.size()):
 		if Input.is_action_pressed(inputs[i]):
 			play_note.rpc(i)

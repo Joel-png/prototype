@@ -14,6 +14,6 @@ func _ready() -> void:
 	pass
 	
 
-func action(delta: float) -> void:
+func action(_delta: float) -> void:
 	pass
 	
