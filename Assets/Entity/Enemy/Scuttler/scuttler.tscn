@@ -555,3 +555,5 @@ one_shot = true
 
 [node name="Pather" parent="." instance=ExtResource("6_wwwbp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.292833, -1.18914)
+search_radius = 200.0
+perfect_hearing_range = 35.0
