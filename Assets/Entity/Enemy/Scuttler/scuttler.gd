@@ -43,11 +43,10 @@ func _process(delta: float) -> void:
 			lerp_angle_look_at(closest_player_position, delta, 0.9)
 			lerp_look_at(eye, closest_player_position, delta, 0.95)
 			
-			set_vel(move_speed * 3.0, -transform.basis.z)
-			
-		#close to play start attack
-		if found_player:
 			var distance_to_player = closest_player_position.distance_to(global_position)
+			set_vel(move_speed * (3.0 + max(0.0, distance_to_player / 100.0)), -transform.basis.z)
+			
+			#close to play start attack
 			if distance_to_player < distance_to_attack:
 				if randi_range(0, 1) == 0:
 					switch_state("attack")

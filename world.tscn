@@ -54,7 +54,7 @@ sdfgi_cascades = 1
 sdfgi_max_distance = 25.6
 fog_enabled = true
 fog_light_color = Color(1, 0.13, 0.13, 1)
-fog_light_energy = 0.01
+fog_light_energy = 0.1
 fog_aerial_perspective = 0.932
 fog_sky_affect = 0.0
 fog_height = 2613.67
@@ -65,7 +65,7 @@ fog_depth_end = 860.8
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.386003, 0.0187373, 0.157066, 1)
-volumetric_fog_emission = Color(0.0728426, 0.0728426, 0.0728426, 1)
+volumetric_fog_emission = Color(0.0295017, 1.92704e-05, 0.14326, 1)
 volumetric_fog_anisotropy = 0.9
 volumetric_fog_detail_spread = 6.0
 volumetric_fog_ambient_inject = 0.36
@@ -316,6 +316,7 @@ shader = ExtResource("12_3c5pl")
 shader_parameter/uv_scale = 0.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_isnlg"]
+material = ExtResource("13_gaw3q")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hiqwa"]
 
@@ -429,6 +430,27 @@ shape = SubResource("BoxShape3D_hiqwa")
 [node name="Enemies" type="Node3D" parent="."]
 
 [node name="scuttler" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler2" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler3" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler4" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler5" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler6" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler7" parent="Enemies" instance=ExtResource("14_pkj14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
+
+[node name="scuttler8" parent="Enemies" instance=ExtResource("14_pkj14")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 325.733, 0)
 
 [node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="."]
