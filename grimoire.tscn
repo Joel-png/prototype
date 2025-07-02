@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://opeswkewbdxj"]
+[gd_scene load_steps=4 format=3 uid="uid://opeswkewbdxj"]
 
 [ext_resource type="Script" uid="uid://b40dt5nq18exy" path="res://Scripts/grimoire.gd" id="1_ehey0"]
+[ext_resource type="PackedScene" uid="uid://dq35xsap13dsn" path="res://fish_manager.tscn" id="2_fudan"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_38rkq"]
 size = Vector3(0.5, 0.1, 1)
@@ -10,3 +11,5 @@ script = ExtResource("1_ehey0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_38rkq")
+
+[node name="FishManager" parent="." instance=ExtResource("2_fudan")]

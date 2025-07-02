@@ -14,7 +14,6 @@ var state: String = "search"
 var flank_direction: int = 1
 var closest_player_position = Vector3(0.0, 0.0, 0.0)
 
-@onready var detection_area = $BaseArmature_001/Skeleton3D/FullBody/Eye/DetectionArea
 @onready var eye = $BaseArmature_001/Skeleton3D/FullBody/Eye
 @onready var pather = $Pather
 

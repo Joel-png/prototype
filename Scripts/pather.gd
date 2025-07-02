@@ -33,7 +33,7 @@ func find_position():
 			noisiest = member_noise
 			pos = member.global_position
 	if print:
-		print([noisiest, pos])
+		pass#print([noisiest, pos])
 	return [noisiest >= hearing_requirement, pos]
 
 func is_heard(pos, noise):
