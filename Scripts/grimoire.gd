@@ -1,8 +1,12 @@
 extends Holdable
 class_name Grimoire
 
-var damage_multiplier = 1.0
-var percent_multiplier = 1.0
+var total_damage_multiplier = 1.0
+var total_percent_multiplier = 1.0
+var action_types = {
+	"damage_multiplier": func(damage_multiplier): do_damage_multiplier(damage_multiplier),
+	"damage_projectile": func(damage): do_damage_projectile(damage)
+}
 
 @onready var fish_manager = $FishManager
 
@@ -21,3 +25,16 @@ func compute_fish():
 	for fish_name in equipped_fish:
 		print(fish_manager.cast_fish(fish_name))
 	
+func do_damage_multiplier(damage_multiplier):
+	total_damage_multiplier *= damage_multiplier
+
+func do_damage(damage):
+	return damage * total_damage_multiplier
+	
+func do_damage_projectile(damage):
+	var calced_damage = do_damage(damage)
+	spawn_projectile_test.rpc()
+	
+@rpc("any_peer", "call_local")
+func spawn_projectile_test(damage):
+	print("spawn proj" + str(damage))
