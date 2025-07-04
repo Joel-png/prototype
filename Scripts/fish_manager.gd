@@ -8,16 +8,16 @@ var fish_name_dictionary: Dictionary
 func _ready() -> void:
 	new_fish("Test fish", "cast", \
 		"Cast {0} projectile for {1} damage", \
-		[1, 10], \
-		["damage_projectile", "damage"])
+		[1, 10, "fireball", 20], \
+		["projectile", "damage", "spell", "cast_cost"])
 	new_fish("Beta fish", "all", \
 		"{0}x damage", \
-		[2], \
-		["damage_multiplier"])
+		[2, 10], \
+		["damage_multiplier", "cast_cost"])
 	new_fish("Redd Fish", "cast", \
 		"Damage yourself for {0}% current HP + {1}% of your total HP each cast, you gain {2}x damage multiplier", \
-		[45, 1, 8], \
-		["percent", "percent", "damage_multiplier"])
+		[45, 1, 8, "damage_self", 0], \
+		["current_hp", "total_hp", "damage_multiplier", "buff", "cast_cost"])
 	new_fish("Hit fish", "onhit", \
 		"do {0} damage in an {1} meter AOE", \
 		[33, 5], \
