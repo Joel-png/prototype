@@ -1,11 +1,12 @@
-[gd_scene load_steps=16 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=17 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" uid="uid://0yl2v46tthnx" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
 [ext_resource type="Script" uid="uid://csuo7j5nt6c15" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
 [ext_resource type="Script" uid="uid://xp82srsev433" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
 [ext_resource type="Script" uid="uid://bji5o0dx0m3i2" path="res://Scripts/multiplayer_grimoire_spawner.gd" id="4_ffd3l"]
-[ext_resource type="Script" uid="uid://bwbo181mpenja" path="res://Scripts/inventory.gd" id="4_op6ry"]
+[ext_resource type="Script" uid="uid://ciyra3ln02cnq" path="res://inventory_manager.gd" id="5_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://brgrcy3cn8f7f" path="res://inventory.tscn" id="6_1jxqw"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -139,11 +140,14 @@ debug_shape_custom_color = Color(1, 0, 1, 1)
 
 [node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.998166, -0.0605433, 0, 0.0605433, 0.998166, 0.471, -0.201, -0.538)
-script = ExtResource("4_op6ry")
+script = ExtResource("5_1jxqw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead/Camera3D/Inventory"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 4.72592e-09, 0, -4.72592e-09, 0.1, 0, 0, 0)
 mesh = SubResource("BoxMesh_64nf0")
+
+[node name="Inventory" parent="PlayerHead/Camera3D/Inventory" instance=ExtResource("6_1jxqw")]
+visible = false
 
 [node name="Crosshair" parent="PlayerHead/Camera3D" instance=ExtResource("2_72jpy")]
 

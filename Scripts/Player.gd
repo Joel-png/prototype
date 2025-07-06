@@ -113,9 +113,11 @@ func _process(delta: float) -> void:
 		if Input.is_action_just_pressed("Escape"):
 			if is_focus:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+				$PlayerHead/Camera3D/Inventory/Inventory.show()
 				is_focus = false
 			else:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				$PlayerHead/Camera3D/Inventory/Inventory.hide()
 				is_focus = true
 			
 		if holdable:

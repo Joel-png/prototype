@@ -1,13 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://gihyiah2uoqv"]
+[gd_scene load_steps=3 format=3 uid="uid://gihyiah2uoqv"]
 
-[ext_resource type="Texture2D" uid="uid://b45dma7itnoop" path="res://Assets/UI/inventory_slot.png" id="1_cjqu3"]
+[ext_resource type="Script" uid="uid://b8dh5qvymlb08" path="res://Scripts/inventory_slot.gd" id="1_f5bh6"]
+[ext_resource type="Texture2D" uid="uid://brlyos4gdirsm" path="res://Assets/UI/inventory_background.png" id="2_bfyh4"]
 
 [node name="InventorySlot" type="Panel"]
 custom_minimum_size = Vector2(40, 40)
 offset_right = 40.0
 offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_f5bh6")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(4, 4)
-texture = ExtResource("1_cjqu3")
-centered = false
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_bfyh4")
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
+
+[node name="ItemTexture" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

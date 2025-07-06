@@ -14,7 +14,7 @@ var action_types = {
 	"cast_cost": func(fish_data): do_cast_cost(fish_data["cast_cost"])
 }
 
-@onready var fish_manager = $FishManager
+@onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
 
 var equipped_fish = ["Beta fish", "Test fish"]
 
