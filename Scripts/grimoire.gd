@@ -1,6 +1,8 @@
 extends Holdable
 class_name Grimoire
 
+var cast_cool_down: float = 0.0
+var cast_cool_down_decrease: float = 10.0
 var total_damage_multiplier = 1.0
 var total_percent_multiplier = 1.0
 var total_projectiles = 0.0
@@ -19,11 +21,14 @@ var action_types = {
 var equipped_fish = []
 
 func _ready() -> void:
-	pass
-	
+	overseer = get_parent().player
+
+func _process(delta: float) -> void:
+	if cast_cool_down > 0.0:
+		cast_cool_down -= cast_cool_down_decrease * delta
 
 func action(_delta: float) -> void:
-	if Input.is_action_just_pressed("left_click"):
+	if Input.is_action_just_pressed("left_click") and cast_cool_down <= 0.0:
 		compute_fishes("cast")
 		
 
@@ -67,7 +72,9 @@ func do_projectile(projectile):
 func do_damage_projectile(fish_data):
 	var calced_damage = do_damage(fish_data["damage"])
 	var calced_projectile = do_projectile(fish_data["projectile"])
-	spawn_projectile_test.rpc(fish_data["spell"], calced_damage, calced_projectile, total_cast_cost)
+	overseer.cast_spell(global_position, global_rotation, fish_data["spell"], calced_damage, calced_projectile, total_cast_cost)
+	cast_cool_down = total_cast_cost
+	
 
 func do_cast_cost(cast_cost):
 	total_cast_cost += cast_cost

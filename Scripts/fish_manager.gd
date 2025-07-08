@@ -8,8 +8,8 @@ var fish_name_dictionary: Dictionary
 func _ready() -> void:
 	new_fish("Test fish", "cast", preload("res://Assets/Fish/bluefish.png"),\
 		"Cast {0} projectile for {1} damage", \
-		[1, 10, "fireball", 20], \
-		["projectile", "damage", "spell", "cast_cost"])
+		[1, 10, 20, "fireball"], \
+		["projectile", "damage", "cast_cost", "spell"])
 	new_fish("Beta fish", "all", preload("res://Assets/Fish/redfish.png"),\
 		"{0}x damage", \
 		[2, 10], \

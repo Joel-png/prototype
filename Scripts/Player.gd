@@ -208,10 +208,18 @@ func hotbar_logic() -> void:
 func select_holdable(item_to_hold: int) -> void:
 	if holdable:
 		holdable.deselect.rpc()
-	print(hotbar)
 	holdable = hotbar[item_to_hold]
 	holdable.select.rpc()
 	
+
+
+func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost):
+	print("spawn proj" + spell_type + " " + str(damage) + " " + str(projectile_count) + " " + str(cast_cost))
+	cast_projectile.rpc(pos, rot, spell_type, damage, projectile_count, cast_cost)
+
+@rpc("any_peer", "call_local")
+func cast_projectile(pos, rot, spell_type, damage, projectile_count, cast_cost):
+	pass
 
 @rpc("any_peer", "call_local")
 func spawn_projectile(pos: Vector3, rot: Vector3, config):
