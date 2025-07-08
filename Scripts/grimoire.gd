@@ -16,7 +16,7 @@ var action_types = {
 
 @onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
 
-var equipped_fish = ["Beta fish", "Test fish"]
+var equipped_fish = []
 
 func _ready() -> void:
 	pass

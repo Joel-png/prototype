@@ -380,6 +380,7 @@ process_material = SubResource("ShaderMaterial_xs7c2")
 draw_pass_1 = ExtResource("8_i2t62")
 
 [node name="ShrubParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+visible = false
 extra_cull_margin = 500.0
 amount = 400
 lifetime = 0.01

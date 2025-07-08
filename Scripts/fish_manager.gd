@@ -30,14 +30,14 @@ func new_fish(fish_name: String, proc_type: String, image, description: String, 
 	fishes.append(fish)
 	fish_name_dictionary[fish_name] = fish_name_dictionary.size()
 	
-func cast_fish(fish_name: String, proc_type: String):
-	var fish = fishes[fish_name_dictionary[fish_name]]
+func cast_fish(fish_to_cast, proc_type: String):
+	var fish = fish_to_cast
 	if fish.is_proc_type(proc_type) or fish.is_proc_type("all"):
 		return [fish.get_dictionary(), fish.get_variable_types()]
 	else:
 		return []
 
-func cast_fish_from_fish(fish_name: String, proc_type: String):
+func cast_fish_from_name(fish_name: String, proc_type: String):
 	var fish = fishes[fish_name_dictionary[fish_name]]
 	if fish.is_proc_type(proc_type) or fish.is_proc_type("all"):
 		return [fish.get_dictionary(), fish.get_variable_types()]

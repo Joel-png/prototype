@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://brgrcy3cn8f7f"]
+[gd_scene load_steps=5 format=3 uid="uid://brgrcy3cn8f7f"]
 
 [ext_resource type="Script" uid="uid://bwbo181mpenja" path="res://Scripts/inventory.gd" id="1_5tt2m"]
 [ext_resource type="Texture2D" uid="uid://brlyos4gdirsm" path="res://Assets/UI/inventory_background.png" id="1_robk6"]
 [ext_resource type="PackedScene" uid="uid://gihyiah2uoqv" path="res://inventory_slot.tscn" id="2_a5thn"]
+[ext_resource type="PackedScene" uid="uid://cs18q0faaaap0" path="res://inventory_grid.tscn" id="3_mrqgh"]
 
 [node name="Inventory" type="Control"]
 layout_mode = 3
@@ -15,40 +16,117 @@ script = ExtResource("1_5tt2m")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 layout_mode = 0
-offset_right = 275.0
-offset_bottom = 74.0
+offset_left = 419.0
+offset_top = 299.0
+offset_right = 733.0
+offset_bottom = 508.0
 texture = ExtResource("1_robk6")
 patch_margin_left = 2
 patch_margin_top = 2
 patch_margin_right = 2
 patch_margin_bottom = 2
 
-[node name="GridContainer" type="GridContainer" parent="NinePatchRect"]
-layout_mode = 0
-offset_right = 275.0
-offset_bottom = 74.0
-columns = 3
+[node name="CenterContainer" parent="." instance=ExtResource("3_mrqgh")]
+layout_mode = 1
+offset_left = -152.0
+offset_right = 152.0
 
-[node name="InventorySlot" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventoryGrid" parent="CenterContainer" index="0"]
+columns = 7
+
+[node name="InventorySlot" parent="CenterContainer/InventoryGrid" index="0" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot2" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot6" parent="CenterContainer/InventoryGrid" index="1" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot3" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot7" parent="CenterContainer/InventoryGrid" index="2" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot4" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot2" parent="CenterContainer/InventoryGrid" index="3" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot5" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot3" parent="CenterContainer/InventoryGrid" index="4" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot6" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot4" parent="CenterContainer/InventoryGrid" index="5" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot7" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="InventorySlot5" parent="CenterContainer/InventoryGrid" index="6" instance=ExtResource("2_a5thn")]
 layout_mode = 2
 
-[node name="InventorySlot8" parent="NinePatchRect/GridContainer" instance=ExtResource("2_a5thn")]
+[node name="CenterContainer2" parent="." instance=ExtResource("3_mrqgh")]
+layout_mode = 1
+offset_left = -152.0
+offset_top = 51.0
+offset_right = 152.0
+offset_bottom = 179.0
+
+[node name="InventoryGrid" parent="CenterContainer2" index="0"]
+columns = 7
+
+[node name="InventorySlot" parent="CenterContainer2/InventoryGrid" index="0" instance=ExtResource("2_a5thn")]
 layout_mode = 2
+
+[node name="InventorySlot6" parent="CenterContainer2/InventoryGrid" index="1" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot7" parent="CenterContainer2/InventoryGrid" index="2" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="CenterContainer2/InventoryGrid" index="3" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="CenterContainer2/InventoryGrid" index="4" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="CenterContainer2/InventoryGrid" index="5" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="CenterContainer2/InventoryGrid" index="6" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot8" parent="CenterContainer2/InventoryGrid" index="7" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot9" parent="CenterContainer2/InventoryGrid" index="8" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot10" parent="CenterContainer2/InventoryGrid" index="9" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot11" parent="CenterContainer2/InventoryGrid" index="10" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot12" parent="CenterContainer2/InventoryGrid" index="11" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot13" parent="CenterContainer2/InventoryGrid" index="12" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot14" parent="CenterContainer2/InventoryGrid" index="13" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot15" parent="CenterContainer2/InventoryGrid" index="14" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot16" parent="CenterContainer2/InventoryGrid" index="15" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot17" parent="CenterContainer2/InventoryGrid" index="16" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot18" parent="CenterContainer2/InventoryGrid" index="17" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot19" parent="CenterContainer2/InventoryGrid" index="18" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot20" parent="CenterContainer2/InventoryGrid" index="19" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[node name="InventorySlot21" parent="CenterContainer2/InventoryGrid" index="20" instance=ExtResource("2_a5thn")]
+layout_mode = 2
+
+[editable path="CenterContainer"]
+[editable path="CenterContainer2"]
