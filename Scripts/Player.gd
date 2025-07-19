@@ -42,6 +42,8 @@ var noise_increase = 2.0
 @onready var gun_scene = preload("res://gun.tscn")
 @onready var rod_scene = preload("res://rod.tscn")
 @onready var instrument_scene = preload("res://instrument.tscn")
+@onready var fireball = preload("res://fireball.tscn")
+
 
 @onready var marker = $Marker
 @onready var player_manager = $".."

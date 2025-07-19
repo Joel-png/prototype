@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsg3cy5if1x2t"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wi6of"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sf4mh"]
+size = Vector3(0.5, 0.5, 1)
+
+[node name="Fireball" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_wi6of")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.746404)
+mesh = SubResource("BoxMesh_sf4mh")
