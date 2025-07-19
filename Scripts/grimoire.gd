@@ -74,7 +74,6 @@ func do_damage_projectile(fish_data):
 	var calced_projectile = do_projectile(fish_data["projectile"])
 	overseer.cast_spell(global_position, global_rotation, fish_data["spell"], calced_damage, calced_projectile, total_cast_cost)
 	cast_cool_down = total_cast_cost
-	
 
 func do_cast_cost(cast_cost):
 	total_cast_cost += cast_cost

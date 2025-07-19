@@ -217,11 +217,12 @@ func select_holdable(item_to_hold: int) -> void:
 
 func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost):
 	print("spawn proj" + spell_type + " " + str(damage) + " " + str(projectile_count) + " " + str(cast_cost))
-	cast_projectile.rpc(pos, rot, spell_type, damage, projectile_count, cast_cost)
+	cast_projectile.rpc(get_multiplayer_authority(), pos, rot, spell_type, damage, projectile_count, cast_cost)
 
 @rpc("any_peer", "call_local")
-func cast_projectile(pos, rot, spell_type, damage, projectile_count, cast_cost):
-	pass
+func cast_projectile(multiplayer_authority, pos, rot, spell_type, damage, projectile_count, cast_cost):
+	var p = fireball.instantiate()
+	
 
 @rpc("any_peer", "call_local")
 func spawn_projectile(pos: Vector3, rot: Vector3, config):
