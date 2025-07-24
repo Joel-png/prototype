@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsg3cy5if1x2t"]
+[gd_scene load_steps=5 format=3 uid="uid://bsg3cy5if1x2t"]
 
 [ext_resource type="Script" uid="uid://bnj1vce6qah7n" path="res://Scripts/fireball.gd" id="1_sf4mh"]
 
@@ -7,7 +7,17 @@
 [sub_resource type="BoxMesh" id="BoxMesh_sf4mh"]
 size = Vector3(0.5, 0.5, 1)
 
-[node name="Fireball" type="Node3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_sf4mh"]
+radius = 0.629134
+
+[node name="Fireball" type="CharacterBody3D"]
+collision_layer = 0
+collision_mask = 5
+motion_mode = 1
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_constant_speed = true
+floor_block_on_wall = false
 script = ExtResource("1_sf4mh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -16,3 +26,6 @@ mesh = SubResource("SphereMesh_wi6of")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.746404)
 mesh = SubResource("BoxMesh_sf4mh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_sf4mh")
