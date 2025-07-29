@@ -4,6 +4,7 @@ extends Panel
 @onready var item_texture = $ItemTexture
 var entered = false
 var item
+var is_backpack = true
 
 func _on_mouse_entered() -> void:
 	entered = true

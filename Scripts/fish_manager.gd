@@ -16,25 +16,25 @@ func _ready() -> void:
 	
 	new_fish("Test fish", "cast", preload("res://Assets/Fish/bluefish.png"),\
 		"Cast {0} projectile for {1} damage", \
-		1, \
+		0, \
 		[1, 10, 20, "fireball"], \
 		["projectile", "damage", "cast_cost", "spell"], \
 		["damage"])
 	new_fish("Beta fish", "all", preload("res://Assets/Fish/redfish.png"),\
 		"{0}x damage", \
-		2, \
+		0, \
 		[2, 10], \
 		["damage_multiplier", "cast_cost"], \
 		["damage_multiplier"])
 	new_fish("Redd Fish", "cast", preload("res://Assets/Fish/bluefish.png"),\
 		"Damage yourself for {0}% current HP + {1}% of your total HP each cast, you gain {2}x damage multiplier", \
-		3, \
+		1, \
 		[45, 1, 8, "damage_self", 0], \
 		["current_hp", "total_hp", "damage_multiplier", "buff", "cast_cost"], \
 		[])
 	new_fish("Hit fish", "onhit", preload("res://Assets/Fish/bluefish.png"),\
 		"do {0} damage in an {1} meter AOE", \
-		4, \
+		0, \
 		[33, 5], \
 		["damage", "aoe"], \
 		[])

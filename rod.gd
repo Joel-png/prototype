@@ -9,7 +9,7 @@ var random_scaler = 0.5
 @onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
 
 func _ready() -> void:
-	pass#call_deferred("_delayed_ready")
+	overseer = get_parent().player
 	
 
 func action(delta: float) -> void:
@@ -22,6 +22,7 @@ func fish():
 	var new_fish = fish_manager.get_fish_from_droprate(random_droprate)
 	new_fish.rarity = set_rarity()
 	new_fish.apply_rarity_to_variables()
+	overseer.inventory.add_item(new_fish)
 
 func set_rarity():
 	var rarity = (1.0 - 1.0 * random_scaler) + (int)(randi_range(1, 100) * random_scaler) / 100.0

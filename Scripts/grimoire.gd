@@ -11,7 +11,7 @@ var action_types = {
 	"damage_multiplier": func(fish_data): do_damage_multiplier(fish_data["damage_multiplier"]),
 	"percent_multiplier": func(fish_data): do_percent_multiplier(fish_data["percent_multiplier"]),
 	"projectile_add": func(fish_data): do_projectile_add(fish_data["projectile_add"]),
-	"buff": func(fish_data): do_damage_multiplier(fish_data),
+	#"buff": func(fish_data): do_damage_multiplier(fish_data),
 	"spell": func(fish_data): do_damage_projectile(fish_data),
 	"cast_cost": func(fish_data): do_cast_cost(fish_data["cast_cost"])
 }

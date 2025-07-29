@@ -49,7 +49,7 @@ var noise_increase = 2.0
 @onready var instrument_spawner = $MSInstrument
 @onready var grimoire_spawner = $MSGrimoire
 @onready var rod_spawner = $MSRod
-@onready var inventory = $PlayerHead/Camera3D/Inventory
+@onready var inventory = $PlayerHead/Camera3D/Inventory/Inventory
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
@@ -108,11 +108,11 @@ func _process(delta: float) -> void:
 		if Input.is_action_just_pressed("Escape"):
 			if is_focus:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-				$PlayerHead/Camera3D/Inventory/Inventory.show()
+				inventory.show()
 				is_focus = false
 			else:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-				$PlayerHead/Camera3D/Inventory/Inventory.hide()
+				inventory.hide()
 				is_focus = true
 			
 		if holdable:
@@ -214,7 +214,7 @@ func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost, equip
 @rpc("any_peer", "call_local")
 func cast_projectile(multiplayer_auth, pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish):
 	var p = fireball.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-	p.setup(multiplayer_auth, pos, rot, damage, projectile_count, equipped_fish)
+	p.setup(multiplayer_auth, pos, get_what_look_at(), damage, projectile_count, equipped_fish)
 	projectiles.add_child(p)
 	
 
