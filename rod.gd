@@ -4,24 +4,26 @@ class_name Rod
 var base_action_cooldown: float = 1
 var action_cooldown: float = 1
 var cast_speed: float = 2.0
-var rotation_amount = deg_to_rad(45)
-var starting_rot_x = rotation.x
-var casting = false
+var random_scaler = 0.5
+
+@onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
 
 func _ready() -> void:
-	pass
+	pass#call_deferred("_delayed_ready")
 	
 
 func action(delta: float) -> void:
-	if Input.is_action_pressed("left_click") and not casting:
-		action_cooldown -= delta
-	else:
-		if action_cooldown < 0:
-			casting = true
-		if action_cooldown < base_action_cooldown:
-			action_cooldown += base_action_cooldown * cast_speed * delta
-			if action_cooldown > base_action_cooldown:
-				action_cooldown = base_action_cooldown
-				casting = false
-		
-	rotation.x = starting_rot_x + rotation_amount * (1 - action_cooldown)
+	if Input.is_action_just_pressed("left_click"):
+		fish()
+
+func fish():
+	var random_droprate = fish_manager.get_random_droprate()
+	print(random_droprate)
+	var new_fish = fish_manager.get_fish_from_droprate(random_droprate)
+	new_fish.rarity = set_rarity()
+	new_fish.apply_rarity_to_variables()
+
+func set_rarity():
+	var rarity = (1.0 - 1.0 * random_scaler) + (int)(randi_range(1, 100) * random_scaler) / 100.0
+	rarity = min(1.0, rarity)
+	return rarity

@@ -37,13 +37,9 @@ var noise_increase = 2.0
 @onready var animation_player = $AnimationPlayer
 @onready var projectiles = $"../../Projectiles"
 @onready var projectile_scene = preload("res://projectile.tscn")
-@onready var grapple_scene = preload("res://grapple.tscn")
-@onready var shotgun_scene = preload("res://shotgun.tscn")
-@onready var gun_scene = preload("res://gun.tscn")
-@onready var rod_scene = preload("res://rod.tscn")
-@onready var instrument_scene = preload("res://instrument.tscn")
-@onready var fireball = preload("res://fireball.tscn")
 
+#spells
+@onready var fireball = preload("res://fireball.tscn")
 
 @onready var marker = $Marker
 @onready var player_manager = $".."
@@ -52,17 +48,13 @@ var noise_increase = 2.0
 @onready var grapple_spawner = $MSGrapple
 @onready var instrument_spawner = $MSInstrument
 @onready var grimoire_spawner = $MSGrimoire
+@onready var rod_spawner = $MSRod
 @onready var inventory = $PlayerHead/Camera3D/Inventory
 
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
 
 var holdable: Holdable = null
-var grapple: Grapple
-var gun: Gun
-var shotgun: Shotgun
-var rod: Rod
-var instrument: Instrument
 var hotbar = []
 var hotbar_length: int = hotbar.size()
 var hotbar_selected: int = 0
@@ -85,6 +77,7 @@ func _ready() -> void:
 		spawn_item(instrument_spawner.spawn(auth))
 		spawn_item(grapple_spawner.spawn(auth))
 		spawn_item(grimoire_spawner.spawn(auth))
+		spawn_item(rod_spawner.spawn(auth))
 		marker.hide()
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		Engine.max_fps = 1000
@@ -93,7 +86,7 @@ func _ready() -> void:
 func spawn_item(item) -> void:
 	hotbar.append(item)
 	item.deselect.rpc()
-	
+
 func calc_noise(delta):
 	if noise_level > 0.0:
 		noise_level -= noise_decrease * delta + noise_level * 0.5 * delta
@@ -214,7 +207,6 @@ func select_holdable(item_to_hold: int) -> void:
 	holdable.select.rpc()
 	
 
-
 func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish):
 	print("spawn proj" + spell_type + " " + str(damage) + " " + str(projectile_count) + " " + str(cast_cost))
 	cast_projectile.rpc(get_multiplayer_authority(), pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish)
@@ -226,6 +218,15 @@ func cast_projectile(multiplayer_auth, pos, rot, spell_type, damage, projectile_
 	projectiles.add_child(p)
 	
 
+func get_what_look_at() -> Vector3:
+	# if point to shoot at is too close bullets will go to the side | if point isn't in raycast
+	if camera_cast.get_collider():
+		if position.distance_to(camera_cast.get_collision_point()) > 2:
+			return camera_cast.get_collision_point()
+	var forward_direction: Vector3 = -camera_cast.global_transform.basis.z.normalized()
+	return camera_cast.global_transform.origin + forward_direction * 100
+
+#old stuff
 @rpc("any_peer", "call_local")
 func spawn_projectile(pos: Vector3, rot: Vector3, config):
 	var p = projectile_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
@@ -259,13 +260,7 @@ func calc_bloom(bloom: float, proj_amount: int, i) -> float:
 	#return rng.randf_range(lower_bloom, upper_bloom)
 	return (lower_bloom + upper_bloom) / 2
 	
-func get_what_look_at() -> Vector3:
-	# if point to shoot at is too close bullets will go to the side | if point isn't in raycast
-	if camera_cast.get_collider():
-		if position.distance_to(camera_cast.get_collision_point()) > 2:
-			return camera_cast.get_collision_point()
-	var forward_direction: Vector3 = -camera_cast.global_transform.basis.z.normalized()
-	return camera_cast.global_transform.origin + forward_direction * 100
+
 	
 func scale_marker(distance: float) -> void:
 	var max_distance: float = 15.0

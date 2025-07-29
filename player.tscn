@@ -1,12 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=19 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" uid="uid://0yl2v46tthnx" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
-[ext_resource type="Script" uid="uid://csuo7j5nt6c15" path="res://Scripts/multiplayer_instrument_spawner.gd" id="2_scgbr"]
-[ext_resource type="Script" uid="uid://xp82srsev433" path="res://Scripts/multiplayer_grapple_spawner.gd" id="3_0l2rs"]
-[ext_resource type="Script" uid="uid://bji5o0dx0m3i2" path="res://Scripts/multiplayer_grimoire_spawner.gd" id="4_ffd3l"]
+[ext_resource type="Script" uid="uid://xp82srsev433" path="res://Scripts/multiplayer_basic_spawner.gd" id="3_0l2rs"]
+[ext_resource type="PackedScene" uid="uid://5gvc6artnuki" path="res://instrument.tscn" id="3_dw050"]
+[ext_resource type="PackedScene" uid="uid://b2g0rqo5jkx7r" path="res://grapple.tscn" id="4_dw050"]
 [ext_resource type="Script" uid="uid://ciyra3ln02cnq" path="res://inventory_manager.gd" id="5_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://opeswkewbdxj" path="res://grimoire.tscn" id="5_b26j0"]
 [ext_resource type="PackedScene" uid="uid://brgrcy3cn8f7f" path="res://inventory.tscn" id="6_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://dyalckmpd84sl" path="res://rod.tscn" id="6_b26j0"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -103,15 +105,23 @@ shape = SubResource("ConvexPolygonShape3D_tfnp7")
 
 [node name="MSInstrument" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
-script = ExtResource("2_scgbr")
+script = ExtResource("3_0l2rs")
+scene = ExtResource("3_dw050")
 
 [node name="MSGrapple" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
 script = ExtResource("3_0l2rs")
+scene = ExtResource("4_dw050")
 
 [node name="MSGrimoire" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
-script = ExtResource("4_ffd3l")
+script = ExtResource("3_0l2rs")
+scene = ExtResource("5_b26j0")
+
+[node name="MSRod" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+script = ExtResource("3_0l2rs")
+scene = ExtResource("6_b26j0")
 
 [node name="PlayerHead" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)

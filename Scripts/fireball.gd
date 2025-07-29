@@ -1,13 +1,11 @@
 extends Projectile
 
-
-
 func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
 	if get_slide_collision_count() > 0:
-		print("collided")
+		# only let the owner of the projectile do something
 		var player = get_player_by_authority(multiplayer_auth)
 		if player.is_player:
 			player.position = position
