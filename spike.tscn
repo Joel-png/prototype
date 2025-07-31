@@ -1,0 +1,187 @@
+[gd_scene load_steps=12 format=4 uid="uid://br2eymqiq3vyo"]
+
+[ext_resource type="Texture2D" uid="uid://bae66k7lp0aed" path="res://Materials/hurlnoise.png" id="1_7k7bx"]
+[ext_resource type="FastNoiseLite" uid="uid://bmyyailayvrul" path="res://Materials/sand_noise.tres" id="2_tggh8"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7k7bx"]
+data = PackedVector3Array(0, 24.0164, 0, 0, -0.3453, -1, 0.9511, -0.3453, -0.309, 0, 24.0164, 0, 0.9511, -0.3453, -0.309, 0.5878, -0.3453, 0.809, 0, 24.0164, 0, 0.5878, -0.3453, 0.809, -0.5878, -0.3453, 0.809, 0.9511, -0.3453, -0.309, 0, -0.3453, -1, 0.9511, -5.012, -0.309, 0.9511, -5.012, -0.309, 0, -0.3453, -1, 0, -5.012, -1, 0, 24.0164, 0, -0.5878, -0.3453, 0.809, -0.9511, -0.3453, -0.309, 0, 24.0164, 0, -0.9511, -0.3453, -0.309, 0, -0.3453, -1, 0.9511, -5.012, -0.309, 0, -5.012, -1, 0.5878, -5.012, 0.809, 0.5878, -5.012, 0.809, 0, -5.012, -1, -0.5878, -5.012, 0.809, -0.5878, -5.012, 0.809, 0, -5.012, -1, -0.9511, -5.012, -0.309, 0, -0.3453, -1, -0.9511, -0.3453, -0.309, 0, -5.012, -1, 0, -5.012, -1, -0.9511, -0.3453, -0.309, -0.9511, -5.012, -0.309, -0.9511, -0.3453, -0.309, -0.5878, -0.3453, 0.809, -0.9511, -5.012, -0.309, -0.9511, -5.012, -0.309, -0.5878, -0.3453, 0.809, -0.5878, -5.012, 0.809, -0.5878, -0.3453, 0.809, 0.5878, -0.3453, 0.809, -0.5878, -5.012, 0.809, -0.5878, -5.012, 0.809, 0.5878, -0.3453, 0.809, 0.5878, -5.012, 0.809, 0.5878, -0.3453, 0.809, 0.9511, -0.3453, -0.309, 0.5878, -5.012, 0.809, 0.5878, -5.012, 0.809, 0.9511, -0.3453, -0.309, 0.9511, -5.012, -0.309)
+
+[sub_resource type="Shader" id="Shader_tpoux"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform vec4 sand_color: source_color; // Sand base color
+uniform float grain_scale : hint_range(0.1, 1000.0) = 2.0; // Scale of the sand grains
+uniform float roughness : hint_range(0.0, 1.0) = 0.8; // Surface roughness
+uniform float metallic : hint_range(0.0, 1.0) = 0.0; // Metallic factor
+uniform float specular : hint_range(0.0, 1.0) = 0.0; // Specular factor
+uniform float glitter_offset : hint_range(0.0, 1.0) = 0.0;
+uniform float glitter_multiply : hint_range(0.0, 10.0) = 0.0;
+uniform float glitter_movement : hint_range(0.0, 1.0) = 0.0;
+uniform sampler2D normal_texture;
+uniform sampler2D no_map_normal_texture;
+uniform sampler2D noise_texture; // Noise texture for grains
+uniform sampler2D glitter_texture;
+
+
+uniform vec4 rim_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); // Color of the rim light
+uniform float rim_intensity : hint_range(0.0, 5.0) = 1.5; // Intensity of the rim light
+uniform float rim_width : hint_range(0.0, 5.0) = 1.0; // Width of the rim light
+
+varying float glitter_light;
+
+vec3 rgb2hsv(vec3 colorin)	{
+	vec3 c = vec3(colorin.xyz);
+	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+	vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+	float d = q.x - min(q.w, q.y);
+	float e = 1.0e-10;
+	return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
+
+vec3 hsv2rgb(vec3 colorin)	{
+	vec3 c = colorin;
+	vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+void fragment() {
+	vec2 uv = UV * grain_scale;
+
+    vec3 base_color = sand_color.rgb;
+	vec3 normalnormal = normalize(NORMAL + texture(normal_texture, uv).rgb * 2.0 - 1.0);
+	vec3 normal = texture(normal_texture, uv).rgb * 2.0 - 1.0;
+	//vec3 perturbed_normal = normalize(NORMAL + normal * 1.0);
+	float normal_view_dot = dot(normal, 1.0 - normalize(VIEW));
+	//float nomap_normal_view_dot = dot(texture(no_map_normal_texture, uv).rgb * 2.0 - 1.0, normalize(VIEW));
+	float nomap_normal_view_dot = dot(texture(no_map_normal_texture, uv).rgb * 2.0 - 1.0, vec3(1.0, 1.0, 1.0));
+	vec3 glitter = texture(glitter_texture, uv * 16.0).rgb;
+
+	float hueShift = TIME * glitter_movement;
+	vec3 hsv = rgb2hsv(glitter);
+	hsv.x += hueShift;
+	hsv.x = (mod(hsv.x, 1.0));
+	vec3 newColor = hsv2rgb(hsv);
+
+	glitter = normalize((newColor - glitter_offset)) * glitter_multiply;
+	float glitter_amount = glitter.r; //dot(glitter, 1.0 - normalize(VIEW));
+	glitter_amount = clamp(glitter_amount, 0.0, 1.0);
+
+	float rim = max(0.0, (1.0 - nomap_normal_view_dot) * 1.5);
+	rim = pow(rim, rim_width) * rim_intensity;
+	rim = smoothstep(0.1, 0.2, rim);
+
+    // Apply noise for sand grains
+    float grain = texture(noise_texture, uv).r;
+
+    // Adjust grain intensity
+    grain = smoothstep(0.4, 1.0, grain); // Creates a soft grain pattern
+
+    // Combine base color with grain effect
+	vec3 final_color = (base_color + rim * rim_color.rgb) * (0.7 * grain);
+
+    // Set material properties
+    ALBEDO = final_color;
+    ROUGHNESS = roughness;
+    METALLIC = metallic;
+	SPECULAR = specular;
+	NORMAL = normalnormal;// * glitter_amount;
+	EMISSION = vec3(1.0) * glitter_amount;//vec3(1.0) * glitter_amount * ;//vec3(1.0) * glitter_amount;
+}
+
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cm0qb"]
+noise_type = 2
+frequency = 0.0568
+fractal_type = 0
+cellular_distance_function = 1
+cellular_jitter = 1.09
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_725mp"]
+width = 1024
+height = 1024
+invert = true
+generate_mipmaps = false
+seamless_blend_skirt = 0.0
+as_normal_map = true
+bump_strength = 32.0
+noise = SubResource("FastNoiseLite_cm0qb")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cqun7"]
+width = 1024
+height = 1024
+bump_strength = 32.0
+noise = ExtResource("2_tggh8")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k643h"]
+width = 1024
+height = 1024
+as_normal_map = true
+bump_strength = 32.0
+noise = ExtResource("2_tggh8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5sso0"]
+render_priority = 0
+shader = SubResource("Shader_tpoux")
+shader_parameter/sand_color = Color(1, 1, 1, 1)
+shader_parameter/grain_scale = 0.64
+shader_parameter/roughness = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/specular = 1.0
+shader_parameter/glitter_offset = 1.0
+shader_parameter/glitter_multiply = 1.097
+shader_parameter/glitter_movement = 0.056
+shader_parameter/normal_texture = SubResource("NoiseTexture2D_k643h")
+shader_parameter/no_map_normal_texture = SubResource("NoiseTexture2D_725mp")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_cqun7")
+shader_parameter/glitter_texture = ExtResource("1_7k7bx")
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/rim_intensity = 0.269
+shader_parameter/rim_width = 2.646
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4ytps"]
+_surfaces = [{
+"aabb": AABB(-0.951057, -5.01196, -1, 1.90211, 29.0284, 1.80902),
+"format": 34359742465,
+"index_count": 54,
+"index_data": PackedByteArray("AAABAAIAAgABAAMAAAAEAAEAAwABAAUAAQAEAAUAAwAFAAYABgACAAMABQAEAAcACAACAAYAAAACAAgABgAFAAkACQAFAAcACQAIAAYABAAKAAcABwAKAAkAAAAKAAQACgAIAAkAAAAIAAoA"),
+"name": "Cone",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 11,
+"vertex_data": PackedByteArray("AAAAAKQhwEEAAAAAAAAAAOPHsL4AAIC/eXhzP+PHsL56N56+eXhzP/JhoMB6N56+eXhzv+PHsL56N56+AAAAAPJhoMAAAIC/FHkWP/JhoMC9G08/eXhzv/JhoMB6N56+FHkWP+PHsL69G08/FHkWv/JhoMC9G08/FHkWv+PHsL69G08/")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_13jd2"]
+_surfaces = [{
+"aabb": AABB(-0.951057, -5.01196, -1, 1.90211, 29.0284, 1.80902),
+"attribute_data": PackedByteArray("AACAPgAAQD8AAIA+XI8CP7Xd9D6XAy0/AACAPgAAQD+13fQ+lwMtPxE6yD67tHE/AACAPgAAQD8ROsg+u7RxP74X3z27tHE/td30PpcDLT8AAIA+XI8CP7Xd9D6XAy0/AACAPlyPAj8AAIA+AABAP74X3z27tHE/qySyPJcDLT8AAIA+AABAP6sksjyXAy0/AACAPlyPAj/bbno/lwMtPwAAQD9cjwI/CB1kP7u0cT/44hs/u7RxPyWRBT+XAy0/AACAPlyPAj+rJLI8lwMtPwAAgD5cjwI/qySyPJcDLT+rJLI8lwMtP74X3z27tHE/qySyPJcDLT++F989u7RxP74X3z27tHE/ETrIPru0cT++F989u7RxPxE6yD67tHE/ETrIPru0cT+13fQ+lwMtPxE6yD67tHE/td30PpcDLT8="),
+"format": 34359742487,
+"index_count": 54,
+"index_data": PackedByteArray("AAABAAIAAwAEAAUABgAHAAgACQAKAAsACwAKAAwADQAOAA8AEAARABIAEwAUABUAFQAUABYAFgAUABcAGAAZABoAGgAZABsAHAAdAB4AHgAdAB8AIAAhACIAIgAhACMAJAAlACYAJgAlACcA"),
+"material": SubResource("ShaderMaterial_5sso0"),
+"name": "Cone",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 40,
+"vertex_data": PackedByteArray("AAAAAKQhwEEAAAAAAAAAAOPHsL4AAIC/eXhzP+PHsL56N56+AAAAAKQhwEEAAAAAeXhzP+PHsL56N56+FHkWP+PHsL69G08/AAAAAKQhwEEAAAAAFHkWP+PHsL69G08/FHkWv+PHsL69G08/eXhzP+PHsL56N56+AAAAAOPHsL4AAIC/eXhzP/JhoMB6N56+AAAAAPJhoMAAAIC/AAAAAKQhwEEAAAAAFHkWv+PHsL69G08/eXhzv+PHsL56N56+AAAAAKQhwEEAAAAAeXhzv+PHsL56N56+AAAAAOPHsL4AAIC/eXhzP/JhoMB6N56+AAAAAPJhoMAAAIC/FHkWP/JhoMC9G08/FHkWv/JhoMC9G08/eXhzv/JhoMB6N56+AAAAAOPHsL4AAIC/eXhzv+PHsL56N56+AAAAAPJhoMAAAIC/eXhzv/JhoMB6N56+eXhzv+PHsL56N56+FHkWv+PHsL69G08/eXhzv/JhoMB6N56+FHkWv/JhoMC9G08/FHkWv+PHsL69G08/FHkWP+PHsL69G08/FHkWv/JhoMC9G08/FHkWP/JhoMC9G08/FHkWP+PHsL69G08/eXhzP+PHsL56N56+FHkWP/JhoMC9G08/eXhzP/JhoMB6N56+Bf1iy9iGa4MF/WLL2IZrgwX9YsvYhmuDIN5Jg1GEKIIg3kmDUYQogiDeSYNRhCiC/38dhP///7//fx2E////v/9/HYT///+///8hyv///7///yHK////v///Icr///+///8hyv///7/eIUmDUYTW/d4hSYNRhNb93iFJg1GE1v35AmLL14aS/PkCYsvXhpL8+QJiy9eGkvz/fwAA////P/9/AAD///8//38AAP///z//fwAA/v//P/9/AAD+//8/AAAhyv///78AACHK////vwAAIcr///+/AAAhyv///79jH/9/////P2Mf/3////8/Yx//f////z9jH/9/////P/9//3////8//3//f////z//f/9/////P/9//3////8/m+D/f////z+b4P9/////P5vg/3////8/m+D/f////z8=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_4ytps")
+
+[node name="Spike" type="StaticBody3D"]
+collision_mask = 0
+
+[node name="Spike" type="Node3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConcavePolygonShape3D_7k7bx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_13jd2")
+skeleton = NodePath("../Spike")

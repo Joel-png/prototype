@@ -61,6 +61,8 @@ var hotbar_selected: int = 0
 var hotbar_to_select: int = 0
 var is_player: bool
 var is_focus: bool = false
+var mouse_rotation: Vector2
+var mouse_moving = false
 
 func _ready() -> void:
 	hotbar = []
@@ -95,14 +97,18 @@ func calc_noise(delta):
 func _unhandled_input(event) -> void:
 	if is_focus:
 		if event is InputEventMouseMotion:
-			rotate_y(-event.relative.x * SENSITIVITY)
-			camera.rotate_x(-event.relative.y * SENSITIVITY)
-			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+			mouse_rotation = Vector2(-event.relative.x, -event.relative.y)
+			
 
 func _process(delta: float) -> void:
 	is_player = is_multiplayer_authority()
 	
 	if is_player:
+		rotate_y(mouse_rotation.x * SENSITIVITY)
+		camera.rotate_x(mouse_rotation.y * SENSITIVITY)
+		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+		mouse_rotation = Vector2.ZERO
+			
 		calc_noise(delta)
 		hotbar_logic()
 		if Input.is_action_just_pressed("Escape"):
@@ -163,7 +169,7 @@ func _process(delta: float) -> void:
 				target_speed.z = local_velocity.z
 		var speed_difference: Vector3 = target_speed - local_velocity
 		speed_difference.y = 0
-	 
+		
 		#final force that will be applied to character
 		var movement: Vector3 = speed_difference * acc_speed
 		

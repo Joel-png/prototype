@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=58 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -43,10 +43,9 @@ background_mode = 2
 background_energy_multiplier = 0.1
 background_intensity = 3.0
 sky = SubResource("Sky_tug5e")
-ambient_light_source = 2
-ambient_light_color = Color(0.0445747, 0.36789, 0.38166, 1)
-ambient_light_sky_contribution = 0.99
-ambient_light_energy = 0.0
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.98
 reflected_light_source = 2
 tonemap_mode = 2
 sdfgi_read_sky_light = false
@@ -84,9 +83,70 @@ noise_type = 0
 frequency = 0.02
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1mi5f"]
-width = 51
-height = 51
+width = 800
+height = 800
 noise = SubResource("FastNoiseLite_xhuuh")
+
+[sub_resource type="Gradient" id="Gradient_udxuc"]
+offsets = PackedFloat32Array(0, 0.638037)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ikiii"]
+noise_type = 0
+frequency = 0.0035
+fractal_type = 0
+fractal_octaves = 10
+fractal_lacunarity = 1.24
+fractal_gain = 0.725
+fractal_weighted_strength = 1.0
+fractal_ping_pong_strength = 2.12
+domain_warp_enabled = true
+domain_warp_frequency = 0.03
+domain_warp_fractal_octaves = 2
+domain_warp_fractal_lacunarity = 4.975
+domain_warp_fractal_gain = -0.075
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cbp6q"]
+width = 800
+height = 800
+color_ramp = SubResource("Gradient_udxuc")
+noise = SubResource("FastNoiseLite_ikiii")
+
+[sub_resource type="Gradient" id="Gradient_ikiii"]
+offsets = PackedFloat32Array(0.886503, 0.91411)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cbp6q"]
+frequency = 0.1
+fractal_octaves = 10
+fractal_lacunarity = 6.25
+fractal_gain = 0.11
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_26xuy"]
+color_ramp = SubResource("Gradient_ikiii")
+noise = SubResource("FastNoiseLite_cbp6q")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_udxuc"]
+frequency = 0.0039
+fractal_type = 0
+fractal_octaves = 1
+fractal_ping_pong_strength = 0.05
+domain_warp_type = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ikiii"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_udxuc")
+
+[sub_resource type="Gradient" id="Gradient_cbp6q"]
+offsets = PackedFloat32Array(0.187117, 0.337423)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_26xuy"]
+frequency = 0.1442
+fractal_gain = 1.96
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bc84e"]
+color_ramp = SubResource("Gradient_cbp6q")
+noise = SubResource("FastNoiseLite_26xuy")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hkpib"]
 noise_type = 2
@@ -99,9 +159,13 @@ cellular_return_type = 0
 noise = SubResource("FastNoiseLite_hkpib")
 
 [sub_resource type="Curve" id="Curve_udxuc"]
-_limits = [0.0, 2.0, 0.0, 1.13793]
-_data = [Vector2(0, 0.224719), 0.0, 0.394961, 0, 0, Vector2(0.143876, 0.269663), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0881066, 0.0881066, 0, 0, Vector2(0.732461, 1.79775), -0.177732, -0.177732, 0, 0, Vector2(1.13793, 2), 0.0, 0.0, 0, 0]
-point_count = 6
+_limits = [0.0, 4.0, 0.0, 1.00449]
+_data = [Vector2(0, 0), 0.0, 0.394961, 0, 0, Vector2(0.151971, 0), 0.0, 0.0, 0, 0, Vector2(0.292546, 1), 0.0, 0.0, 0, 0, Vector2(0.518988, 1), 0.0, 0.0, 0, 0, Vector2(0.680823, 1.03371), 0.0, 0.0, 0, 0, Vector2(0.750579, 1.97753), 1.96432, 1.96432, 0, 0, Vector2(0.834287, 2.47191), -0.177732, -0.788593, 0, 0, Vector2(0.884512, 1.76496), 0.0, 0.0, 0, 0, Vector2(0.943107, 2.78652), 0.0, 0.0, 0, 0, Vector2(1.00449, 3.50562), 0.0, 0.0, 0, 0]
+point_count = 10
+
+[sub_resource type="Curve" id="Curve_ikiii"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.569444, 0), 0.0, 0.0, 0, 0, Vector2(0.761111, 0.384657), 2.72185, 2.72185, 0, 0, Vector2(1, 0.787813), 0.612985, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_woola"]
 frequency = 1.0
@@ -334,8 +398,7 @@ fog_curve = SubResource("Curve_sq6ro")
 transform = Transform3D(-0.900996, -0.390441, -0.189109, -0.424815, 0.882435, 0.202092, 0.087971, 0.26242, -0.960935, 0, 0, 0)
 light_intensity_lux = 1000.0
 light_temperature = 9915.0
-light_energy = 0.001
-light_indirect_energy = 0.0
+light_energy = 0.002
 light_angular_distance = 0.97
 shadow_enabled = true
 shadow_bias = 0.0
@@ -362,8 +425,13 @@ replication_config = SubResource("SceneReplicationConfig_iuys2")
 [node name="TerrainGeneration" type="Node3D" parent="."]
 script = ExtResource("4_hblxr")
 noise_texture = SubResource("NoiseTexture2D_1mi5f")
+mountain_noise_texture = SubResource("NoiseTexture2D_cbp6q")
+spike_noise_texture = SubResource("NoiseTexture2D_26xuy")
+spike_direction_noise_texture = SubResource("NoiseTexture2D_ikiii")
+tree_noise_texture = SubResource("NoiseTexture2D_bc84e")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 height_curve = SubResource("Curve_udxuc")
+mountain_curve = SubResource("Curve_ikiii")
 
 [node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]
 visible = false

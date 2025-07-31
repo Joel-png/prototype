@@ -92,7 +92,7 @@ func switch_state(change_state: String):
 		
 func set_vel(move_amount, direction):
 	if is_on_floor():
-		velocity = direction * move_amount * 0.1
+		velocity = direction * move_amount * 1.0
 
 func get_angle_to_lookat_position(target_position):
 	var direction: Vector3 = (target_position - position)
