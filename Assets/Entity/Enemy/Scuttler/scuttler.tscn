@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://d4jkxnxnjk1i4"]
+[gd_scene load_steps=22 format=4 uid="uid://d4jkxnxnjk1i4"]
 
 [ext_resource type="Script" uid="uid://dyo2pb3vhx1r2" path="res://Assets/Entity/Enemy/Scuttler/scuttler_ik_start.gd" id="2_5xe81"]
 [ext_resource type="Script" uid="uid://cigsea4ymag1a" path="res://Assets/Entity/Enemy/Scuttler/scuttler.gd" id="2_as2l2"]
@@ -207,10 +207,30 @@ _data = {
 &"scuttler_walk": SubResource("Animation_k7g0y")
 }
 
+[sub_resource type="Curve" id="Curve_wwwbp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_lt8uf"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.0862069, 1), 0.0, 0.0, 0, 0, Vector2(0.362069, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wwwbp"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:closest_player_position")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+
 [node name="scuttler" type="CharacterBody3D"]
 collision_layer = 4
 floor_constant_speed = true
 floor_max_angle = 1.39626
+floor_snap_length = 0.3
 script = ExtResource("2_as2l2")
 
 [node name="BaseArmature_001" type="Node3D" parent="."]
@@ -554,6 +574,11 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Pather" parent="." instance=ExtResource("6_wwwbp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.292833, -1.18914)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.292833, -0.0456125)
 search_radius = 200.0
-perfect_hearing_range = 35.0
+hearing_requirement = 60.0
+hearing_curve = SubResource("Curve_wwwbp")
+perfect_hearing_curve = SubResource("Curve_lt8uf")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_wwwbp")

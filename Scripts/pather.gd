@@ -2,9 +2,9 @@ extends Node3D
 
 @export var group_name: String = ""
 @export var search_radius: float = 50.0
-@export var perfect_hearing_range: float = 20.0
 @export var hearing_requirement: float = 20.0
-@export var perfect_hearing_added: float = 20.0
+@export var hearing_curve: Curve
+@export var perfect_hearing_curve: Curve
 var group_members
 var counter = 0
 var print = false
@@ -29,6 +29,7 @@ func find_position():
 		if found and member_noise > noisiest:
 			noisiest = member_noise
 			pos = member.global_position
+		# if very loud, agro without line of sight
 		elif member_noise >= hearing_requirement * 4.0:
 			noisiest = member_noise
 			pos = member.global_position
@@ -37,14 +38,13 @@ func find_position():
 	return [noisiest >= hearing_requirement, pos]
 
 func is_heard(pos, noise):
-	var distance_to = global_position.distance_to(pos)
-	var distance_scaler = 1.0 - min(distance_to / search_radius, 1.0)
-	var hearing_value = noise * distance_scaler
-	if distance_to <= perfect_hearing_range:
-		hearing_value *= 2.0
-		hearing_value += perfect_hearing_added
-	if distance_to <= perfect_hearing_range * 10.0 and noise > 5.0 * hearing_requirement:
-		hearing_value += perfect_hearing_added * 5.0
+	var distance_to = min(search_radius, global_position.distance_to(pos))
+	var hearing_falloff = hearing_curve.sample(distance_to/search_radius)
+	var hearing_added = perfect_hearing_curve.sample(distance_to/search_radius)
+	var hearing_value = noise * hearing_falloff + hearing_added * hearing_requirement
+	# if very noisy in the distance automatically detect at 4x the required noise
+	if noise >= hearing_requirement * 5.0 and distance_to <= search_radius:
+		hearing_value += hearing_requirement * 4.0
 	return hearing_value
 	
 func has_line_of_sight(player):

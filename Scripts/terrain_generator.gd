@@ -12,6 +12,8 @@ var grass_scale: int = 7
 
 @export var noise_texture: NoiseTexture2D
 @export var test_noise: NoiseTexture2D
+@export var height_curve: Curve
+
 var terrain_seed: int = 0
 var image: Image
 
@@ -99,7 +101,7 @@ func generate():
 	for i in range(data.get_vertex_count()):
 		var vertex = data.get_vertex(i)
 		var y = get_noise_y(vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
-		vertex.y = y * height_multiplier
+		vertex.y = y * height_multiplier * height_curve.sample(y)
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		

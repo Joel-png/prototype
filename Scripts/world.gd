@@ -6,6 +6,7 @@ var fog: float = 0.0
 @onready var environment = $WorldEnvironment
 @onready var terrain_generator = $TerrainGeneration
 @onready var azathoth_spawner = $MultiplayerAzathothSpawner
+@onready var scuttler_spawner = $MultiplayerScuttlerSpawner
 
 func _ready() -> void:
 	if is_multiplayer_authority():
@@ -13,7 +14,9 @@ func _ready() -> void:
 		print("Created world with seed: " + str(terrain_seed))
 	terrain_generator.setup()
 	if is_multiplayer_authority():
-		azathoth_spawner.spawn(1)
+		pass
+		#azathoth_spawner.spawn(1)
+		scuttler_spawner.spawn(1)
 
 func set_seed() -> void:
 	terrain_seed = randi_range(0, 1000)
