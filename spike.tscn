@@ -91,7 +91,6 @@ void fragment() {
 	NORMAL = normalnormal;// * glitter_amount;
 	EMISSION = vec3(1.0) * glitter_amount;//vec3(1.0) * glitter_amount * ;//vec3(1.0) * glitter_amount;
 }
-
 "
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cm0qb"]

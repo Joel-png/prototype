@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=56 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -10,10 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b4jkx222552xh" path="res://Assets/heightmap.png" id="7_wkvnm"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Texture2D" uid="uid://bp2pxfrb4qf0x" path="res://Assets/normalmap.png" id="8_pbu1x"]
-[ext_resource type="Shader" uid="uid://bwgem73vdriki" path="res://Shaders/s_ground_material.tres" id="12_3c5pl"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
-[ext_resource type="PackedScene" uid="uid://bu2pr5twlv1es" path="res://pather.tscn" id="13_2u3nc"]
-[ext_resource type="Material" uid="uid://dkfljf0w8mh4r" path="res://Materials/sand_material.tres" id="13_gaw3q"]
 [ext_resource type="Script" uid="uid://kfndg42krwck" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
 [ext_resource type="Script" uid="uid://j5ie4manvego" path="res://multiplayer_scuttler_spawner.gd" id="17_ikiii"]
 [ext_resource type="PackedScene" uid="uid://dq35xsap13dsn" path="res://fish_manager.tscn" id="17_udxuc"]
@@ -113,13 +110,14 @@ color_ramp = SubResource("Gradient_udxuc")
 noise = SubResource("FastNoiseLite_ikiii")
 
 [sub_resource type="Gradient" id="Gradient_ikiii"]
-offsets = PackedFloat32Array(0.886503, 0.91411)
+offsets = PackedFloat32Array(0.854167, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cbp6q"]
 frequency = 0.1
+fractal_type = 0
 fractal_octaves = 10
 fractal_lacunarity = 6.25
-fractal_gain = 0.11
+fractal_gain = 0.015
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_26xuy"]
 color_ramp = SubResource("Gradient_ikiii")
@@ -133,11 +131,10 @@ fractal_ping_pong_strength = 0.05
 domain_warp_type = 1
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ikiii"]
-as_normal_map = true
 noise = SubResource("FastNoiseLite_udxuc")
 
 [sub_resource type="Gradient" id="Gradient_cbp6q"]
-offsets = PackedFloat32Array(0.187117, 0.337423)
+offsets = PackedFloat32Array(0, 0.337423)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_26xuy"]
 frequency = 0.1442
@@ -147,6 +144,31 @@ fractal_weighted_strength = 1.0
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bc84e"]
 color_ramp = SubResource("Gradient_cbp6q")
 noise = SubResource("FastNoiseLite_26xuy")
+
+[sub_resource type="Gradient" id="Gradient_26xuy"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bc84e"]
+frequency = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wukud"]
+generate_mipmaps = false
+color_ramp = SubResource("Gradient_26xuy")
+noise = SubResource("FastNoiseLite_bc84e")
+
+[sub_resource type="Gradient" id="Gradient_il2jm"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wjb0r"]
+frequency = 1.0
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mc2jv"]
+as_normal_map = true
+bump_strength = 999.5
+color_ramp = SubResource("Gradient_il2jm")
+noise = SubResource("FastNoiseLite_wjb0r")
+
+[sub_resource type="BoxMesh" id="BoxMesh_70uel"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hkpib"]
 noise_type = 2
@@ -366,29 +388,8 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="BoxMesh" id="BoxMesh_hiqwa"]
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_2u3nc"]
 material = ExtResource("12_ulnk3")
-
-[sub_resource type="BoxMesh" id="BoxMesh_udxuc"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_kke3t"]
-lightmap_size_hint = Vector2i(42, 42)
-material = ExtResource("12_ulnk3")
-size = Vector2(50, 50)
-subdivide_width = 200
-subdivide_depth = 200
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oitm3"]
-render_priority = 0
-shader = ExtResource("12_3c5pl")
-shader_parameter/uv_scale = 0.0
-
-[sub_resource type="BoxMesh" id="BoxMesh_isnlg"]
-material = ExtResource("13_gaw3q")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hiqwa"]
 
 [node name="World" type="Node3D" groups=["Damagable"]]
 script = ExtResource("1_5i068")
@@ -429,6 +430,9 @@ mountain_noise_texture = SubResource("NoiseTexture2D_cbp6q")
 spike_noise_texture = SubResource("NoiseTexture2D_26xuy")
 spike_direction_noise_texture = SubResource("NoiseTexture2D_ikiii")
 tree_noise_texture = SubResource("NoiseTexture2D_bc84e")
+flower_noise_texture = SubResource("NoiseTexture2D_wukud")
+random_noise_texture = SubResource("NoiseTexture2D_mc2jv")
+mesh_instance = SubResource("BoxMesh_70uel")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 height_curve = SubResource("Curve_udxuc")
 mountain_curve = SubResource("Curve_ikiii")
@@ -464,6 +468,7 @@ process_material = SubResource("ShaderMaterial_fmlye")
 draw_pass_1 = SubResource("ArrayMesh_14slt")
 
 [node name="RockSmallParticle" type="GPUParticles3D" parent="TerrainGeneration"]
+visible = false
 extra_cull_margin = 500.0
 amount = 400
 lifetime = 0.01
@@ -472,36 +477,8 @@ draw_order = 3
 process_material = SubResource("ShaderMaterial_v56lm")
 draw_pass_1 = SubResource("ArrayMesh_8yg87")
 
-[node name="Waterold" type="CSGMesh3D" parent="TerrainGeneration"]
-mesh = SubResource("BoxMesh_hiqwa")
-material = ExtResource("12_ulnk3")
-
 [node name="Water" type="MeshInstance3D" parent="TerrainGeneration"]
 mesh = SubResource("PlaneMesh_2u3nc")
-
-[node name="PreviewGround" type="CSGMesh3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.3838, 11.9259, 0)
-mesh = SubResource("BoxMesh_udxuc")
-material = ExtResource("13_gaw3q")
-
-[node name="PreviewWater" type="CSGMesh3D" parent="."]
-transform = Transform3D(8.56582, 0, 0, 0, 8.56582, 0, 0, 0, 8.56582, -72.0628, 49.8775, 0)
-visible = false
-mesh = SubResource("PlaneMesh_kke3t")
-
-[node name="Pather" parent="." instance=ExtResource("13_2u3nc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8717, 28.817, 0)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(5.58002, 0, 0, 0, 5.58002, 0, 0, 0, 5.58002, -7.80497, 25.1427, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-material_override = SubResource("ShaderMaterial_oitm3")
-mesh = SubResource("BoxMesh_isnlg")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_hiqwa")
 
 [node name="Enemies" type="Node3D" parent="."]
 

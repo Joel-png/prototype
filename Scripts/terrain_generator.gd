@@ -11,21 +11,27 @@ var grass_scale: int = 7
 
 
 @export var noise_texture: NoiseTexture2D
+var image: Image
 @export var mountain_noise_texture: NoiseTexture2D
+var mountain_image: Image
 @export var spike_noise_texture: NoiseTexture2D
+var spike_image: Image
 @export var spike_direction_noise_texture: NoiseTexture2D
+var spike_direction_image: Image
 @export var tree_noise_texture: NoiseTexture2D
+var tree_image: Image
+@export var flower_noise_texture: NoiseTexture2D
+var flower_image: Image
+@export var random_noise_texture: NoiseTexture2D
+var random_image: Image
+
+@export var mesh_instance: Mesh
 
 @export var test_noise: NoiseTexture2D
 @export var height_curve: Curve
 @export var mountain_curve: Curve
 
 var terrain_seed: int = 0
-var image: Image
-var mountain_image: Image
-var spike_image: Image
-var spike_direction_image: Image
-var tree_image: Image
 
 @onready var water = $Water
 @onready var world = $".."
@@ -35,11 +41,17 @@ var tree_image: Image
 @onready var shrubs = $ShrubParticle
 @onready var spike_scene = preload("res://spike.tscn")
 @onready var tree_scene = preload("res://tree.tscn")
+@onready var flower_scene = preload("res://Assets/Terrain/Flower/flower.tscn")
 
 func setup_noise(noise):
 	noise.width = world_size + 2
 	noise.height = world_size + 2
 	noise.noise.seed = terrain_seed + 2
+
+func noise_to_image(noise):
+	setup_noise(noise)
+	await noise.changed
+	return noise
 
 func setup() -> void:
 	terrain_seed = world.terrain_seed
@@ -50,26 +62,19 @@ func setup() -> void:
 	var rock_small_sm = rocks_small.process_material
 	var shrubs_sm = shrubs.process_material
 	
-	setup_noise(noise_texture)
-	await noise_texture.changed
-	image = modify_noise(noise_texture)
+	image = modify_noise(await noise_to_image(noise_texture))
 	
-	setup_noise(mountain_noise_texture)
-	await mountain_noise_texture.changed
-	mountain_image = modify_noise(mountain_noise_texture)
+	mountain_image = modify_noise(await noise_to_image(mountain_noise_texture))
 	
-	setup_noise(spike_noise_texture)
-	await spike_noise_texture.changed
-	spike_image = spike_noise_texture.get_image()
+	spike_image = (await noise_to_image(spike_noise_texture)).get_image()
 	
+	spike_direction_image = (await noise_to_image(spike_direction_noise_texture)).get_image()
 	
-	setup_noise(spike_direction_noise_texture)
-	await spike_direction_noise_texture.changed
-	spike_direction_image = spike_direction_noise_texture.get_image()
+	tree_image = (await noise_to_image(tree_noise_texture)).get_image()
 	
-	setup_noise(tree_noise_texture)
-	await tree_noise_texture.changed
-	tree_image = tree_noise_texture.get_image()
+	flower_image = (await noise_to_image(flower_noise_texture)).get_image()
+	
+	random_image = (await noise_to_image(random_noise_texture)).get_image()
 	
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)
@@ -129,45 +134,92 @@ func generate():
 	
 	var spike_count = 0
 	var tree_count = 0
+	var flower_count = 0
+	
+	var tree_positions = []
+	
 	for i in range(data.get_vertex_count()):
 		var vertex = data.get_vertex(i)
-		var y = get_noise_y(image, vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
-		var mountain_y = get_noise_y(mountain_image, vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
-		var spikeness = get_noise_y(spike_image, vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
-		var spike_directionness = get_noise_y(spike_direction_image, vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
-		var treeness = get_noise_y(tree_image, vertex.x + floor(world_size / 2.0) + 1, vertex.z + floor(world_size / 2.0) + 1)
 		
-		vertex.y = y * height_multiplier * height_curve.sample(y)
-		vertex.y += height_multiplier * mountain_curve.sample(mountain_y) * 4.0
+		# get random offset
+		var world_x = vertex.x + floor(world_size / 2.0) + 1
+		var world_z = vertex.z + floor(world_size / 2.0) + 1
+		
+		var random_x = get_noise_y(random_image, world_x, world_z)
+		var random_z = get_noise_z(random_image, world_x, world_z)
+		
+		var y = get_noise_y(image, world_x, world_z)
+		var mountain_y = get_noise_y(mountain_image, world_x, world_z)
+		var spikeness = get_noise_y(spike_image, world_x, world_z)
+		var spike_directionness = get_noise_y(spike_direction_image, world_x, world_z)
+		var treeness = get_noise_y(tree_image, world_x, world_z)
+		var flowerness = get_noise_y(flower_image, world_x, world_z)
+		
+		var mountain_strength = 4.0
+		
+		var total_height = y * height_curve.sample(y)
+		total_height += mountain_curve.sample(mountain_y) * mountain_strength
+		
+		
+		vertex.y = total_height * height_multiplier
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		
+		var random_multiplier = 1.0
+		var random_vertex = Vector3.ZERO
+		random_vertex.y = total_height * height_multiplier
+		random_vertex.x = vertex.x + random_x * random_multiplier * scale_multiplier
+		random_vertex.z = vertex.z + random_z * random_multiplier * scale_multiplier
+		
 		if spikeness > 0.5:
+			
 			spike_count += 1
 			var new_scene = spike_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 			add_child(new_scene)
-			new_scene.position.x = vertex.x
-			new_scene.position.y = vertex.y
-			new_scene.position.z = vertex.z
-			var spike_scale = max(treeness, 0.1) * 10.0
-			new_scene.scale = Vector3(spike_scale, spike_scale, spike_scale)
+			new_scene.position.x = random_vertex.x
+			new_scene.position.y = random_vertex.y
+			new_scene.position.z = random_vertex.z
+			var spike_scale = max(spikeness - 0.5 + treeness, 0.1) * 10.0
+			var vector_maker = spike_scale + spike_scale * random_x * random_multiplier
+			new_scene.scale = Vector3(vector_maker, vector_maker, vector_maker)
 			new_scene.rotation.y = deg_to_rad(360.0 * spike_directionness)
 			new_scene.rotation.z = deg_to_rad(45.0)
 			
 		
 		if treeness > 0.5:
 			tree_count += 1
-			var new_scene = tree_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
-			add_child(new_scene)
-			new_scene.position.x = vertex.x
-			new_scene.position.y = vertex.y
-			new_scene.position.z = vertex.z
+			tree_positions.append(vertex)
+			
+		if flowerness > 0.5 and 0.35 > total_height and total_height > 0.3:
+			flower_count += 1
+			#var new_scene = flower_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+			#add_child(new_scene)
+			#new_scene.position.x = vertex.x
+			#new_scene.position.y = vertex.y
+			#new_scene.position.z = vertex.z
 			
 		
 		data.set_vertex(i, vertex)
 	
+	var mm_instance = MultiMeshInstance3D.new()
+	var mm = MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = mesh_instance
+	
+	mm.instance_count = tree_positions.size()
+	print(mm.instance_count)
+	print(mm.mesh)
+	for i in range(tree_positions.size()):
+		var vertex = tree_positions[i]
+		var transform_tree = Transform3D(Basis(), vertex)
+		mm.set_instance_transform(i, transform_tree)
+	
+	mm_instance.multimesh = mm
+	add_child(mm_instance)
+	
 	print("Total Spikes: " + str(spike_count))
 	print("Total Trees: " + str(tree_count))
+	print("Total Flowers: " + str(flower_count))
 	
 	array_plane.clear_surfaces()
 	data.commit_to_surface(array_plane)
@@ -196,8 +248,14 @@ func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap
 	material.set_shader_parameter("_coverage_altitude", coverage_alt)
 
 func get_noise_y(noise_image, x, z):
-	var value = noise_image.get_pixel(x, z).r
-	return value
+	if x >= noise_image.get_width() or z >= noise_image.get_height():
+		return noise_image.get_pixel(0, 0).r
+	return noise_image.get_pixel(x, z).r
+	
+func get_noise_z(noise_image, x, z):
+	if x >= noise_image.get_width() or z >= noise_image.get_height():
+		return noise_image.get_pixel(0, 0).b
+	return noise_image.get_pixel(x, z).b
 
 func modify_noise(noise):
 	var edge_damp = floor(world_size / 5.0)
@@ -220,7 +278,7 @@ func modify_noise(noise):
 			new_image.set_pixel(world_size + 1 - i, y, colour)
 			
 	return new_image
-	
+
 
 func mul_colour(colour: Color, val: float):
 	colour.r *= val
