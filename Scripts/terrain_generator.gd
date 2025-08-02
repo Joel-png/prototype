@@ -2,13 +2,12 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh: MeshInstance3D
-var world_size: int = 100
+var world_size: int = 200
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
 var height_multiplier: int = 4 * scale_multiplier
 
 var grass_scale: int = 7
-
 
 @export var noise_texture: NoiseTexture2D
 var image: Image
@@ -26,6 +25,8 @@ var flower_image: Image
 var random_image: Image
 
 @export var mesh_instance: Mesh
+@onready var grassbare_mesh: Mesh = preload("res://Assets/Terrain/Plants/grassbare.tres")
+@onready var grassbulb_mesh: Mesh = preload("res://Assets/Terrain/Plants/grassbulb.tres")
 
 @export var test_noise: NoiseTexture2D
 @export var height_curve: Curve
@@ -136,10 +137,12 @@ func generate():
 	data.create_from_surface(array_plane, 0)
 	
 	var spike_count = 0
-	var tree_count = 0
+	var grassbare_count = 0
+	var grassbulb_count = 0
 	var flower_count = 0
 	
-	var tree_positions = []
+	var grassbare_positions = []
+	var grassbulb_positions = []
 	
 	for i in range(data.get_vertex_count()):
 		var vertex = data.get_vertex(i)
@@ -167,7 +170,7 @@ func generate():
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		
-		var random_multiplier = 8.0
+		var random_multiplier = 4.0
 		var random_scale_multiplier = 3.0
 		var random_vertex = Vector3.ZERO
 		random_vertex.y = total_height * height_multiplier
@@ -200,7 +203,7 @@ func generate():
 			
 		
 		if treeness > 0.5 and 0.7 > total_height and total_height > 0.3:
-			var repeat: float = 10 #get_random_repeat(random_x, 10, 5) + 10
+			var repeat: float = get_random_repeat(random_x, 40, 20)
 			
 			# sets offset based on random noise and curve, adjust y value for new position
 			for j in range(0, repeat):
@@ -220,8 +223,13 @@ func generate():
 				offset_vertex.y = total_height_offset * height_multiplier
 				
 				if 0.7 > total_height_offset and total_height_offset > 0.3:
-					tree_count += 1
-					tree_positions.append(offset_vertex)
+					if j == 17:
+						grassbulb_count += 1
+						grassbulb_positions.append(offset_vertex)
+					else:
+						grassbare_count += 1
+						grassbare_positions.append(offset_vertex)
+					
 			
 		if flowerness > 0.5 and 0.35 > total_height and total_height > 0.3:
 			flower_count += 1
@@ -230,28 +238,43 @@ func generate():
 			#new_scene.position.x = vertex.x
 			#new_scene.position.y = vertex.y
 			#new_scene.position.z = vertex.z
-			
-		
 		data.set_vertex(i, vertex)
 	
-	var mm_instance = MultiMeshInstance3D.new()
-	var mm = MultiMesh.new()
-	mm.transform_format = MultiMesh.TRANSFORM_3D
-	mm.mesh = mesh_instance
 	
-	mm.instance_count = tree_positions.size()
-	print(mm.instance_count)
-	print(mm.mesh)
-	for i in range(tree_positions.size()):
-		var vertex = tree_positions[i]
-		var transform_tree = Transform3D(Basis(), vertex)
-		mm.set_instance_transform(i, transform_tree)
+	var mm_instance_grassbare = MultiMeshInstance3D.new()
+	var mm_grassbare = MultiMesh.new()
+	mm_grassbare.transform_format = MultiMesh.TRANSFORM_3D
+	mm_grassbare.mesh = grassbare_mesh
 	
-	mm_instance.multimesh = mm
-	add_child(mm_instance)
+	mm_grassbare.instance_count = grassbare_positions.size()
+	for i in range(grassbare_positions.size()):
+		var vertex = grassbare_positions[i]
+		vertex.y -= 0.2
+		var new_basis = get_rotation_basis(vertex.x * TAU, Vector3(0.1, 0.1, 0.1))
+		var transform_grass = Transform3D(new_basis, vertex)
+		mm_grassbare.set_instance_transform(i, transform_grass)
+	
+	mm_instance_grassbare.multimesh = mm_grassbare
+	add_child(mm_instance_grassbare)
+	
+	var mm_instance_grassbulb = MultiMeshInstance3D.new()
+	var mm_grassbulb = MultiMesh.new()
+	mm_grassbulb.transform_format = MultiMesh.TRANSFORM_3D
+	mm_grassbulb.mesh = grassbulb_mesh
+	mm_grassbulb.instance_count = grassbulb_positions.size()
+	for i in range(grassbulb_positions.size()):
+		var vertex = grassbulb_positions[i]
+		vertex.y -= 0.2
+		var new_basis = get_rotation_basis(vertex.x * TAU, Vector3(0.1, 0.1, 0.1))
+		var transform_grass = Transform3D(new_basis, vertex)
+		mm_grassbulb.set_instance_transform(i, transform_grass)
+	
+	mm_instance_grassbulb.multimesh = mm_grassbulb
+	add_child(mm_instance_grassbulb)
 	
 	print("Total Spikes: " + str(spike_count))
-	print("Total Trees: " + str(tree_count))
+	print("Total Grass: " + str(grassbare_count))
+	print("Total Grassbulb: " + str(grassbulb_count))
 	print("Total Flowers: " + str(flower_count))
 	
 	array_plane.clear_surfaces()
@@ -267,7 +290,6 @@ func generate():
 	mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	
 	add_child(mesh)
-	
 
 func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size, coverage_range, coverage_alt):
 	material.set_shader_parameter("map_heightmap", height_texture)
@@ -279,6 +301,12 @@ func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap
 	material.set_shader_parameter("size_difference_of_world", scale_multiplier)
 	material.set_shader_parameter("_coverage_range", coverage_range)
 	material.set_shader_parameter("_coverage_altitude", coverage_alt)
+
+func get_rotation_basis(rot_y: float, _scale: Vector3):
+	var new_basis = Basis()
+	new_basis = new_basis.rotated(Vector3.UP, rot_y)
+	new_basis = new_basis.scaled(_scale)
+	return new_basis
 
 func get_noise_y(noise_image, x, z):
 	return get_pixel_bilinear(noise_image, x, z).r

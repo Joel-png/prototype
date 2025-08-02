@@ -14,7 +14,7 @@ func _ready() -> void:
 		print("Created world with seed: " + str(terrain_seed))
 	terrain_generator.setup()
 	if is_multiplayer_authority():
-		for i in range(0, 600):
+		for i in range(0, 3):
 			scuttler_spawner.spawn(1)
 
 func set_seed() -> void:

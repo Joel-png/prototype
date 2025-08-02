@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b3lef7vp8a8yl"]
+
+[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass.png" id="1_lr5tk"]
+
+[resource]
+resource_name = "Material.001"
+cull_mode = 2
+albedo_texture = ExtResource("1_lr5tk")
+roughness = 0.5

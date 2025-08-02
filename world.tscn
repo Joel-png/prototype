@@ -134,7 +134,7 @@ domain_warp_type = 1
 noise = SubResource("FastNoiseLite_udxuc")
 
 [sub_resource type="Gradient" id="Gradient_cbp6q"]
-offsets = PackedFloat32Array(0, 0.337423)
+offsets = PackedFloat32Array(0, 0.282738)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_26xuy"]
 frequency = 0.1442
