@@ -12,7 +12,7 @@ func _ready() -> void:
 	overseer = get_parent().player
 	
 
-func action(delta: float) -> void:
+func action(_delta: float) -> void:
 	if Input.is_action_just_pressed("left_click"):
 		fish()
 

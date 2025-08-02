@@ -25,7 +25,7 @@ func _late_ready() -> void:
 	reset_backpack()
 	update_inventory_display_page(0)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not grabbing:
 		grab()
 	elif grabbing:

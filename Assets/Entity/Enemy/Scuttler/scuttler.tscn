@@ -227,6 +227,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 2
 
 [node name="scuttler" type="CharacterBody3D"]
+physics_interpolation_mode = 2
 collision_layer = 4
 floor_constant_speed = true
 floor_max_angle = 1.39626

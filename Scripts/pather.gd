@@ -7,16 +7,16 @@ extends Node3D
 @export var perfect_hearing_curve: Curve
 var group_members
 var counter = 0
-var print = false
+var print_ = false
 
 func _process(delta: float):
 	if counter >= 0.0:
 		counter -= 1.0 * delta
-		print = false
+		print_ = false
 	else:
 		counter += 1.0
-		print = true
-	
+		print_ = true
+
 func find_position():
 	var pos = Vector3(0.0, 0.0, 0.0)
 	var found = false

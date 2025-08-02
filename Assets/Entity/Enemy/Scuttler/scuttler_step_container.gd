@@ -8,7 +8,7 @@ extends Node3D
 
 func _process(delta: float) -> void:
 	var velocity = (parent.global_position - previous_position) / delta
-	var speed_per_sec : float = parent.global_position.distance_to(previous_position) / delta
+	#var speed_per_sec : float = parent.global_position.distance_to(previous_position) / delta
 	global_position = parent.global_position + velocity * offset
 	
 	previous_position = parent.global_position

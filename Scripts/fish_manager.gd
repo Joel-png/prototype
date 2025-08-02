@@ -80,5 +80,5 @@ func cast_fish_from_name(fish_name: String, proc_type: String):
 		return []
 
 func get_new_fish_from_name(fish_name: String):
-	var new_fish = fishes[fish_name_dictionary[fish_name]].dup()
-	return new_fish
+	var new_fish_from_name = fishes[fish_name_dictionary[fish_name]].dup()
+	return new_fish_from_name

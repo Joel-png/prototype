@@ -218,7 +218,7 @@ func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost, equip
 	cast_projectile.rpc(get_multiplayer_authority(), pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish)
 
 @rpc("any_peer", "call_local")
-func cast_projectile(multiplayer_auth, pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish):
+func cast_projectile(multiplayer_auth, pos, _rot, _spell_type, damage, projectile_count, _cast_cost, equipped_fish):
 	var p = fireball.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	p.setup(multiplayer_auth, pos, get_what_look_at(), damage, projectile_count, equipped_fish)
 	projectiles.add_child(p)

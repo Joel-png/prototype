@@ -13,7 +13,7 @@ var adjacent_is_stepping: bool = false
 var adjacent_distance: float = 0.0
 var distance_from: float = 0.0
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if adjacent_target:
 		adjacent_is_stepping = adjacent_target.is_stepping
 		adjacent_distance = adjacent_target.distance_from
