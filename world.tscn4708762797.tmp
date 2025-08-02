@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=57 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -188,11 +188,6 @@ point_count = 10
 [sub_resource type="Curve" id="Curve_ikiii"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.569444, 0), 0.0, 0.0, 0, 0, Vector2(0.761111, 0.384657), 2.72185, 2.72185, 0, 0, Vector2(1, 0.787813), 0.612985, 0.0, 0, 0]
 point_count = 4
-
-[sub_resource type="Curve" id="Curve_hiqwa"]
-_limits = [1.0, 4.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.254054, 1), 0.0, 4.02174, 0, 1, Vector2(1, 4), 4.02174, 0.0, 1, 0]
-point_count = 3
 
 [sub_resource type="Curve" id="Curve_70uel"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -446,7 +441,6 @@ mesh_instance = SubResource("BoxMesh_70uel")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 height_curve = SubResource("Curve_udxuc")
 mountain_curve = SubResource("Curve_ikiii")
-spike_scale_curve = SubResource("Curve_hiqwa")
 random_curve = SubResource("Curve_70uel")
 
 [node name="GrassClumpParticle" type="GPUParticles3D" parent="TerrainGeneration"]

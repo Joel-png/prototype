@@ -30,6 +30,8 @@ var random_image: Image
 @export var test_noise: NoiseTexture2D
 @export var height_curve: Curve
 @export var mountain_curve: Curve
+@export var spike_scale_curve: Curve
+@export var random_curve: Curve
 
 var terrain_seed: int = 0
 
@@ -42,6 +44,7 @@ var terrain_seed: int = 0
 @onready var spike_scene = preload("res://spike.tscn")
 @onready var tree_scene = preload("res://tree.tscn")
 @onready var flower_scene = preload("res://Assets/Terrain/Flower/flower.tscn")
+
 
 func setup_noise(noise):
 	noise.width = world_size + 2
@@ -160,35 +163,64 @@ func generate():
 		var total_height = y * height_curve.sample(y)
 		total_height += mountain_curve.sample(mountain_y) * mountain_strength
 		
-		
 		vertex.y = total_height * height_multiplier
 		vertex.x = vertex.x * scale_multiplier
 		vertex.z = vertex.z * scale_multiplier
 		
-		var random_multiplier = 1.0
+		var random_multiplier = 8.0
+		var random_scale_multiplier = 3.0
 		var random_vertex = Vector3.ZERO
 		random_vertex.y = total_height * height_multiplier
 		random_vertex.x = vertex.x + random_x * random_multiplier * scale_multiplier
 		random_vertex.z = vertex.z + random_z * random_multiplier * scale_multiplier
 		
-		if spikeness > 0.5:
+		var spike_threshold = 0.5
+		if spikeness > spike_threshold:
 			
 			spike_count += 1
 			var new_scene = spike_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 			add_child(new_scene)
+			
+			var new_world_x = random_vertex.x / scale_multiplier + floor(world_size / 2.0) + 1
+			var new_world_z = random_vertex.z / scale_multiplier + floor(world_size / 2.0) + 1
+			var y_offset = get_noise_y(image, new_world_x, new_world_z)
+			var mountain_y_offset = get_noise_y(mountain_image, new_world_x, new_world_z)
+			var total_height_offset = y_offset * height_curve.sample(y_offset)
+			total_height_offset += mountain_curve.sample(mountain_y_offset) * mountain_strength
+			random_vertex.y = total_height_offset * height_multiplier
 			new_scene.position.x = random_vertex.x
 			new_scene.position.y = random_vertex.y
 			new_scene.position.z = random_vertex.z
-			var spike_scale = max(spikeness - 0.5 + treeness, 0.1) * 10.0
-			var vector_maker = spike_scale + spike_scale * random_x * random_multiplier
+			var spike_scale = max(spikeness - spike_threshold + treeness, 0.1) * 10.0
+			var vector_maker = spike_scale + spike_scale * random_x * random_scale_multiplier * (spike_scale_curve.sample(spikeness - spike_threshold))
 			new_scene.scale = Vector3(vector_maker, vector_maker, vector_maker)
 			new_scene.rotation.y = deg_to_rad(360.0 * spike_directionness)
 			new_scene.rotation.z = deg_to_rad(45.0)
 			
 		
-		if treeness > 0.5:
-			tree_count += 1
-			tree_positions.append(vertex)
+		if treeness > 0.5 and 0.7 > total_height and total_height > 0.3:
+			var repeat: float = 10 #get_random_repeat(random_x, 10, 5) + 10
+			
+			# sets offset based on random noise and curve, adjust y value for new position
+			for j in range(0, repeat):
+				# change random amount from curve as iterating
+				var offset_vertex = Vector3(random_vertex.x, random_vertex.y, random_vertex.z)
+				var random_offset_x: float = random_curve.sample(random_x * j/repeat)
+				var random_offset_z: float = random_curve.sample(random_z * j/repeat)
+				offset_vertex.x += random_x * random_multiplier * scale_multiplier * random_offset_x
+				offset_vertex.z += random_z * random_multiplier * scale_multiplier * random_offset_z
+				
+				var new_world_x = offset_vertex.x / scale_multiplier + floor(world_size / 2.0) + 1
+				var new_world_z = offset_vertex.z / scale_multiplier + floor(world_size / 2.0) + 1
+				var y_offset = get_noise_y(image, new_world_x, new_world_z)
+				var mountain_y_offset = get_noise_y(mountain_image, new_world_x, new_world_z)
+				var total_height_offset = y_offset * height_curve.sample(y_offset)
+				total_height_offset += mountain_curve.sample(mountain_y_offset) * mountain_strength
+				offset_vertex.y = total_height_offset * height_multiplier
+				
+				if 0.7 > total_height_offset and total_height_offset > 0.3:
+					tree_count += 1
+					tree_positions.append(offset_vertex)
 			
 		if flowerness > 0.5 and 0.35 > total_height and total_height > 0.3:
 			flower_count += 1
@@ -248,14 +280,35 @@ func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap
 	material.set_shader_parameter("_coverage_altitude", coverage_alt)
 
 func get_noise_y(noise_image, x, z):
-	if x >= noise_image.get_width() or z >= noise_image.get_height():
-		return noise_image.get_pixel(0, 0).r
-	return noise_image.get_pixel(x, z).r
+	return get_pixel_bilinear(noise_image, x, z).r
 	
 func get_noise_z(noise_image, x, z):
-	if x >= noise_image.get_width() or z >= noise_image.get_height():
-		return noise_image.get_pixel(0, 0).b
-	return noise_image.get_pixel(x, z).b
+	return get_pixel_bilinear(noise_image, x, z).b
+
+func get_pixel_bilinear(img: Image, u: float, v: float) -> Color:
+	var x = clamp(u, 0.0, img.get_width() - 1.0)
+	var y = clamp(v, 0.0, img.get_height() - 1.0)
+	
+	var x0 = int(floor(x))
+	var y0 = int(floor(y))
+	var x1 = min(x0 + 1, img.get_width() - 1)
+	var y1 = min(y0 + 1, img.get_height() - 1)
+	
+	var fx = x - x0
+	var fy = y - y0
+	
+	var c00 = img.get_pixel(x0, y0)
+	var c10 = img.get_pixel(x1, y0)
+	var c01 = img.get_pixel(x0, y1)
+	var c11 = img.get_pixel(x1, y1)
+	
+	var c0 = c00.lerp(c10, fx)
+	var c1 = c01.lerp(c11, fx)
+	return c0.lerp(c1, fy)
+
+func get_random_repeat(value, multi, mod):
+	value *= multi
+	return ((int)(value) % mod)
 
 func modify_noise(noise):
 	var edge_damp = floor(world_size / 5.0)
@@ -278,7 +331,6 @@ func modify_noise(noise):
 			new_image.set_pixel(world_size + 1 - i, y, colour)
 			
 	return new_image
-
 
 func mul_colour(colour: Color, val: float):
 	colour.r *= val
