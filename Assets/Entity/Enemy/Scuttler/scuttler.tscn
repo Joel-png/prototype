@@ -216,15 +216,18 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.0862069, 1), 0.0, 0.0, 0, 0, V
 point_count = 3
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_wwwbp"]
-properties/0/path = NodePath(".:position")
+properties/0/path = NodePath(".:rotation")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath(".:rotation")
+properties/1/path = NodePath(".:closest_player_position")
 properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath(".:closest_player_position")
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:target_position")
 properties/2/spawn = true
-properties/2/replication_mode = 2
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:position")
+properties/3/spawn = true
+properties/3/replication_mode = 0
 
 [node name="scuttler" type="CharacterBody3D"]
 physics_interpolation_mode = 2
@@ -582,4 +585,6 @@ hearing_curve = SubResource("Curve_wwwbp")
 perfect_hearing_curve = SubResource("Curve_lt8uf")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.05
+delta_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_wwwbp")

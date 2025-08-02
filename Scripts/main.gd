@@ -77,7 +77,7 @@ func _on_join_local_pressed() -> void:
 	multiplayer.multiplayer_peer = enet_peer
 	
 	hide_menu()
-	
+
 func hide_menu() -> void:
 	$Host.hide()
 	$Refresh.hide()

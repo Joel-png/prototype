@@ -26,11 +26,15 @@ var found_player = false
 @onready var fr_leg = $BaseArmature_001/Skeleton3D/IKFrontR
 @onready var br_leg = $BaseArmature_001/Skeleton3D/IKBackR
 
+var target_position: Vector3 = Vector3.ZERO
 var counter = randf_range(0, 1.0)
-var update_frequency = 0.25
+var update_frequency = 1.0
 var rotation_speed: float = 0.0
+var total_time_alive = 0
+var lerp_speed = 3.0
 
 func _process(delta: float) -> void:
+	total_time_alive += delta
 	if is_multiplayer_authority():
 		path_data = pather.find_position()
 		found_player = path_data[0]
@@ -40,6 +44,7 @@ func _process(delta: float) -> void:
 			velocity.y -= 9.8 * 4 * delta
 		counter -= delta
 		if counter <= 0.0:
+			#sync_state.rpc(position, rotation, closest_player_position)
 			_process_states(delta)
 			counter += update_frequency
 	
@@ -49,6 +54,17 @@ func _process(delta: float) -> void:
 	if is_multiplayer_authority():
 		lerp_angle_look_at(closest_player_position, delta, rotation_speed)
 		move_and_slide()
+		target_position = global_position
+	else:
+		if is_inside_tree():
+			global_position = global_position.lerp(target_position, delta * lerp_speed)
+
+@rpc("any_peer", "call_remote", "unreliable_ordered")
+func sync_state(pos: Vector3, rot: Vector3, closest_player: Vector3):
+	#if total_time_alive > 20:
+		position = pos
+		rotation = rot
+		closest_player_position = closest_player
 
 func _process_states(_delta: float) -> void:
 	match state:
@@ -107,14 +123,14 @@ func set_vel(move_amount, direction):
 		velocity = direction * move_amount * 1.0
 		velocity.y += current_y_vel
 
-func get_angle_to_lookat_position(target_position):
-	var direction: Vector3 = (target_position - position)
+func get_angle_to_lookat_position(look_at_position):
+	var direction: Vector3 = (look_at_position - position)
 	var angle_yaw: float = -atan2(direction.z, direction.x) - PI/2.0
 	var angle = abs(rotation.y - lerp_angle(rotation.y, angle_yaw, 1.0))
 	return angle
 
-func lerp_angle_look_at(target_position: Vector3, delta: float, _rotation_speed: float) -> void:
-	var direction: Vector3 = (target_position - position)
+func lerp_angle_look_at(look_at_position: Vector3, delta: float, _rotation_speed: float) -> void:
+	var direction: Vector3 = (look_at_position - position)
 	#var direction_x_z: float = pow(pow(direction.x, 2) + pow(direction.z, 2), 0.5)
 	#var angle_pitch: float = -atan2(direction_x_z, direction.y) + PI/2.0
 	var angle_yaw: float = -atan2(direction.z, direction.x) - PI/2.0
@@ -125,10 +141,10 @@ func lerp_angle_look_at(target_position: Vector3, delta: float, _rotation_speed:
 		velocity.z *= 0.1
 	rotation.y = lerp_angle(rotation.y, angle_yaw, _rotation_speed * delta)
 
-func lerp_look_at(thing_looking, target_position: Vector3, _delta: float, _rotation_speed: float) -> void:
+func lerp_look_at(thing_looking, look_at_position: Vector3, _delta: float, _rotation_speed: float) -> void:
 	#var old_rotation: Vector3 = thing_looking.rotation
-	if not Vector3.UP.cross(target_position - global_transform.origin).is_zero_approx():
-		thing_looking.look_at(target_position)
+	if not Vector3.UP.cross(look_at_position - global_transform.origin).is_zero_approx():
+		thing_looking.look_at(look_at_position)
 	#var new_rotation: Vector3 = thing_looking.rotation
 	#thing_looking.rotation = old_rotation
 	#thing_looking.rotate_y(((new_rotation.y - old_rotation.y) * delta * rotation_speed))

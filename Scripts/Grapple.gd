@@ -51,7 +51,8 @@ func end_action() -> void:
 	if overseer.is_grappling:
 		show_mesh.rpc()
 	else:
-		hide_mesh.rpc()
+		if grapple_mesh.visible:
+			hide_mesh.rpc()
 	
 @rpc("any_peer", "call_local")
 func show_mesh() -> void:

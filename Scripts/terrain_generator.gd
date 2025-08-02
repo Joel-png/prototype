@@ -2,7 +2,7 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh: MeshInstance3D
-var world_size: int = 400
+var world_size: int = 100
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
 var height_multiplier: int = 4 * scale_multiplier
@@ -181,6 +181,7 @@ func generate():
 			var new_scene = spike_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 			add_child(new_scene)
 			
+			# updates the pixel looked at to get the adjusted height value, scale world coord to image coord
 			var new_world_x = random_vertex.x / scale_multiplier + floor(world_size / 2.0) + 1
 			var new_world_z = random_vertex.z / scale_multiplier + floor(world_size / 2.0) + 1
 			var y_offset = get_noise_y(image, new_world_x, new_world_z)
@@ -285,6 +286,7 @@ func get_noise_y(noise_image, x, z):
 func get_noise_z(noise_image, x, z):
 	return get_pixel_bilinear(noise_image, x, z).b
 
+# thank u chatgpt for this banger, the 5tons of water that went into creating this function will not be forgotten
 func get_pixel_bilinear(img: Image, u: float, v: float) -> Color:
 	var x = clamp(u, 0.0, img.get_width() - 1.0)
 	var y = clamp(v, 0.0, img.get_height() - 1.0)
