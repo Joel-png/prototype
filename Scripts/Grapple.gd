@@ -26,24 +26,25 @@ func action(_delta: float) -> void:
 	var grapple_raycast_hit = overseer.camera_cast.get_collider()
 	crosshair_info(grapple_raycast_hit)
 	
-	if Input.is_action_just_pressed("left_click"):
-		if grapple_raycast_hit:
-			overseer.grapple_hook_position = overseer.camera_cast.get_collision_point()
-			overseer.is_grappling = true
-		else:
-			overseer.is_grappling = false
- 
-	if overseer.is_grappling and Input.is_action_pressed("left_click"):
-		overseer.grapple_pivot.look_at(overseer.grapple_hook_position)
-		var grapple_direction: Vector3 = (overseer.grapple_hook_position - overseer.position).normalized()
-		
-		if overseer.grapple_hook_position.distance_to(overseer.position) < GRAPPLE_MIN_DIST:
-			var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX * max(0, overseer.grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
-			overseer.velocity = grapple_target_speed
-		else:
-			var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX
-			overseer.velocity = grapple_target_speed
+	if is_focus():
+		if Input.is_action_just_pressed("left_click"):
+			if grapple_raycast_hit:
+				overseer.grapple_hook_position = overseer.camera_cast.get_collision_point()
+				overseer.is_grappling = true
+			else:
+				overseer.is_grappling = false
+	 
+		if overseer.is_grappling and Input.is_action_pressed("left_click"):
+			overseer.grapple_pivot.look_at(overseer.grapple_hook_position)
+			var grapple_direction: Vector3 = (overseer.grapple_hook_position - overseer.position).normalized()
 			
+			if overseer.grapple_hook_position.distance_to(overseer.position) < GRAPPLE_MIN_DIST:
+				var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX * max(0, overseer.grapple_hook_position.distance_to(overseer.position) - GRAPPLE_MIN_DIST * 0.2)/GRAPPLE_MIN_DIST
+				overseer.velocity = grapple_target_speed
+			else:
+				var grapple_target_speed: Vector3 = grapple_direction * GRAPPLE_FORCE_MAX
+				overseer.velocity = grapple_target_speed
+				
 	if overseer.is_grappling and not Input.is_action_pressed("left_click"):
 		overseer.is_grappling = false
 

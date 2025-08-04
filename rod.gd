@@ -13,8 +13,9 @@ func _ready() -> void:
 	
 
 func action(_delta: float) -> void:
-	if Input.is_action_just_pressed("left_click"):
-		fish()
+	if is_focus():
+		if Input.is_action_just_pressed("left_click"):
+			fish()
 
 func fish():
 	var random_droprate = fish_manager.get_random_droprate()

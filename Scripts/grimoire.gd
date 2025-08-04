@@ -28,9 +28,10 @@ func _process(delta: float) -> void:
 		cast_cool_down -= cast_cool_down_decrease * delta
 
 func action(_delta: float) -> void:
-	if Input.is_action_just_pressed("left_click") and cast_cool_down <= 0.0:
-		compute_fishes("cast")
-		
+	if is_focus():
+		if Input.is_action_just_pressed("left_click") and cast_cool_down <= 0.0:
+			compute_fishes("cast")
+			
 
 func reset_variables():
 	total_damage_multiplier = 1.0

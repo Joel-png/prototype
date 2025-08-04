@@ -32,3 +32,9 @@ func select() -> void:
 
 func get_scene():
 	return scene
+
+func is_focus():
+	if overseer != null:
+		if overseer.is_focus:
+			return true
+	return false
