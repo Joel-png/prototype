@@ -1,30 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://brgrcy3cn8f7f"]
+[gd_scene load_steps=6 format=3 uid="uid://brgrcy3cn8f7f"]
 
 [ext_resource type="Script" uid="uid://bwbo181mpenja" path="res://Scripts/inventory.gd" id="1_5tt2m"]
-[ext_resource type="Texture2D" uid="uid://brlyos4gdirsm" path="res://Assets/UI/inventory_background.png" id="1_robk6"]
 [ext_resource type="PackedScene" uid="uid://gihyiah2uoqv" path="res://inventory_slot.tscn" id="2_a5thn"]
+[ext_resource type="PackedScene" uid="uid://6mgdhbeingdw" path="res://nine_patch.tscn" id="2_dw5ng"]
 [ext_resource type="PackedScene" uid="uid://cs18q0faaaap0" path="res://inventory_grid.tscn" id="3_mrqgh"]
+[ext_resource type="PackedScene" uid="uid://cenhrxhrcvkn1" path="res://pop_up.tscn" id="5_dw5ng"]
 
 [node name="Inventory" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -11.0
+offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5tt2m")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
-layout_mode = 0
-offset_left = 419.0
-offset_top = 299.0
-offset_right = 733.0
-offset_bottom = 508.0
-texture = ExtResource("1_robk6")
-patch_margin_left = 2
-patch_margin_top = 2
-patch_margin_right = 2
-patch_margin_bottom = 2
+[node name="PanelContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -167.0
+offset_top = -36.0
+offset_right = 167.0
+offset_bottom = 193.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="NinePatch" parent="PanelContainer/PanelContainer" instance=ExtResource("2_dw5ng")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="MarginContainer" parent="PanelContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 294
+theme_override_constants/margin_top = 189
 
 [node name="CenterContainer" parent="." instance=ExtResource("3_mrqgh")]
 layout_mode = 1
@@ -127,6 +153,9 @@ layout_mode = 2
 
 [node name="InventorySlot21" parent="CenterContainer2/InventoryGrid" index="20" instance=ExtResource("2_a5thn")]
 layout_mode = 2
+
+[node name="PopUp" parent="." instance=ExtResource("5_dw5ng")]
+layout_mode = 1
 
 [editable path="CenterContainer"]
 [editable path="CenterContainer2"]

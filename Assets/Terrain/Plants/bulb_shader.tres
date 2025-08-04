@@ -52,7 +52,7 @@ void fragment() {
 	if (fresnel_factor > 0.0) {
 	    emission_mask = 0.0;
 	}
-	
+
 	float eyemission_mask = 1.0;
 	if (fresnel_inner_factor > 0.0) {
 	    eyemission_mask = 0.0;
@@ -69,7 +69,7 @@ void fragment() {
 
 	// Emission: Enabled
 	vec3 emission_tex = texture(texture_emission, base_uv).rgb;
-	
+
 	// Emission Operator: Add
 	EMISSION = (emission.rgb + emission_tex) * emission_energy * emission_mask * (1.0 - eyemission_mask);
 }

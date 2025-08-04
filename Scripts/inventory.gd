@@ -7,6 +7,7 @@ var first_slot
 var second_slot
 var grabbing = false
 var inventory_page_size = 0
+@onready var popup = $PopUp
 @onready var inventory_manager = $".."
 @onready var inventory_slots = $CenterContainer2/InventoryGrid.get_children()
 @onready var fish_slots = $CenterContainer/InventoryGrid
@@ -82,6 +83,7 @@ func swap_items(first, second):
 		second.update_item()
 		inventory_manager.update_grimoire_fish(update_selected_fish())
 		print_inventory()
+		set_description(second)
 
 func fix_backpack(first, second):
 	if first.is_backpack and not second.is_backpack:
@@ -109,8 +111,20 @@ func reset_backpack():
 		backpack.append(item)
 
 func hover(slot):
+	if hovered_slot != slot:
+		set_description(slot)
 	hovered_slot = slot
-	
+
+func unhover():
+	hovered_slot = null
+	popup.hide()
+
+func set_description(slot):
+	if slot.item != null:
+			var description = slot.get_description()
+			if description != null:
+				popup.update_popup_text(description)
+				popup.show()
 
 func print_inventory():
 	for pack in backpack:

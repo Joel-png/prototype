@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://cenhrxhrcvkn1"]
+
+[ext_resource type="Script" uid="uid://ceoq6sp5ouq1a" path="res://pop_up.gd" id="1_xhdr8"]
+[ext_resource type="PackedScene" uid="uid://6mgdhbeingdw" path="res://nine_patch.tscn" id="2_xhdr8"]
+
+[node name="PopUp" type="Control"]
+top_level = true
+layout_mode = 3
+anchor_left = 0.009
+anchor_top = 0.058
+anchor_right = 0.009
+anchor_bottom = 0.058
+offset_left = -10.368
+offset_top = -37.584
+offset_right = -10.368
+offset_bottom = -37.584
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+script = ExtResource("1_xhdr8")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 21.0
+offset_bottom = 43.0
+mouse_filter = 2
+
+[node name="NinePatch" parent="PanelContainer" instance=ExtResource("2_xhdr8")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
