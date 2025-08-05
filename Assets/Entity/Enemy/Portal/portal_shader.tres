@@ -1,0 +1,66 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://ciprux3gcbs8s"]
+
+[sub_resource type="VisualShaderNodeFresnel" id="VisualShaderNodeFresnel_tkhu7"]
+default_input_values = [2, true, 3, 1.0]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_scaje"]
+parameter_name = "FloatParameter"
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_w3giy"]
+parameter_name = "ColorParameter"
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_0j6ly"]
+size = Vector2(280, 340)
+expression = "output0 = input0 * (1.0 - input1);"
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded;
+
+uniform vec4 ColorParameter : source_color;
+uniform float FloatParameter;
+
+
+
+void fragment() {
+// ColorParameter:4
+	vec4 n_out4p0 = ColorParameter;
+
+
+// FloatParameter:3
+	float n_out3p0 = FloatParameter;
+
+
+// Fresnel:2
+	float n_out2p0 = pow(clamp(dot(NORMAL, VIEW), 0.0, 1.0), n_out3p0);
+
+
+	vec3 n_out5p0;
+// Expression:5
+	n_out5p0 = vec3(0.0, 0.0, 0.0);
+	{
+		n_out5p0 = vec3(n_out4p0.xyz) * (1.0 - n_out2p0);
+	}
+
+
+// Output:0
+	ALBEDO = n_out5p0;
+
+
+}
+"
+graph_offset = Vector2(-323.86, -64.8847)
+flags/unshaded = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeFresnel_tkhu7")
+nodes/fragment/2/position = Vector2(-360, 320)
+nodes/fragment/3/node = SubResource("VisualShaderNodeFloatParameter_scaje")
+nodes/fragment/3/position = Vector2(-700, 420)
+nodes/fragment/4/node = SubResource("VisualShaderNodeColorParameter_w3giy")
+nodes/fragment/4/position = Vector2(-380, 100)
+nodes/fragment/5/node = SubResource("VisualShaderNodeExpression_0j6ly")
+nodes/fragment/5/position = Vector2(-100, 180)
+nodes/fragment/5/size = Vector2(280, 340)
+nodes/fragment/5/input_ports = "0,4,input0;1,0,input1;"
+nodes/fragment/5/output_ports = "0,4,output0;"
+nodes/fragment/5/expression = "output0 = input0 * (1.0 - input1);"
+nodes/fragment/connections = PackedInt32Array(3, 0, 2, 3, 5, 0, 0, 0, 2, 0, 5, 1, 4, 0, 5, 0)

@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://gihyiah2uoqv"]
+[gd_scene load_steps=5 format=3 uid="uid://gihyiah2uoqv"]
 
 [ext_resource type="Script" uid="uid://b8dh5qvymlb08" path="res://Scripts/inventory_slot.gd" id="1_f5bh6"]
 [ext_resource type="PackedScene" uid="uid://6mgdhbeingdw" path="res://nine_patch.tscn" id="2_f5bh6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f5bh6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bfyh4"]
 
 [node name="InventorySlot" type="Panel"]
 custom_minimum_size = Vector2(40, 40)
@@ -9,6 +13,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_f5bh6")
 script = ExtResource("1_f5bh6")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -16,6 +21,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bfyh4")
 
 [node name="NinePatch" parent="PanelContainer" instance=ExtResource("2_f5bh6")]
 layout_mode = 2

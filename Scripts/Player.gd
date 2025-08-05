@@ -192,7 +192,7 @@ func _process(delta: float) -> void:
 		scale_marker(position.distance_to(player_manager.main_player_position))
 	if holdable:
 		holdable.end_action()
-	
+
 func hotbar_logic() -> void:
 	if is_player:
 		for i in range(hotbar.size()):

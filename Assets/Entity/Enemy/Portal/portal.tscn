@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://vqtjlh5oacw3"]
+
+[ext_resource type="Script" uid="uid://383a1x2knvc0" path="res://Assets/Entity/Enemy/Portal/portal.gd" id="1_4l2ym"]
+[ext_resource type="Shader" uid="uid://ciprux3gcbs8s" path="res://Assets/Entity/Enemy/Portal/portal_shader.tres" id="1_sli4q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4l2ym"]
+render_priority = 0
+shader = ExtResource("1_sli4q")
+shader_parameter/ColorParameter = Color(0.862082, 0.00157792, 0.981768, 1)
+shader_parameter/FloatParameter = 0.325
+
+[sub_resource type="SphereMesh" id="SphereMesh_n5iic"]
+material = SubResource("ShaderMaterial_4l2ym")
+
+[node name="Portal" type="Node3D"]
+script = ExtResource("1_4l2ym")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_n5iic")

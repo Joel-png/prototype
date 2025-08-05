@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cenhrxhrcvkn1"]
+[gd_scene load_steps=4 format=3 uid="uid://cenhrxhrcvkn1"]
 
 [ext_resource type="Script" uid="uid://ceoq6sp5ouq1a" path="res://pop_up.gd" id="1_xhdr8"]
 [ext_resource type="PackedScene" uid="uid://6mgdhbeingdw" path="res://nine_patch.tscn" id="2_xhdr8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xhdr8"]
 
 [node name="PopUp" type="Control"]
 top_level = true
@@ -24,6 +26,7 @@ layout_mode = 0
 offset_right = 21.0
 offset_bottom = 43.0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xhdr8")
 
 [node name="NinePatch" parent="PanelContainer" instance=ExtResource("2_xhdr8")]
 layout_mode = 2
