@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=25 format=3 uid="uid://k1xflmuolakr"]
+[gd_resource type="VisualShader" load_steps=22 format=3 uid="uid://k1xflmuolakr"]
 
 [sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_hkear"]
 size = Vector2(472, 340)
@@ -12,31 +12,19 @@ float sin_a = sin(angle);
 uv += vec2(0.5);
 output0 = uv;"
 
-[sub_resource type="Gradient" id="Gradient_hkear"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_yk861"]
-noise_type = 2
-frequency = 0.0681
-fractal_octaves = 1
-cellular_jitter = 3.615
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6wf02"]
-color_ramp = SubResource("Gradient_hkear")
-noise = SubResource("FastNoiseLite_yk861")
-
-[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_3mttd"]
-texture = SubResource("NoiseTexture2D_6wf02")
-
-[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tbogs"]
-output_port_for_preview = 0
-input_name = "uv"
-
 [sub_resource type="Gradient" id="Gradient_qsrn1"]
 offsets = PackedFloat32Array(0.353933, 0.522472, 0.536517, 0.558989, 0.567416, 0.609551, 0.676966, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.280405, 0.245355, 1, 1, 0.488069, 0.44629, 0.998349, 1, 0.983266, 0.925443, 0.994413, 1, 0.537096, 0.000684997, 0.633762, 1, 0.899426, 0.185769, 0.247736, 1, 0.476357, 0, 0.17378, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_bfda2"]
 gradient = SubResource("Gradient_qsrn1")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_3mttd"]
+texture = SubResource("GradientTexture1D_bfda2")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_tbogs"]
+output_port_for_preview = 0
+input_name = "uv"
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_hjrw6"]
 output_port_for_preview = 0
@@ -96,7 +84,7 @@ texture = SubResource("NoiseTexture2D_tbrgg")
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_always, cull_front, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, alpha_to_coverage_and_one, fog_disabled;
+render_mode blend_mix, depth_draw_always, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, alpha_to_coverage_and_one, fog_disabled;
 
 uniform sampler2D tex_frg_2;
 uniform sampler2D tex_frg_13;
@@ -193,9 +181,9 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-495.893, 109.987)
+graph_offset = Vector2(-166.893, -17.0126)
 modes/depth_draw = 1
-modes/cull = 1
+modes/cull = 2
 flags/unshaded = true
 flags/shadows_disabled = true
 flags/alpha_to_coverage_and_one = true
@@ -244,4 +232,4 @@ nodes/fragment/18/node = SubResource("VisualShaderNodeFloatOp_yk861")
 nodes/fragment/18/position = Vector2(-1100, 1300)
 nodes/fragment/19/node = SubResource("VisualShaderNodeVectorOp_yk861")
 nodes/fragment/19/position = Vector2(180, 40)
-nodes/fragment/connections = PackedInt32Array(5, 0, 6, 2, 2, 0, 6, 0, 6, 0, 7, 0, 8, 0, 7, 1, 11, 0, 6, 1, 12, 0, 10, 0, 10, 0, 9, 0, 2, 0, 13, 0, 13, 0, 14, 0, 16, 0, 10, 1, 15, 0, 18, 0, 17, 0, 18, 1, 18, 0, 16, 1, 7, 0, 16, 0, 9, 1, 14, 1, 14, 0, 0, 0, 14, 0, 19, 0, 19, 0, 0, 1, 19, 0, 0, 5)
+nodes/fragment/connections = PackedInt32Array(5, 0, 6, 2, 2, 0, 6, 0, 6, 0, 7, 0, 8, 0, 7, 1, 11, 0, 6, 1, 12, 0, 10, 0, 10, 0, 9, 0, 2, 0, 13, 0, 13, 0, 14, 0, 16, 0, 10, 1, 15, 0, 18, 0, 17, 0, 18, 1, 18, 0, 16, 1, 7, 0, 16, 0, 9, 1, 14, 1, 14, 0, 0, 0, 14, 0, 19, 0, 19, 0, 0, 5, 19, 0, 0, 1)

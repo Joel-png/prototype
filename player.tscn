@@ -130,10 +130,6 @@ scene = ExtResource("6_b26j0")
 [node name="PlayerHead" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)
 
-[node name="SubViewport" type="SubViewport" parent="PlayerHead"]
-
-[node name="Camera3D" type="Camera3D" parent="PlayerHead/SubViewport"]
-
 [node name="Camera3D" type="Camera3D" parent="PlayerHead"]
 
 [node name="DebugLabel0" type="Label" parent="PlayerHead/Camera3D"]

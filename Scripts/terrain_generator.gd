@@ -2,12 +2,13 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh: MeshInstance3D
-var world_size: int = 200
+var world_size: int = 400
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
 var height_multiplier: int = 4 * scale_multiplier
 
 var grass_scale: int = 7
+var generated = false
 
 @export var noise_texture: NoiseTexture2D
 var image: Image
@@ -241,7 +242,7 @@ func generate():
 		data.set_vertex(i, vertex)
 	
 	
-	var mm_instance_grassbare = MultiMeshInstance3D.new()
+	var mm_instance_grassbare = $GrassBare
 	var mm_grassbare = MultiMesh.new()
 	mm_grassbare.transform_format = MultiMesh.TRANSFORM_3D
 	mm_grassbare.mesh = grassbare_mesh
@@ -255,9 +256,8 @@ func generate():
 		mm_grassbare.set_instance_transform(i, transform_grass)
 	
 	mm_instance_grassbare.multimesh = mm_grassbare
-	add_child(mm_instance_grassbare)
 	
-	var mm_instance_grassbulb = MultiMeshInstance3D.new()
+	var mm_instance_grassbulb = $GrassBulb
 	var mm_grassbulb = MultiMesh.new()
 	mm_grassbulb.transform_format = MultiMesh.TRANSFORM_3D
 	mm_grassbulb.mesh = grassbulb_mesh
@@ -270,7 +270,6 @@ func generate():
 		mm_grassbulb.set_instance_transform(i, transform_grass)
 	
 	mm_instance_grassbulb.multimesh = mm_grassbulb
-	add_child(mm_instance_grassbulb)
 	
 	print("Total Spikes: " + str(spike_count))
 	print("Total Grass: " + str(grassbare_count))
@@ -290,6 +289,8 @@ func generate():
 	mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	
 	add_child(mesh)
+	
+	generated = true
 
 func setup_shader(material, height_texture, normal_map, spacing, rows, heightmap_size, coverage_range, coverage_alt):
 	material.set_shader_parameter("map_heightmap", height_texture)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=61 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b4jkx222552xh" path="res://Assets/heightmap.png" id="7_wkvnm"]
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Texture2D" uid="uid://bp2pxfrb4qf0x" path="res://Assets/normalmap.png" id="8_pbu1x"]
+[ext_resource type="Script" uid="uid://qsesthnav4mb" path="res://multimesh.gd" id="12_2u3nc"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
 [ext_resource type="Script" uid="uid://kfndg42krwck" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
 [ext_resource type="PackedScene" uid="uid://vqtjlh5oacw3" path="res://Assets/Entity/Enemy/Portal/portal.tscn" id="15_hiqwa"]
@@ -402,6 +403,8 @@ blend_shape_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_2u3nc"]
 material = ExtResource("12_ulnk3")
 
+[sub_resource type="MultiMesh" id="MultiMesh_2u3nc"]
+
 [node name="World" type="Node3D" groups=["Damagable"]]
 script = ExtResource("1_5i068")
 fog_curve = SubResource("Curve_sq6ro")
@@ -415,8 +418,12 @@ light_angular_distance = 0.97
 shadow_enabled = true
 shadow_bias = 0.0
 shadow_blur = 0.504
+directional_shadow_mode = 0
+directional_shadow_split_1 = 0.0
 directional_shadow_blend_splits = true
-directional_shadow_max_distance = 888.6
+directional_shadow_fade_start = 0.25
+directional_shadow_max_distance = 629.2
+directional_shadow_pancake_size = 146.4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_f23m3")
@@ -493,6 +500,12 @@ draw_pass_1 = SubResource("ArrayMesh_8yg87")
 [node name="Water" type="MeshInstance3D" parent="TerrainGeneration"]
 mesh = SubResource("PlaneMesh_2u3nc")
 
+[node name="GrassBare" type="MultiMeshInstance3D" parent="TerrainGeneration"]
+multimesh = SubResource("MultiMesh_2u3nc")
+script = ExtResource("12_2u3nc")
+
+[node name="GrassBulb" type="MultiMeshInstance3D" parent="TerrainGeneration"]
+
 [node name="Enemies" type="Node3D" parent="."]
 
 [node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="."]
@@ -506,4 +519,4 @@ script = ExtResource("17_ikiii")
 [node name="FishManager" parent="." groups=["FishManager"] instance=ExtResource("17_udxuc")]
 
 [node name="Portal" parent="." instance=ExtResource("15_hiqwa")]
-transform = Transform3D(188.824, 0, 0, 0, 188.824, 0, 0, 0, 188.824, 0, 119.189, 0)
+transform = Transform3D(190.559, 0, 0, 0, 190.559, 0, 0, 0, 190.559, 0, 326.722, 0)
