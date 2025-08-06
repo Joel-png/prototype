@@ -1,4 +1,5 @@
 extends Node3D
+
 var time_scale = 0.1
 
 func _process(delta):
