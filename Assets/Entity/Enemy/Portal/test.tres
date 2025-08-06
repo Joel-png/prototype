@@ -1,0 +1,13 @@
+[gd_resource type="VisualShader" load_steps=2 format=3 uid="uid://wwvf35dogu37"]
+
+[sub_resource type="VisualShaderNodeTexture3D" id="VisualShaderNodeTexture3D_7tnr3"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+
+
+"
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture3D_7tnr3")
+nodes/fragment/2/position = Vector2(100, 120)

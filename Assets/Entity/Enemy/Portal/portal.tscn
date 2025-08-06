@@ -1,19 +1,158 @@
-[gd_scene load_steps=5 format=3 uid="uid://vqtjlh5oacw3"]
+[gd_scene load_steps=30 format=3 uid="uid://vqtjlh5oacw3"]
 
 [ext_resource type="Script" uid="uid://383a1x2knvc0" path="res://Assets/Entity/Enemy/Portal/portal.gd" id="1_4l2ym"]
-[ext_resource type="Shader" uid="uid://ciprux3gcbs8s" path="res://Assets/Entity/Enemy/Portal/portal_shader.tres" id="1_sli4q"]
+[ext_resource type="Shader" uid="uid://k1xflmuolakr" path="res://Assets/Entity/Enemy/Portal/rim_portal.tres" id="2_kmmto"]
+[ext_resource type="Shader" uid="uid://ddifmvlrfh77a" path="res://Assets/Entity/Enemy/Portal/portal.gdshader" id="2_n5iic"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4l2ym"]
+[sub_resource type="Gradient" id="Gradient_kmmto"]
+offsets = PackedFloat32Array(0.25974, 0.386364)
+colors = PackedColorArray(0, 0, 0, 1, 0.964143, 0.964143, 0.964143, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3y8q3"]
+gradient = SubResource("Gradient_kmmto")
+
+[sub_resource type="Gradient" id="Gradient_toqyk"]
+offsets = PackedFloat32Array(0.162338, 0.172078, 0.217532, 0.253247, 0.275974, 0.36039, 0.409091, 0.535714)
+colors = PackedColorArray(0, 0, 0, 1, 0.652585, 0.604856, 0.9961, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eilpl"]
+gradient = SubResource("Gradient_toqyk")
+
+[sub_resource type="Gradient" id="Gradient_0s3cf"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tkhxk"]
+gradient = SubResource("Gradient_0s3cf")
+
+[sub_resource type="Gradient" id="Gradient_qe04n"]
+offsets = PackedFloat32Array(0.496753, 0.853896)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lpnxg"]
+gradient = SubResource("Gradient_qe04n")
+
+[sub_resource type="Gradient" id="Gradient_lfvbw"]
+offsets = PackedFloat32Array(0.185065, 0.311688, 0.435065, 0.487013, 0.587662, 0.987013)
+colors = PackedColorArray(0.505801, 0.276843, 0.984939, 1, 0.538339, 0.152199, 0.246123, 1, 0.530347, 0.182813, 0.427587, 1, 0.988896, 0.542796, 0.591811, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fnx5h"]
+gradient = SubResource("Gradient_lfvbw")
+
+[sub_resource type="Gradient" id="Gradient_dxkkk"]
+offsets = PackedFloat32Array(0.191558, 0.603896, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.957831, 0.957831, 0.957831, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4yvfa"]
+gradient = SubResource("Gradient_dxkkk")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_708q6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ri7ro"]
+noise = SubResource("FastNoiseLite_708q6")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cjw8f"]
+noise_type = 5
+frequency = 0.0259
+fractal_type = 0
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_amplitude = 39.31
+domain_warp_frequency = 3.23
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x7nv4"]
+seamless = true
+seamless_blend_skirt = 0.493
+noise = SubResource("FastNoiseLite_cjw8f")
+
+[sub_resource type="Gradient" id="Gradient_n5iic"]
+offsets = PackedFloat32Array(0.480519, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kmmto"]
+gradient = SubResource("Gradient_n5iic")
+
+[sub_resource type="Gradient" id="Gradient_1yo7q"]
+offsets = PackedFloat32Array(0.49026, 0.775974)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aan6t"]
+gradient = SubResource("Gradient_1yo7q")
+
+[sub_resource type="Gradient" id="Gradient_nm6u7"]
+offsets = PackedFloat32Array(0, 0.665584)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aro84"]
+gradient = SubResource("Gradient_nm6u7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8fkw0"]
 render_priority = 0
-shader = ExtResource("1_sli4q")
-shader_parameter/ColorParameter = Color(0.862082, 0.00157792, 0.981768, 1)
-shader_parameter/FloatParameter = 0.325
+shader = ExtResource("2_n5iic")
+shader_parameter/noise_offset_texture = SubResource("NoiseTexture2D_ri7ro")
+shader_parameter/base_color = Color(0, 0, 0, 1)
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader_parameter/ior = 2.945
+shader_parameter/fresnel_power = 5.0
+shader_parameter/time_scale = 1.00001
+shader_parameter/rotation_scale = 4.00001
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_eilpl")
+shader_parameter/albedo_gradient_texture = SubResource("GradientTexture1D_3y8q3")
+shader_parameter/refraction_gradient_texture = SubResource("GradientTexture1D_aro84")
+shader_parameter/other_refraction_gradient_texture = SubResource("GradientTexture1D_aan6t")
+shader_parameter/ior_gradient_texture = SubResource("GradientTexture1D_tkhxk")
+shader_parameter/other_ior_gradient_texture = SubResource("GradientTexture1D_kmmto")
+shader_parameter/mix_gradient_texture = SubResource("GradientTexture1D_lpnxg")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_x7nv4")
+shader_parameter/noise_color_ramp_texture = SubResource("GradientTexture1D_fnx5h")
+shader_parameter/noise_gradient_texture = SubResource("GradientTexture1D_4yvfa")
 
 [sub_resource type="SphereMesh" id="SphereMesh_n5iic"]
-material = SubResource("ShaderMaterial_4l2ym")
+material = SubResource("ShaderMaterial_8fkw0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fnx5h"]
+render_priority = 0
+shader = ExtResource("2_kmmto")
+shader_parameter/time_scale = 2.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lfvbw"]
+lightmap_size_hint = Vector2i(12, 12)
+material = SubResource("ShaderMaterial_fnx5h")
 
 [node name="Portal" type="Node3D"]
 script = ExtResource("1_4l2ym")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_n5iic")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="RingPivot3" type="Node3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot3"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot3"]
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")
+
+[node name="RingPivot2" type="Node3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot2"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot2"]
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")
+
+[node name="RingPivot" type="Node3D" parent="Node3D"]
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot"]
+mesh = SubResource("PlaneMesh_lfvbw")
+skeleton = NodePath("../../..")

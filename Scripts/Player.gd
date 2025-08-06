@@ -37,6 +37,8 @@ var noise_increase = 2.0
 @onready var animation_player = $AnimationPlayer
 @onready var projectiles = $"../../Projectiles"
 @onready var projectile_scene = preload("res://projectile.tscn")
+@onready var viewport = $PlayerHead/SubViewport
+@onready var viewport_camera = $PlayerHead/SubViewport/Camera3D
 
 #spells
 @onready var fireball = preload("res://fireball.tscn")
@@ -75,6 +77,7 @@ func _ready() -> void:
 		debug0.hide()
 		debug1.hide()
 	else:
+		viewport.add_to_group("Viewport")
 		var auth = get_multiplayer_authority()
 		spawn_item(instrument_spawner.spawn(auth))
 		spawn_item(grapple_spawner.spawn(auth))
@@ -181,6 +184,7 @@ func _process(delta: float) -> void:
 			var delta_calc = moving_amount * delta
 			noise_level += noise_increase * delta_calc
 		move_and_slide()
+		update_viewport_camera()
 		#holdable.action(delta)
 		debug0.text = str(moving_amount) + "\n " + str(velocity) + "\n " + str(noise_level)
 		debug1.text = str(Engine.get_frames_per_second()) + " " + str(1.0/(get_process_delta_time()))
@@ -204,6 +208,13 @@ func hotbar_logic() -> void:
 		select_holdable(hotbar_to_select)
 		hotbar_selected = hotbar_to_select
 		
+
+func update_viewport_camera():
+	viewport.size = get_viewport().size
+	viewport_camera.global_transform = camera.global_transform
+	viewport_camera.fov = camera.fov
+	viewport_camera.near = camera.near
+	viewport_camera.far = camera.far
 
 #@rpc("any_peer", "call_local")
 func select_holdable(item_to_hold: int) -> void:

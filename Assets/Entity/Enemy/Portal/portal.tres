@@ -1,0 +1,81 @@
+[gd_resource type="ShaderMaterial" load_steps=20 format=3 uid="uid://biw3dir6yv3rd"]
+
+[ext_resource type="Shader" uid="uid://ddifmvlrfh77a" path="res://Assets/Entity/Enemy/Portal/portal.gdshader" id="1_0j7fv"]
+
+[sub_resource type="Gradient" id="Gradient_toqyk"]
+offsets = PackedFloat32Array(0.301948, 0.522727)
+colors = PackedColorArray(0, 0, 0, 1, 0.964143, 0.964143, 0.964143, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eilpl"]
+gradient = SubResource("Gradient_toqyk")
+
+[sub_resource type="Gradient" id="Gradient_4l2ym"]
+offsets = PackedFloat32Array(0.337662, 0.353896, 0.37013, 0.418831, 0.470779, 0.529221)
+colors = PackedColorArray(0, 0, 0, 1, 0.652585, 0.604856, 0.9961, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_n5iic"]
+gradient = SubResource("Gradient_4l2ym")
+
+[sub_resource type="Gradient" id="Gradient_n5iic"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kmmto"]
+gradient = SubResource("Gradient_n5iic")
+
+[sub_resource type="Gradient" id="Gradient_3y8q3"]
+offsets = PackedFloat32Array(0.340909, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_toqyk"]
+gradient = SubResource("Gradient_3y8q3")
+
+[sub_resource type="Gradient" id="Gradient_0j7fv"]
+colors = PackedColorArray(0, 0, 0, 1, 0.842008, 0.37673, 0.65661, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0vj6r"]
+gradient = SubResource("Gradient_0j7fv")
+
+[sub_resource type="Gradient" id="Gradient_t5x14"]
+offsets = PackedFloat32Array(0.740741, 0.848765)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_isu0s"]
+gradient = SubResource("Gradient_t5x14")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_t5x14"]
+noise_type = 5
+frequency = 0.0259
+fractal_type = 0
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_amplitude = 39.31
+domain_warp_frequency = 3.23
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_isu0s"]
+noise = SubResource("FastNoiseLite_t5x14")
+
+[sub_resource type="Gradient" id="Gradient_eilpl"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0s3cf"]
+gradient = SubResource("Gradient_eilpl")
+
+[sub_resource type="Gradient" id="Gradient_kmmto"]
+offsets = PackedFloat32Array(0.279221, 0.685065)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3y8q3"]
+gradient = SubResource("Gradient_kmmto")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0j7fv")
+shader_parameter/base_color = Color(0, 0, 0, 1)
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader_parameter/ior = 2.0
+shader_parameter/fresnel_power = 5.0
+shader_parameter/time_scale = 2.19701
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_n5iic")
+shader_parameter/albedo_gradient_texture = SubResource("GradientTexture1D_eilpl")
+shader_parameter/refraction_gradient_texture = SubResource("GradientTexture1D_3y8q3")
+shader_parameter/other_refraction_gradient_texture = SubResource("GradientTexture1D_0s3cf")
+shader_parameter/ior_gradient_texture = SubResource("GradientTexture1D_kmmto")
+shader_parameter/mix_gradient_texture = SubResource("GradientTexture1D_toqyk")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_isu0s")
+shader_parameter/noise_color_ramp_texture = SubResource("GradientTexture1D_0vj6r")
+shader_parameter/noise_gradient_texture = SubResource("GradientTexture1D_isu0s")
