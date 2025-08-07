@@ -1,0 +1,12 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://n88c0iwoqd76"]
+
+[ext_resource type="Shader" uid="uid://bvm2taqsyvw65" path="res://Assets/Terrain/Plants/grass_shader.gdshader" id="1_7li58"]
+[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass.png" id="2_w6gy0"]
+[ext_resource type="Texture2D" uid="uid://cc4hhiv7ls1ob" path="res://Assets/Terrain/Plants/grassalpha.png" id="3_3m1r0"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_7li58")
+shader_parameter/albedo_texture = ExtResource("2_w6gy0")
+shader_parameter/alpha_texture = ExtResource("3_3m1r0")
+shader_parameter/alpha_cutoff = 0.592

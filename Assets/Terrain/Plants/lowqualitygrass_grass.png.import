@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u4tkrjnpmnvj"
-path.s3tc="res://.godot/imported/grassbulb_grass.png-0386d1bb2a213c75d71c5a435d3136b4.s3tc.ctex"
+uid="uid://c1ir8m7ekfok3"
+path.s3tc="res://.godot/imported/lowqualitygrass_grass.png-6dc995af433a6a3360b7bb962d67a2ca.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "ac402069097e093b098a940fdbec60b3"
+"md5": "f9db7a3187b2e8e606bd8b903a601ba9"
 }
 
 [deps]
 
-source_file="res://Assets/Terrain/Plants/grassbulb_grass.png"
-dest_files=["res://.godot/imported/grassbulb_grass.png-0386d1bb2a213c75d71c5a435d3136b4.s3tc.ctex"]
+source_file="res://Assets/Terrain/Plants/lowqualitygrass_grass.png"
+dest_files=["res://.godot/imported/lowqualitygrass_grass.png-6dc995af433a6a3360b7bb962d67a2ca.s3tc.ctex"]
 
 [params]
 

@@ -62,7 +62,7 @@ func pick_enemy():
 	for i in range(0, enemy_data.size()):
 		if enemy_data_index(i) <= spawn_tokens and enemy_spawn_weights[i] > 0.0:
 			valid_enemy_index = i
-		if current_weight > enemy_spawn_weights[i]:
+		if current_weight > enemy_spawn_weights[i]: # if we run out of tokens break
 			current_weight -= enemy_spawn_weights[i]
 		else:
 			break

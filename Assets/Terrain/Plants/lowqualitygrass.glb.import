@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://jcchirn78m3t"
-path="res://.godot/imported/grassbare.glb-486e7285a98364614aebb414a8dfd86c.scn"
+uid="uid://cjejw7gwiw4ur"
+path="res://.godot/imported/lowqualitygrass.glb-fdeccf9f2b393f82a7f31d5f2fb4ab8c.scn"
 
 [deps]
 
-source_file="res://Assets/Terrain/Plants/grassbare.glb"
-dest_files=["res://.godot/imported/grassbare.glb-486e7285a98364614aebb414a8dfd86c.scn"]
+source_file="res://Assets/Terrain/Plants/lowqualitygrass.glb"
+dest_files=["res://.godot/imported/lowqualitygrass.glb-fdeccf9f2b393f82a7f31d5f2fb4ab8c.scn"]
 
 [params]
 

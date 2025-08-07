@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://sptliba06l65"
-path.s3tc="res://.godot/imported/grassbare_grass.png-2abe88779abba87730291d124ad1c04b.s3tc.ctex"
+uid="uid://cc4hhiv7ls1ob"
+path.s3tc="res://.godot/imported/grassalpha.png-184ccbb56c1d037666c12a6c4c948cea.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "52eef67f8132d4ffd6f813169a537569"
-}
 
 [deps]
 
-source_file="res://Assets/Terrain/Plants/grassbare_grass.png"
-dest_files=["res://.godot/imported/grassbare_grass.png-2abe88779abba87730291d124ad1c04b.s3tc.ctex"]
+source_file="res://Assets/Terrain/Plants/grassalpha.png"
+dest_files=["res://.godot/imported/grassalpha.png-184ccbb56c1d037666c12a6c4c948cea.s3tc.ctex"]
 
 [params]
 
