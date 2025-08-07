@@ -1,6 +1,6 @@
 [gd_resource type="ArrayMesh" load_steps=5 format=4 uid="uid://c8jxlyotp8jea"]
 
-[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass.png" id="1_p8xa2"]
+[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass_old.png" id="1_p8xa2"]
 [ext_resource type="Material" uid="uid://mfgicddq4it" path="res://Assets/Terrain/Plants/bulb_shader.tres" id="2_uhtod"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tnwyo"]

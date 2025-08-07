@@ -203,7 +203,7 @@ func generate():
 			new_scene.rotation.z = deg_to_rad(45.0)
 			
 		
-		if treeness > 0.3 and 0.7 > total_height and total_height > 0.3:
+		if treeness > 0.3 and 0.6 > total_height and total_height > 0.3:
 			var repeat: float = get_random_repeat(random_x, 40, 20)
 			
 			# sets offset based on random noise and curve, adjust y value for new position
@@ -250,7 +250,9 @@ func generate():
 	for i in range(grassbare_positions.size()):
 		var vertex = grassbare_positions[i]
 		vertex.y -= 0.1
-		var new_basis = get_rotation_basis(vertex.x * TAU, Vector3(0.5, 0.5, 0.5))
+		var random_scale = abs(sin(vertex.x + vertex.y + vertex.z)) * 0.5
+		var vector_scale = random_scale + 0.2
+		var new_basis = get_rotation_basis(vertex.x * TAU, Vector3(vector_scale, vector_scale, vector_scale))
 		var transform_grass = Transform3D(new_basis, vertex)
 		mm_grassbare.set_instance_transform(i, transform_grass)
 	

@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bg1cg6mepvknm"]
+[gd_scene load_steps=6 format=3 uid="uid://bg1cg6mepvknm"]
 
 [ext_resource type="ArrayMesh" uid="uid://c8jxlyotp8jea" path="res://Assets/Terrain/Plants/grass_bulb_mesh.tres" id="2_sk3ca"]
+[ext_resource type="Shader" uid="uid://yec45ifmwbok" path="res://Assets/Terrain/Plants/grass.tres" id="3_ppa6i"]
 [ext_resource type="ArrayMesh" uid="uid://c4dkcr5fujbda" path="res://Assets/Terrain/Plants/grass_mesh.tres" id="7_gebgx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_srh63"]
+render_priority = 0
+shader = ExtResource("3_ppa6i")
+
+[sub_resource type="BoxMesh" id="BoxMesh_2r2dm"]
+material = SubResource("ShaderMaterial_srh63")
 
 [node name="Grass" type="Node3D"]
 
@@ -17,3 +25,7 @@ skeleton = NodePath("")
 [node name="Cylinder" type="MeshInstance3D" parent="grassbulb2"]
 mesh = ExtResource("2_sk3ca")
 skeleton = NodePath("")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_2r2dm")
