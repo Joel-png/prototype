@@ -1,10 +1,8 @@
-[gd_scene load_steps=11 format=4 uid="uid://bg1cg6mepvknm"]
+[gd_scene load_steps=8 format=4 uid="uid://bg1cg6mepvknm"]
 
 [ext_resource type="ArrayMesh" uid="uid://c8jxlyotp8jea" path="res://Assets/Terrain/Plants/grass_bulb_mesh.tres" id="2_sk3ca"]
 [ext_resource type="Material" uid="uid://n88c0iwoqd76" path="res://Assets/Terrain/Plants/grass_material.tres" id="3_ppa6i"]
-[ext_resource type="Shader" uid="uid://cukkxffy65r0v" path="res://Assets/Terrain/ground.gdshader" id="4_a5uit"]
-[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass_old.png" id="5_gebgx"]
-[ext_resource type="Texture2D" uid="uid://b5hn7jk1xfvry" path="res://Assets/Terrain/Plants/grass.png" id="6_reamo"]
+[ext_resource type="Material" uid="uid://gw46fys16mje" path="res://Assets/Terrain/ground_material.tres" id="4_srh63"]
 [ext_resource type="ArrayMesh" uid="uid://c4dkcr5fujbda" path="res://Assets/Terrain/Plants/grass_mesh.tres" id="7_gebgx"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_0gmlv"]
@@ -39,17 +37,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_0gmlv")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_63mgs"]
-render_priority = 0
-shader = ExtResource("4_a5uit")
-shader_parameter/texture_up = ExtResource("6_reamo")
-shader_parameter/texture_side = ExtResource("5_gebgx")
-shader_parameter/blend_sharpness = 0.815
-shader_parameter/texture_scale = 0.0
-shader_parameter/normal_range = 0.451
-
 [sub_resource type="TorusMesh" id="TorusMesh_dwoav"]
-material = SubResource("ShaderMaterial_63mgs")
+material = ExtResource("4_srh63")
 
 [node name="Grass" type="Node3D"]
 

@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://gw46fys16mje"]
+
+[ext_resource type="Shader" uid="uid://cukkxffy65r0v" path="res://Assets/Terrain/ground.gdshader" id="1_c4ki3"]
+[ext_resource type="Texture2D" uid="uid://b15oieqcf2f6u" path="res://Assets/Terrain/Plants/grass_old.png" id="2_dq4xn"]
+[ext_resource type="Texture2D" uid="uid://b5hn7jk1xfvry" path="res://Assets/Terrain/Plants/grass.png" id="3_bddmw"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_c4ki3")
+shader_parameter/texture_up = ExtResource("3_bddmw")
+shader_parameter/texture_side = ExtResource("2_dq4xn")
+shader_parameter/blend_sharpness = 0.025
+shader_parameter/texture_scale = 0.884
+shader_parameter/normal_range = -0.917

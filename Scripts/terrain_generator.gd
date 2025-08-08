@@ -129,7 +129,7 @@ func generate():
 	plane_mesh.subdivide_depth = world_size * mesh_resolution
 	plane_mesh.subdivide_width = world_size * mesh_resolution
 	#var material = preload("res://Materials/ground_material.tres")
-	var material = preload("res://Materials/sand_material.tres")
+	var material = preload("res://Assets/Terrain/ground_material.tres")
 	material.set_shader_parameter("uv_scale", world_size * scale_multiplier / 5.0)
 	plane_mesh.material = material
 	
