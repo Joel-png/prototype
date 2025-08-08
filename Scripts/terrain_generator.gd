@@ -204,7 +204,6 @@ func generate():
 			new_scene.scale = Vector3(vector_maker, vector_maker, vector_maker)
 			new_scene.rotation.y = deg_to_rad(360.0 * spike_directionness)
 			new_scene.rotation.z = deg_to_rad(45.0)
-			
 		
 		if treeness > 0.3 and 0.6 > total_height and total_height > 0.3:
 			var repeat: float = get_random_repeat(random_x, 40, 20)
