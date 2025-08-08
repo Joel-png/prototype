@@ -2,13 +2,13 @@
 
 [ext_resource type="Material" uid="uid://n88c0iwoqd76" path="res://Assets/Terrain/Plants/grass_material.tres" id="1_cot43"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_i6gmt"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_0gmlv"]
 _surfaces = [{
 "aabb": AABB(-1.39033, -0.563991, -1.0486, 2.79412, 1.64425, 2.43355),
 "format": 34896613377,
 "index_count": 18,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
-"name": "Material.008",
+"name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 12,
@@ -17,7 +17,7 @@ _surfaces = [{
 blend_shape_mode = 0
 
 [resource]
-resource_name = "lowqualitygrass_Plane_010"
+resource_name = "grassbare_Plane_003"
 _surfaces = [{
 "aabb": AABB(-1.39033, -0.563991, -1.0486, 2.79412, 1.64425, 2.43355),
 "attribute_data": PackedByteArray("AAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAA"),
@@ -25,11 +25,11 @@ _surfaces = [{
 "index_count": 18,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
 "material": ExtResource("1_cot43"),
-"name": "Material.008",
+"name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 12,
-"vertex_data": PackedByteArray("tCMAAMB46LjH2///rALouO3aAgFte+i4jST8/gAA6LhXpQAA7A1s4F2i/////23gtkcCAcbCbOD///z+JUts4Bm1AAA9xIXfAAD//z9Ihd+BWwIBtwyF35hZ/P7F/4XfRv4ogUb+KIFG/iiBRv4ogXSaPrd0mj+3dJo+t3SaPrcaye4aGsnuGhrJ7hoaye4a")
+"vertex_data": PackedByteArray("tCMAAMB4BcDH2///rAIFwO3aAgFtewTAjST8/gAABcBXpQAA7A0K412i/////wrjtkcCAcbC++L///z+JUsK4xm1AAA9xBPiAAD//z9IE+KBWwIBtwwi4phZ/P7F/xPiY/4kgWP+JIFj/gCBY/4igXSc1bF0nNWxaZzSsXSc1LGJzuYcis7mHIfO8RyJzuYc")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_i6gmt")
+shadow_mesh = SubResource("ArrayMesh_0gmlv")

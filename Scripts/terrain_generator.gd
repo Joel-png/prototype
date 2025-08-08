@@ -25,11 +25,13 @@ var flower_image: Image
 @export var random_noise_texture: NoiseTexture2D
 var random_image: Image
 
-@export var mesh_instance: Mesh
+@export var grass_color_gradient: GradientTexture1D
+
 @onready var grassbare_mesh: Mesh = preload("res://Assets/Terrain/Plants/grass_mesh.tres")
 @onready var grassbulb_mesh: Mesh = preload("res://Assets/Terrain/Plants/grass_bulb_mesh.tres")
 
 @export var test_noise: NoiseTexture2D
+var test_image: Image
 @export var height_curve: Curve
 @export var mountain_curve: Curve
 @export var spike_scale_curve: Curve
@@ -81,6 +83,7 @@ func setup() -> void:
 	
 	random_image = (await noise_to_image(random_noise_texture)).get_image()
 	
+	test_image = (await noise_to_image(test_noise)).get_image()
 	var height_texture = ImageTexture.new()
 	height_texture.set_image(image)
 	
@@ -231,7 +234,7 @@ func generate():
 					grassbare_positions.append(offset_vertex)
 					
 			
-		if flowerness > 0.5 and 0.35 > total_height and total_height > 0.3:
+		if flowerness > 0.1 and 0.35 > total_height and total_height > 0.3:
 			flower_count += 1
 			#var new_scene = flower_scene.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 			#add_child(new_scene)
@@ -244,17 +247,24 @@ func generate():
 	var mm_instance_grassbare = $GrassBare
 	var mm_grassbare = MultiMesh.new()
 	mm_grassbare.transform_format = MultiMesh.TRANSFORM_3D
+	mm_grassbare.use_colors = true
 	mm_grassbare.mesh = grassbare_mesh
 	
 	mm_grassbare.instance_count = grassbare_positions.size()
+	var grass_gradient = grass_color_gradient.get_gradient()
 	for i in range(grassbare_positions.size()):
 		var vertex = grassbare_positions[i]
 		vertex.y -= 0.1
-		var random_scale = abs(sin(vertex.x + vertex.y + vertex.z)) * 0.5
-		var vector_scale = random_scale + 0.2
+		var world_scale = 0.01
+		var random_amount = get_noise_y(random_image, vertex.x, vertex.z)
+		var random_scale = abs(sin(vertex.x + vertex.y + vertex.z)) * 0.5 + random_amount * 0.5
+		var color_random = abs(sin(vertex.x + vertex.z * world_scale) + cos(vertex.x + vertex.z * world_scale)) * 0.5 * random_amount
+		var vector_scale = random_scale * 0.5 + 0.2
 		var new_basis = get_rotation_basis(vertex.x * TAU, Vector3(vector_scale, vector_scale, vector_scale))
 		var transform_grass = Transform3D(new_basis, vertex)
+		var gradient_color = grass_gradient.sample(color_random)
 		mm_grassbare.set_instance_transform(i, transform_grass)
+		mm_grassbare.set_instance_color(i, gradient_color)
 	
 	mm_instance_grassbare.multimesh = mm_grassbare
 	

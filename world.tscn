@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=62 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -51,7 +51,6 @@ sdfgi_read_sky_light = false
 sdfgi_bounce_feedback = 0.0
 sdfgi_cascades = 1
 sdfgi_max_distance = 25.6
-fog_enabled = true
 fog_light_color = Color(1, 0.13, 0.13, 1)
 fog_light_energy = 0.1
 fog_aerial_perspective = 0.932
@@ -61,7 +60,6 @@ fog_height_density = 0.0002
 fog_depth_curve = 7.46423
 fog_depth_begin = 0.0
 fog_depth_end = 860.8
-volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.386003, 0.0187373, 0.157066, 1)
 volumetric_fog_emission = Color(0.0295017, 1.92704e-05, 0.14326, 1)
@@ -170,14 +168,20 @@ bump_strength = 999.5
 color_ramp = SubResource("Gradient_il2jm")
 noise = SubResource("FastNoiseLite_wjb0r")
 
-[sub_resource type="BoxMesh" id="BoxMesh_70uel"]
+[sub_resource type="Gradient" id="Gradient_2u3nc"]
+offsets = PackedFloat32Array(0.00297619, 0.758929, 1)
+colors = PackedColorArray(0.196078, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_udxuc"]
+gradient = SubResource("Gradient_2u3nc")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hkpib"]
 noise_type = 2
-frequency = 0.03
+frequency = 0.0403
 fractal_type = 0
-cellular_jitter = 0.45
+cellular_jitter = 1.16
 cellular_return_type = 0
+domain_warp_enabled = true
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bsnyw"]
 noise = SubResource("FastNoiseLite_hkpib")
@@ -198,8 +202,8 @@ point_count = 3
 
 [sub_resource type="Curve" id="Curve_70uel"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(0.248649, 0.520548), 0.0, 0.0, 0, 0, Vector2(0.5, -0.561644), 0.0, 0.0, 0, 0, Vector2(0.751351, 0.328767), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 5
+_data = [Vector2(0, -1), 0.0, 0.0, 0, 0, Vector2(0.0702703, 0.164384), 0.0, 0.0, 0, 0, Vector2(0.135135, -0.383562), 0.0, 0.0, 0, 0, Vector2(0.175676, 0.273973), 0.0, 0.0, 0, 0, Vector2(0.248649, 0.520548), 0.0, 0.0, 0, 0, Vector2(0.289189, -0.589041), 0.0, 0.0, 0, 0, Vector2(0.402703, 0.342466), 0.0, 0.0, 0, 0, Vector2(0.467568, -0.191781), 0.0, 0.0, 0, 0, Vector2(0.610811, -0.520548), 0.0, 0.0, 0, 0, Vector2(0.662162, 0.712329), 0.0, 0.0, 0, 0, Vector2(0.751351, 0.328767), 0.0, 0.0, 0, 0, Vector2(0.856757, -0.561644), 0.0, 0.0, 0, 0, Vector2(0.891892, 0.0136986), 0.0, 0.0, 0, 0, Vector2(0.937838, -0.890411), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 15
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_woola"]
 frequency = 1.0
@@ -403,6 +407,8 @@ blend_shape_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_2u3nc"]
 material = ExtResource("12_ulnk3")
 
+[sub_resource type="MultiMesh" id="MultiMesh_ikiii"]
+
 [node name="World" type="Node3D" groups=["Damagable"]]
 script = ExtResource("1_5i068")
 fog_curve = SubResource("Curve_sq6ro")
@@ -447,7 +453,7 @@ spike_direction_noise_texture = SubResource("NoiseTexture2D_ikiii")
 tree_noise_texture = SubResource("NoiseTexture2D_bc84e")
 flower_noise_texture = SubResource("NoiseTexture2D_wukud")
 random_noise_texture = SubResource("NoiseTexture2D_mc2jv")
-mesh_instance = SubResource("BoxMesh_70uel")
+grass_color_gradient = SubResource("GradientTexture1D_udxuc")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 height_curve = SubResource("Curve_udxuc")
 mountain_curve = SubResource("Curve_ikiii")
@@ -498,6 +504,7 @@ draw_pass_1 = SubResource("ArrayMesh_8yg87")
 mesh = SubResource("PlaneMesh_2u3nc")
 
 [node name="GrassBare" type="MultiMeshInstance3D" parent="TerrainGeneration"]
+multimesh = SubResource("MultiMesh_ikiii")
 
 [node name="GrassBulb" type="MultiMeshInstance3D" parent="TerrainGeneration"]
 

@@ -16,7 +16,7 @@ void vertex() {
 	float wind_noise = texture(wind_noise_texture, vec2(VERTEX.x + TIME * wind_speed, VERTEX.y + TIME * wind_speed)).r;
 	float sway_x = sin(sway + wind_noise * wind_nosie_strength) * wind_strength * pow(distance_from_origin, 2.0);
 	float sway_y = cos(sway + wind_noise * wind_nosie_strength) * wind_strength * pow(distance_from_origin, 2.0);
-	
+
     VERTEX.x += sway_x;
     VERTEX.z += sway_y;
 }
@@ -24,23 +24,26 @@ void vertex() {
 void fragment() {
 	vec4 tex_color = texture(albedo_texture, UV);
 	vec4 tex_alpha = texture(alpha_texture, UV);
-	
+
 	if (FRONT_FACING == false) {
         NORMAL = -NORMAL;
     }
-	
+
     if (tex_alpha.r > alpha_cutoff) {
         ALPHA = round(tex_alpha.r * alpha_extra);
     } else {
 		ALPHA = 0.0;
 	}
-	
+
 	SPECULAR = 0.025;
 	METALLIC = 0.0;
 	ROUGHNESS = 1.0;
+	tex_color.r *= COLOR.r;
+	tex_color.g *= COLOR.g;
+	tex_color.b *= COLOR.b;
     ALBEDO = tex_color.rgb;
-	
+
 
     // Sharp alpha cutout
-    
+
 }

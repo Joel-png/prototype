@@ -1,19 +1,45 @@
-[gd_scene load_steps=6 format=3 uid="uid://bg1cg6mepvknm"]
+[gd_scene load_steps=6 format=4 uid="uid://bg1cg6mepvknm"]
 
 [ext_resource type="ArrayMesh" uid="uid://c8jxlyotp8jea" path="res://Assets/Terrain/Plants/grass_bulb_mesh.tres" id="2_sk3ca"]
-[ext_resource type="Shader" uid="uid://yec45ifmwbok" path="res://Assets/Terrain/Plants/grass.tres" id="3_ppa6i"]
+[ext_resource type="Material" uid="uid://n88c0iwoqd76" path="res://Assets/Terrain/Plants/grass_material.tres" id="3_ppa6i"]
 [ext_resource type="ArrayMesh" uid="uid://c4dkcr5fujbda" path="res://Assets/Terrain/Plants/grass_mesh.tres" id="7_gebgx"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_srh63"]
-render_priority = 0
-shader = ExtResource("3_ppa6i")
+[sub_resource type="ArrayMesh" id="ArrayMesh_0gmlv"]
+_surfaces = [{
+"aabb": AABB(-1.39033, -0.563991, -1.0486, 2.79412, 1.64425, 2.43355),
+"format": 34896613377,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("tCMAAMB4AADH2///rAIAAO3aAgFtewAAjST8/gAAAABXpQAA7A0AAF2i/////wAAtkcCAcbCAAD///z+JUsAABm1AAA9xAAAAAD//z9IAACBWwIBtwwAAJhZ/P7F/wAA")
+}]
+blend_shape_mode = 0
 
-[sub_resource type="BoxMesh" id="BoxMesh_2r2dm"]
-material = SubResource("ShaderMaterial_srh63")
+[sub_resource type="ArrayMesh" id="ArrayMesh_srh63"]
+resource_name = "grassbare_Plane_003"
+_surfaces = [{
+"aabb": AABB(-1.39033, -0.563991, -1.0486, 2.79412, 1.64425, 2.43355),
+"attribute_data": PackedByteArray("AAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAA"),
+"format": 34896613399,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
+"material": ExtResource("3_ppa6i"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("tCMAAMB4BcDH2///rAIFwO3aAgFtewTAjST8/gAABcBXpQAA7A0K412i/////wrjtkcCAcbC++L///z+JUsK4xm1AAA9xBPiAAD//z9IE+KBWwIBtwwi4phZ/P7F/xPiY/4kgWP+JIFj/gCBY/4igXSc1bF0nNWxaZzSsXSc1LGJzuYcis7mHIfO8RyJzuYc")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_0gmlv")
 
 [node name="Grass" type="Node3D"]
 
 [node name="lowqualitygrass" type="Node3D" parent="."]
+visible = false
 
 [node name="Plane_003" type="MeshInstance3D" parent="lowqualitygrass"]
 transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
@@ -21,11 +47,15 @@ mesh = ExtResource("7_gebgx")
 skeleton = NodePath("")
 
 [node name="grassbulb2" type="Node3D" parent="."]
+visible = false
 
 [node name="Cylinder" type="MeshInstance3D" parent="grassbulb2"]
 mesh = ExtResource("2_sk3ca")
 skeleton = NodePath("")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("BoxMesh_2r2dm")
+[node name="grassbare" type="Node3D" parent="."]
+
+[node name="Plane_005" type="MeshInstance3D" parent="grassbare"]
+transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 0, 0, 0)
+mesh = SubResource("ArrayMesh_srh63")
+skeleton = NodePath("")

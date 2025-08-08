@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://bvm2taqsyvw65" path="res://Assets/Terrain/Plants/grass_shader.gdshader" id="1_7li58"]
 [ext_resource type="Texture2D" uid="uid://b5hn7jk1xfvry" path="res://Assets/Terrain/Plants/grass.png" id="2_w6gy0"]
-[ext_resource type="Texture2D" uid="uid://d32i3l2pnp4nh" path="res://Assets/Terrain/Plants/grassalpha.png" id="3_3m1r0"]
+[ext_resource type="Texture2D" uid="uid://bcuhbsxayst27" path="res://Assets/Terrain/Plants/grassalpha32.png" id="3_7li58"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_7li58"]
 
@@ -15,7 +15,7 @@ noise = SubResource("FastNoiseLite_7li58")
 render_priority = 0
 shader = ExtResource("1_7li58")
 shader_parameter/albedo_texture = ExtResource("2_w6gy0")
-shader_parameter/alpha_texture = ExtResource("3_3m1r0")
+shader_parameter/alpha_texture = ExtResource("3_7li58")
 shader_parameter/wind_noise_texture = SubResource("NoiseTexture2D_w6gy0")
 shader_parameter/alpha_cutoff = 0.0
 shader_parameter/alpha_extra = 20.0
