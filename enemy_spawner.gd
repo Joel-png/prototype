@@ -13,6 +13,7 @@ extends Node3D
 @export var token_curve: Curve
 @export var token_scale: float = 0
 @export var portal_scale: Vector3 = Vector3(1.0, 1.0, 1.0)
+@export var portal_scale_scale: float = 1.0
 
 @onready var multiplayer_spawners = $"../../MultiplayerSpawners"
 @onready var enemy_spawners = {
@@ -44,15 +45,17 @@ func _ready() -> void:
 		set_tokens(base_spawn_tokens)
 
 func _process(delta):
+	portal.scale = portal_scale * (1.0 + min(total_lifetime / time_to_scale, 1.0) * portal_scale_scale)
 	if is_multiplayer_authority():
 		total_lifetime += delta
 		if spawn_timer.is_stopped():
 			update_spawner_timer()
 		if wave_timer.is_stopped():
 			update_wave_timer()
+
 func update_spawner_timer():
 	spawn_timer.wait_time = timer_length
-	spawn_tokens = (int)(base_spawn_tokens * (token_curve.sample(min(total_lifetime / time_to_scale, 1.0)) * token_scale))
+	spawn_tokens = (int)(base_spawn_tokens * (1.0 + token_curve.sample(min(total_lifetime / time_to_scale, 1.0)) * token_scale))
 	spawn_timer.start()
 
 func update_wave_timer():
@@ -60,7 +63,6 @@ func update_wave_timer():
 	wave_spawn_amount = randi_range(wave_min_max.x, wave_min_max.y)
 	wave_timer.start()
 	spawn_enemy(position)
-
 
 func set_tokens(tokens: int):
 	base_spawn_tokens = tokens

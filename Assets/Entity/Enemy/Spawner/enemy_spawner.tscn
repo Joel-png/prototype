@@ -4,8 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://vqtjlh5oacw3" path="res://Assets/Entity/Enemy/Portal/portal.tscn" id="2_5xa88"]
 
 [sub_resource type="Curve" id="Curve_iq6sj"]
-_limits = [1.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.756757, 1.5), 0.230386, 0.230386, 0, 0, Vector2(1, 2), 5.91325, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.754054, 0.495432), 0.230386, 0.230386, 0, 0, Vector2(1, 1), 4.36004, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iq6sj"]
@@ -19,13 +18,14 @@ properties/1/replication_mode = 1
 [node name="EnemySpawner" type="Node3D"]
 script = ExtResource("1_iq6sj")
 base_spawn_tokens = 100
-time_to_scale = 600.0
+time_to_scale = 20.0
 timer_length = 300.0
 wave_timer_length = 60.0
 wave_min_max = Vector2(1, 4)
 token_curve = SubResource("Curve_iq6sj")
 token_scale = 1.0
 portal_scale = Vector3(150, 150, 150)
+portal_scale_scale = 5.0
 
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
