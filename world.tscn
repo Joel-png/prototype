@@ -421,13 +421,16 @@ light_intensity_lux = 1000.0
 light_temperature = 9915.0
 light_energy = 0.008
 shadow_enabled = true
-shadow_opacity = 0.86
-shadow_blur = 0.0
-directional_shadow_mode = 0
-directional_shadow_split_1 = 0.0
+shadow_bias = 0.005
+shadow_normal_bias = 1.1
+shadow_opacity = 0.8
+shadow_blur = 10.0
+directional_shadow_split_1 = 0.01
+directional_shadow_split_2 = 0.05
+directional_shadow_split_3 = 0.2
 directional_shadow_blend_splits = true
 directional_shadow_fade_start = 1.0
-directional_shadow_max_distance = 545.9
+directional_shadow_max_distance = 600.0
 directional_shadow_pancake_size = 1024.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -526,3 +529,5 @@ script = ExtResource("17_ikiii")
 transform = Transform3D(190.559, 0, 0, 0, 190.559, 0, 0, 0, 190.559, 0, 326.722, 0)
 
 [node name="EnemySpawner" parent="." instance=ExtResource("17_cbp6q")]
+
+[editable path="EnemySpawner"]

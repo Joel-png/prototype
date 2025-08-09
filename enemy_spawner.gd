@@ -1,7 +1,19 @@
 extends Node3D
 
+
+@onready var spawn_timer = $SpawnTimer
+@onready var portal = $Portal
+
+@export var base_spawn_tokens: int = 0
+@export var time_to_scale: float
+@export var timer_length: float
+@export var token_curve: Curve
+@export var token_scale: float = 0
+
+var total_lifetime: float = 0
+
 # tokens dictate the bias of spawn weights
-var spawn_tokens = 111
+var spawn_tokens: int = 0
 var enemy_spawn_weights: Array[float]
 var total_weights = 0
 var enemy_data = {
@@ -12,19 +24,24 @@ var enemy_data = {
 var enemy_data_keys = enemy_data.keys()
 
 func _ready() -> void:
-	set_weights()
-	set_weights()
-	set_weights()
-	set_weights()
-	set_weights()
+	spawn_timer.wait_time = timer_length
+	spawn_timer.start()
+	set_tokens(100)
+
+func _process(delta):
+	total_lifetime += delta
 	
-	pick_enemy()
-	pick_enemy()
-	pick_enemy()
+	if spawn_timer.is_stopped():
+		update_spawner()
 
+func update_spawner():
+	spawn_timer.wait_time = timer_length
+	spawn_tokens = (int)(base_spawn_tokens * (token_curve.sample(min(total_lifetime / time_to_scale, 1.0)) * token_scale))
+	spawn_timer.start()
 
-func set_tokens(tokens):
-	spawn_tokens = tokens
+func set_tokens(tokens: int):
+	base_spawn_tokens = tokens
+	spawn_tokens = base_spawn_tokens
 	set_weights()
 
 func set_weights():
@@ -45,9 +62,6 @@ func set_weights():
 			tokens_left -= current_enemy_cost
 			total_weights += weight_from_tokens
 	
-	
-	enemy_spawn_weights = [1, 1, 100]
-	total_weights = 101
 	print(enemy_spawn_weights)
 	print(total_weights)
 

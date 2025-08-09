@@ -1,6 +1,35 @@
-[gd_scene load_steps=2 format=3 uid="uid://ctlan1ybjjvur"]
+[gd_scene load_steps=5 format=3 uid="uid://ctlan1ybjjvur"]
 
 [ext_resource type="Script" uid="uid://r5i2p0u617um" path="res://enemy_spawner.gd" id="1_iq6sj"]
+[ext_resource type="PackedScene" uid="uid://vqtjlh5oacw3" path="res://Assets/Entity/Enemy/Portal/portal.tscn" id="2_5xa88"]
+
+[sub_resource type="Curve" id="Curve_iq6sj"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.756757, 1.5), 0.230386, 0.230386, 0, 0, Vector2(1, 2), 5.91325, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iq6sj"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:scale")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="EnemySpawner" type="Node3D"]
 script = ExtResource("1_iq6sj")
+base_spawn_tokens = 100
+time_to_scale = 25.0
+timer_length = 1.0
+token_curve = SubResource("Curve_iq6sj")
+token_scale = 1.0
+
+[node name="SpawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 1.0
+delta_interval = 1.0
+replication_config = SubResource("SceneReplicationConfig_iq6sj")
+
+[node name="Portal" parent="." instance=ExtResource("2_5xa88")]
