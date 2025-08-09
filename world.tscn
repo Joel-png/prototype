@@ -11,10 +11,10 @@
 [ext_resource type="ArrayMesh" uid="uid://bgm7i30x6ch2k" path="res://Meshes/grass_mesh.tres" id="8_i2t62"]
 [ext_resource type="Texture2D" uid="uid://bp2pxfrb4qf0x" path="res://Assets/normalmap.png" id="8_pbu1x"]
 [ext_resource type="Material" uid="uid://ddo1y4minpeg2" path="res://Materials/water_material.tres" id="12_ulnk3"]
-[ext_resource type="Script" uid="uid://kfndg42krwck" path="res://multiplayer_enemy_spawner.gd" id="15_34crx"]
-[ext_resource type="PackedScene" uid="uid://vqtjlh5oacw3" path="res://Assets/Entity/Enemy/Portal/portal.tscn" id="15_hiqwa"]
-[ext_resource type="PackedScene" uid="uid://ctlan1ybjjvur" path="res://Assets/Entity/Enemy/Spawner/enemy_spawner.tscn" id="17_cbp6q"]
-[ext_resource type="Script" uid="uid://j5ie4manvego" path="res://multiplayer_scuttler_spawner.gd" id="17_ikiii"]
+[ext_resource type="Script" uid="uid://xp82srsev433" path="res://Scripts/multiplayer_basic_spawner.gd" id="13_hiqwa"]
+[ext_resource type="PackedScene" uid="uid://c7ht64odpbsic" path="res://Assets/Entity/Enemy/Azathoth/azathoth.tscn" id="14_2u3nc"]
+[ext_resource type="Script" uid="uid://b5ieywqfiy4xl" path="res://multiplayer_enemy_spawner_spawner.gd" id="15_2u3nc"]
+[ext_resource type="PackedScene" uid="uid://d4jkxnxnjk1i4" path="res://Assets/Entity/Enemy/Scuttler/scuttler.tscn" id="15_udxuc"]
 [ext_resource type="PackedScene" uid="uid://dq35xsap13dsn" path="res://fish_manager.tscn" id="17_udxuc"]
 
 [sub_resource type="Curve" id="Curve_sq6ro"]
@@ -515,19 +515,21 @@ multimesh = SubResource("MultiMesh_ikiii")
 
 [node name="Enemies" type="Node3D" parent="."]
 
-[node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../Enemies")
-script = ExtResource("15_34crx")
-
-[node name="MultiplayerScuttlerSpawner" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../Enemies")
-script = ExtResource("17_ikiii")
-
 [node name="FishManager" parent="." groups=["FishManager"] instance=ExtResource("17_udxuc")]
 
-[node name="Portal" parent="." instance=ExtResource("15_hiqwa")]
-transform = Transform3D(190.559, 0, 0, 0, 190.559, 0, 0, 0, 190.559, 0, 326.722, 0)
+[node name="MultiplayerSpawners" type="Node3D" parent="."]
 
-[node name="EnemySpawner" parent="." instance=ExtResource("17_cbp6q")]
+[node name="MultiplayerAzathothSpawner" type="MultiplayerSpawner" parent="MultiplayerSpawners"]
+spawn_path = NodePath("../../Enemies")
+script = ExtResource("13_hiqwa")
+scene = ExtResource("14_2u3nc")
+scale_amount = Vector3(250, 250, 250)
 
-[editable path="EnemySpawner"]
+[node name="MultiplayerScuttlerSpawner" type="MultiplayerSpawner" parent="MultiplayerSpawners"]
+spawn_path = NodePath("../../Enemies")
+script = ExtResource("13_hiqwa")
+scene = ExtResource("15_udxuc")
+
+[node name="MultiplayerEnemySpawnerSpawner" type="MultiplayerSpawner" parent="MultiplayerSpawners"]
+spawn_path = NodePath("..")
+script = ExtResource("15_2u3nc")

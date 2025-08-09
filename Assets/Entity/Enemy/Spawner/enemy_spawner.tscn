@@ -19,10 +19,13 @@ properties/1/replication_mode = 1
 [node name="EnemySpawner" type="Node3D"]
 script = ExtResource("1_iq6sj")
 base_spawn_tokens = 100
-time_to_scale = 25.0
-timer_length = 1.0
+time_to_scale = 600.0
+timer_length = 300.0
+wave_timer_length = 60.0
+wave_min_max = Vector2(1, 4)
 token_curve = SubResource("Curve_iq6sj")
 token_scale = 1.0
+portal_scale = Vector3(150, 150, 150)
 
 [node name="SpawnTimer" type="Timer" parent="."]
 one_shot = true
@@ -33,3 +36,6 @@ delta_interval = 1.0
 replication_config = SubResource("SceneReplicationConfig_iq6sj")
 
 [node name="Portal" parent="." instance=ExtResource("2_5xa88")]
+
+[node name="WaveTimer" type="Timer" parent="."]
+one_shot = true

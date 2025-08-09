@@ -1,6 +1,6 @@
 extends MultiplayerSpawner
 
-@onready var terrain = $"../TerrainGeneration"
+@onready var terrain = $"../../TerrainGeneration"
 
 var azathoth_scene: PackedScene = preload("res://Assets/Entity/Enemy/Azathoth/azathoth.tscn")
 
