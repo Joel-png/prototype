@@ -41,6 +41,9 @@ func _process(delta: float) -> void:
 	if currently_attacking and not eyeball_attack_animation.is_playing():
 		currently_attacking = false
 
+func update_scale():
+	laser.parent_scale = scale.x
+	
 func calc_movement() -> void:
 	var direction_type = randi_range(-1, 1)
 	if currently_attacking:
@@ -60,7 +63,7 @@ func attack(attack_number: int):
 func _on_timer_attack_timeout() -> void:
 	if is_multiplayer_authority():
 		var random_animation_number: int = randi_range(0, attack_animations.size() - 1)
-		#attack.rpc(random_animation_number)
+		attack.rpc(random_animation_number)
 	
 func _on_timer_movement_timeout() -> void:
 	if is_multiplayer_authority():

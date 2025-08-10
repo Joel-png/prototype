@@ -17,14 +17,14 @@ properties/1/replication_mode = 1
 
 [node name="EnemySpawner" type="Node3D"]
 script = ExtResource("1_iq6sj")
-base_spawn_tokens = 100
+base_spawn_tokens = 5000
 time_to_scale = 20.0
 timer_length = 300.0
 wave_timer_length = 60.0
-wave_min_max = Vector2(1, 4)
+wave_min_max = Vector2(1, 1)
 token_curve = SubResource("Curve_iq6sj")
 token_scale = 1.0
-portal_scale = Vector3(150, 150, 150)
+portal_scale = Vector3(10, 10, 10)
 portal_scale_scale = 5.0
 
 [node name="SpawnTimer" type="Timer" parent="."]

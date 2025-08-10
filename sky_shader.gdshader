@@ -10,10 +10,10 @@ uniform sampler2D cloud_movement_sampler : filter_linear_mipmap_anisotropic, rep
 uniform sampler2D cloud_noise_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_curves;
 
-uniform int clouds_samples : hint_range(8, 32, 8) = 16;
+uniform int clouds_samples : hint_range(1, 128, 1) = 16;
 uniform int shadow_sample : hint_range(1, 4, 1) = 4;
 
-uniform float clouds_density : hint_range(0.0, 1.0, 0.1) = 0.5;
+uniform float clouds_density : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform float clouds_scale : hint_range(0.5, 1.5, 0.1) = 1.0;
 uniform float clouds_smoothness : hint_range(0.01, 0.1, 0.01) = 0.035;
 uniform vec3 clouds_light_color : source_color;
@@ -34,6 +34,8 @@ uniform float astro_intensity : hint_range(1.0, 3.0, 0.1) = 1.0;
 
 group_uniforms stars;
 
+uniform sampler2D star_texture : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float star_amount : hint_range(0.0, 1.0, 0.01) = 0.0;
 uniform float stars_intensity : hint_range(0.0, 5.0, 0.1) = 0.0;
 
 
@@ -48,6 +50,7 @@ uniform float nebula_power = 0.0;
 uniform float nebula_layers = 0.0;
 uniform vec3 nebula_color_shift = vec3(1.0);
 uniform vec3 nebula_color : source_color;
+uniform float nebula_speed;
 
 float nebula(vec2 uv, vec2 speed) {
 	float _nebula = texture(nebula_tex, uv + speed).r;
@@ -206,7 +209,7 @@ void sky() {
 	vec2 uv = EYEDIR.xz;
 	vec4 nebulaness = vec4(nebula_color.r, nebula_color.g, nebula_color.b, 1.0);
 	float lacunarity = 0.1;
-	float speed = 0.014;
+	float speed = nebula_speed;
 	float hue_shift = 0.05;
 	for(float i = 1.0; i <= float(nebula_layers); i++) {
 		vec2 st = uv * nebula_scale * lacunarity;
@@ -225,16 +228,18 @@ void sky() {
 		vec2 stars = voronoi(EYEDIR * 25.0).xz;
 		star_color += smoothstep(0.025 + ((1.0 + sin(TIME + stars.y)) / 2.0) * 0.05, 0.0, stars.x) * stars_intensity * 5.0;
 	}
+	
 	// clouds
 	vec3 clouds_direction = vec3(EYEDIR.xz / clamp(EYEDIR.y, 0.0, 1.0), 1.0);
 	vec2 clouds = EYEDIR.y > 0.0 ? cloud_ray_march(clouds_direction, LIGHT0_DIRECTION) : vec2(0.0);
 	// Stars
 	float cloud_mix = exp(-clouds.y * clouds_shadow_intensity);
+	nebulaness = clamp(nebulaness, vec4(0.0), vec4(1.0));
 	if (AT_HALF_RES_PASS) {
 		COLOR = mix(bottom_color, clouds_light_color, cloud_mix); 
 		ALPHA = (1.0 - exp(-clouds.x * horizon_mask * bottom_mask * 10.0));
 	} else {
-		star_color *= (1.0 - exp(-clouds.x * horizon_mask * bottom_mask * 10.0));
+		star_color *= (1.0 - exp(horizon_mask * 0.5 * bottom_mask * -1.0));
 		COLOR.rgb = mix(sky_color + star_color + nebulaness.rgb, HALF_RES_COLOR.rgb, HALF_RES_COLOR.a);
 	}
 }

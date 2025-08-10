@@ -36,7 +36,7 @@ func set_length() -> void:
 		set_mesh_length(ray_cast.target_position.z * base_scale.z * parent_scale)
 
 func set_mesh_length(length: float):
-	var extra_length_scale: float = 1.2
+	var extra_length_scale: float = 1.0
 	var scaled_length: float = length / base_scale.z / parent_scale
 	beam_mesh.scale.z = extra_length_scale * scaled_length
 	inner_beam_mesh.scale.z = extra_length_scale * scaled_length

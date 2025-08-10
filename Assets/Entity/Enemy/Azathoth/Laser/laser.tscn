@@ -77,7 +77,6 @@ blend_shape_mode = 0
 radius = 1.0
 
 [node name="Laser" type="Node3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 script = ExtResource("1_cj5pn")
 
 [node name="BeamMesh" type="MeshInstance3D" parent="."]
@@ -91,7 +90,7 @@ mesh = SubResource("ArrayMesh_61olh")
 mesh = SubResource("ArrayMesh_solrq")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, 100)
+target_position = Vector3(0, 0, 1000)
 collision_mask = 3
 collide_with_areas = true
 
