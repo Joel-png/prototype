@@ -6,6 +6,7 @@ render_mode use_half_res_pass;
 group_uniforms clouds;
 
 uniform sampler2D cloud_shape_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform sampler2D cloud_movement_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_noise_sampler : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D cloud_curves;
 
@@ -17,11 +18,6 @@ uniform float clouds_scale : hint_range(0.5, 1.5, 0.1) = 1.0;
 uniform float clouds_smoothness : hint_range(0.01, 0.1, 0.01) = 0.035;
 uniform vec3 clouds_light_color : source_color;
 uniform float clouds_shadow_intensity : hint_range(0.1, 10.0, 0.1) = 1.0;
-
-group_uniforms high_clouds;
-
-uniform sampler2D high_clouds_sampler;
-uniform float high_clouds_density : hint_range(0.0, 1.0, 0.05) = 0.0;
 
 group_uniforms sky;
 
@@ -40,22 +36,18 @@ group_uniforms stars;
 
 uniform float stars_intensity : hint_range(0.0, 5.0, 0.1) = 0.0;
 
-group_uniforms shooting_stars;
-
-uniform float shooting_stars_intensity : hint_range(0.0, 10.0, 0.1) = 0.0;
-uniform sampler2D shooting_star_sampler : filter_linear, repeat_disable;
-uniform vec3 shooting_star_tint : source_color;
 
 group_uniforms nebula;
 uniform sampler2D nebula_tex : filter_linear;
 uniform sampler2D nebula_mask : filter_linear;
+uniform sampler2D nebula_other_mask : filter_linear;
+uniform sampler2D nebula_other_mask_offset : filter_linear;
 uniform float nebula_scale = 1.0;
 uniform float nebula_blend : hint_range(0.0, 1.0, 0.01) = 0.1;
 uniform float nebula_power = 0.0;
 uniform float nebula_layers = 0.0;
 uniform vec3 nebula_color_shift = vec3(1.0);
 uniform vec3 nebula_color : source_color;
-uniform vec3 nebula_color_increase : source_color;
 
 float nebula(vec2 uv, vec2 speed) {
 	float _nebula = texture(nebula_tex, uv + speed).r;
@@ -140,16 +132,18 @@ mat3 direction_to_matrix(vec3 direction) {
 }
 
 float cloud_density(vec3 p, float progress){
-	float t_o = TIME * 0.001;
+	float t_o = TIME * 0.005;
+	float t_o2 = TIME * -0.007;
 	float t_o_small = TIME * -0.005;
 	float noise = texture(cloud_noise_sampler, p.xy * 4.0 + t_o_small).x * 0.1 + 0.9;
 	float clouds_shape = texture(cloud_shape_sampler, (p.xy + t_o) * clouds_scale).x;
+	float clouds_movement = texture(cloud_movement_sampler, (p.xy + t_o2) * clouds_scale).x;
 	float height_curve = texture(cloud_curves, vec2(progress, 0.0)).x;
 	float base_density = 1.0 - clouds_density;
 	float density = 
 	smoothstep(base_density - clouds_smoothness,
 	base_density + clouds_smoothness,
-	clouds_shape * noise * height_curve
+	clouds_shape * noise * height_curve * clouds_movement
 	);
 	return density;
 }
@@ -206,26 +200,13 @@ void sky() {
 	vec3 sunset_color = sun_scatter * (1.0 - horizon_mask);
 	vec3 sky_color = clamp(sky_gradient + sunset_color, 0.0, 1.0);
 	
-	// Stars
-	if(stars_intensity > 0.0){
-		vec2 stars = voronoi(EYEDIR * 25.0).xz;
-		sky_color += smoothstep(0.025 + ((1.0 + sin(TIME + stars.y)) / 2.0) * 0.05, 0.0, stars.x) * stars_intensity;
-	}
-	
 	// Add astro
 	sky_color = mix(sky_color, astro_color.rgb * astro_intensity * astro_tint, astro_color.a * astro_mask * bottom_mask);
 	
-	// Add high clouds
-	
-	if(high_clouds_density > 0.0){
-		vec2 high_clouds_uv = (EYEDIR.xz / clamp(EYEDIR.y, 0.0, 1.0)) * 0.25 + TIME * 0.001;
-		float high_clouds_mask = texture(high_clouds_sampler, high_clouds_uv).x;
-		sky_color = mix(sky_color, clouds_light_color, smoothstep(0.0, 1.0, high_clouds_mask) * horizon_mask * bottom_mask * high_clouds_density);
-	}
 	vec2 uv = EYEDIR.xz;
 	vec4 nebulaness = vec4(nebula_color.r, nebula_color.g, nebula_color.b, 1.0);
 	float lacunarity = 0.1;
-	float speed = 0.004;
+	float speed = 0.014;
 	float hue_shift = 0.05;
 	for(float i = 1.0; i <= float(nebula_layers); i++) {
 		vec2 st = uv * nebula_scale * lacunarity;
@@ -234,16 +215,26 @@ void sky() {
 		lacunarity *= 2.5;
 		speed *= 1.002;
 	}
-	nebulaness.rgb *= smoothstep(0, nebula_blend, abs(EYEDIR.y));
+	float time_scale = 0.005;
+	float other_mask = texture(nebula_other_mask, uv).r;
+	other_mask = other_mask * smoothstep(0.0, texture(nebula_other_mask_offset, uv + TIME * time_scale).r, other_mask);
+	
+	nebulaness.rgb *= smoothstep(0, nebula_blend, abs(EYEDIR.y)) * other_mask;
+	vec3 star_color = vec3(0.0);
+	if(stars_intensity > 0.0){
+		vec2 stars = voronoi(EYEDIR * 25.0).xz;
+		star_color += smoothstep(0.025 + ((1.0 + sin(TIME + stars.y)) / 2.0) * 0.05, 0.0, stars.x) * stars_intensity * 5.0;
+	}
 	// clouds
+	vec3 clouds_direction = vec3(EYEDIR.xz / clamp(EYEDIR.y, 0.0, 1.0), 1.0);
+	vec2 clouds = EYEDIR.y > 0.0 ? cloud_ray_march(clouds_direction, LIGHT0_DIRECTION) : vec2(0.0);
+	// Stars
+	float cloud_mix = exp(-clouds.y * clouds_shadow_intensity);
 	if (AT_HALF_RES_PASS) {
-		vec3 clouds_direction = vec3(EYEDIR.xz / clamp(EYEDIR.y, 0.0, 1.0), 1.0);
-		vec2 clouds = EYEDIR.y > 0.0 ? cloud_ray_march(clouds_direction, LIGHT0_DIRECTION) : vec2(0.0);
-		
-		COLOR = mix(bottom_color, clouds_light_color, exp(-clouds.y * clouds_shadow_intensity)); 
+		COLOR = mix(bottom_color, clouds_light_color, cloud_mix); 
 		ALPHA = (1.0 - exp(-clouds.x * horizon_mask * bottom_mask * 10.0));
-		
 	} else {
-		COLOR.rgb = mix(sky_color + nebulaness.rgb, HALF_RES_COLOR.rgb, HALF_RES_COLOR.a);
+		star_color *= (1.0 - exp(-clouds.x * horizon_mask * bottom_mask * 10.0));
+		COLOR.rgb = mix(sky_color + star_color + nebulaness.rgb, HALF_RES_COLOR.rgb, HALF_RES_COLOR.a);
 	}
 }
