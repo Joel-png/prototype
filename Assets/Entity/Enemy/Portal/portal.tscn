@@ -152,45 +152,57 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_tdcbc")
 
 [node name="Portal" type="Node3D"]
+physics_interpolation_mode = 2
 script = ExtResource("1_4l2ym")
 
 [node name="Node3D" type="Node3D" parent="."]
+physics_interpolation_mode = 2
 transform = Transform3D(1.86363, 0, 0, 0, 1.86363, 0, 0, 0, 1.86363, 0, 0, 0)
 
 [node name="RingPivot3" type="Node3D" parent="Node3D"]
+physics_interpolation_mode = 2
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot3"]
+physics_interpolation_mode = 2
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot3"]
+physics_interpolation_mode = 2
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="RingPivot2" type="Node3D" parent="Node3D"]
+physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot2"]
+physics_interpolation_mode = 2
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot2"]
+physics_interpolation_mode = 2
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="RingPivot" type="Node3D" parent="Node3D"]
+physics_interpolation_mode = 2
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/RingPivot"]
+physics_interpolation_mode = 2
 transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/RingPivot"]
+physics_interpolation_mode = 2
 mesh = SubResource("PlaneMesh_lfvbw")
 skeleton = NodePath("../../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+physics_interpolation_mode = 2
 mesh = SubResource("ArrayMesh_eilpl")

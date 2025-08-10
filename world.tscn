@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
+[ext_resource type="Material" uid="uid://bacunb6pjuynp" path="res://Assets/Sky/skymaterial.tres" id="2_udxuc"]
 [ext_resource type="Script" uid="uid://dojspk4uhibbg" path="res://player_manager.gd" id="3_6oj04"]
 [ext_resource type="Script" uid="uid://dg7v8sh18fcc" path="res://Scripts/multiplayer_spawner.gd" id="3_lu5lj"]
 [ext_resource type="Script" uid="uid://d0iibkkf2g03" path="res://Scripts/terrain_generator.gd" id="4_hblxr"]
@@ -22,20 +23,8 @@ _limits = [0.0, 0.3, 0.0, 1.0]
 _data = [Vector2(0, 0.0131868), 0.0, 0.0, 0, 0, Vector2(1, 0.141758), 0.251491, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q50i2"]
-sky_top_color = Color(0.150161, 0.0504769, 0.506565, 1)
-sky_horizon_color = Color(0.421577, 0.101041, 0.587984, 1)
-sky_curve = 2.85409
-sky_energy_multiplier = 0.2
-ground_bottom_color = Color(0, 0, 0, 1)
-ground_horizon_color = Color(0, 0, 0, 1)
-ground_curve = 0.117127
-ground_energy_multiplier = 0.2
-sun_angle_max = 15.0
-sun_curve = 0.878452
-
 [sub_resource type="Sky" id="Sky_tug5e"]
-sky_material = SubResource("ProceduralSkyMaterial_q50i2")
+sky_material = ExtResource("2_udxuc")
 
 [sub_resource type="Environment" id="Environment_f23m3"]
 background_mode = 2
@@ -44,7 +33,6 @@ background_intensity = 3.0
 sky = SubResource("Sky_tug5e")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_sky_contribution = 0.98
 reflected_light_source = 2
 tonemap_mode = 2
 sdfgi_read_sky_light = false
@@ -55,7 +43,6 @@ fog_enabled = true
 fog_light_color = Color(1, 0.13, 0.13, 1)
 fog_light_energy = 0.1
 fog_aerial_perspective = 0.932
-fog_sky_affect = 0.0
 fog_height = 2613.67
 fog_height_density = 0.0002
 fog_depth_curve = 7.46423
@@ -67,7 +54,6 @@ volumetric_fog_albedo = Color(0.386003, 0.0187373, 0.157066, 1)
 volumetric_fog_emission = Color(0.0295017, 1.92704e-05, 0.14326, 1)
 volumetric_fog_anisotropy = 0.9
 volumetric_fog_detail_spread = 6.0
-volumetric_fog_ambient_inject = 0.36
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")

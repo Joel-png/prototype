@@ -1,0 +1,90 @@
+[gd_resource type="ShaderMaterial" load_steps=14 format=3 uid="uid://bacunb6pjuynp"]
+
+[ext_resource type="Shader" uid="uid://du51jwk85kl8e" path="res://sky_shader.gdshader" id="1_2b77l"]
+[ext_resource type="Texture2D" uid="uid://d32i3l2pnp4nh" path="res://Assets/Terrain/Plants/grassalpha.png" id="2_4c6hh"]
+
+[sub_resource type="Curve" id="Curve_26xuy"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.369427, 0.87516), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_bc84e"]
+curve = SubResource("Curve_26xuy")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wukud"]
+frequency = 0.0714
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_il2jm"]
+noise = SubResource("FastNoiseLite_wukud")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mc2jv"]
+frequency = 0.0119
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bo7i5"]
+seamless = true
+seamless_blend_skirt = 0.469
+noise = SubResource("FastNoiseLite_mc2jv")
+
+[sub_resource type="Gradient" id="Gradient_bc84e"]
+offsets = PackedFloat32Array(0.260417, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_il2jm"]
+noise_type = 2
+frequency = 0.005
+fractal_lacunarity = 3.0
+fractal_gain = 0.6
+cellular_return_type = 5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wjb0r"]
+width = 1024
+height = 1024
+seamless = true
+seamless_blend_skirt = 0.481
+color_ramp = SubResource("Gradient_bc84e")
+noise = SubResource("FastNoiseLite_il2jm")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bo7i5"]
+noise_type = 2
+frequency = 0.0065
+fractal_lacunarity = 3.0
+cellular_distance_function = 1
+cellular_return_type = 5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4h6ng"]
+width = 1024
+height = 1024
+seamless = true
+seamless_blend_skirt = 0.446
+noise = SubResource("FastNoiseLite_bo7i5")
+
+[resource]
+shader = ExtResource("1_2b77l")
+shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_bo7i5")
+shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_il2jm")
+shader_parameter/cloud_curves = SubResource("CurveTexture_bc84e")
+shader_parameter/clouds_samples = 16
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.5
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_light_color = Color(0.407843, 0.584314, 0.752941, 1)
+shader_parameter/clouds_shadow_intensity = 8.0
+shader_parameter/high_clouds_density = 0.0
+shader_parameter/top_color = Color(0, 0, 0, 1)
+shader_parameter/bottom_color = Color(0, 0, 0, 1)
+shader_parameter/sun_scatter = Color(0.243665, 0.261606, 0.399208, 1)
+shader_parameter/astro_tint = Color(1, 1, 1, 1)
+shader_parameter/astro_sampler = ExtResource("2_4c6hh")
+shader_parameter/astro_scale = 6.1
+shader_parameter/astro_intensity = 2.0
+shader_parameter/stars_intensity = 5.0
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = Color(0, 0, 0, 1)
+shader_parameter/nebula_tex = SubResource("NoiseTexture2D_4h6ng")
+shader_parameter/nebula_mask = SubResource("NoiseTexture2D_wjb0r")
+shader_parameter/nebula_scale = 0.4
+shader_parameter/nebula_blend = 0.06
+shader_parameter/nebula_power = 2.08
+shader_parameter/nebula_layers = 5.0
+shader_parameter/nebula_color_shift = Vector3(-1.01, 1.01, 1.515)
+shader_parameter/nebula_color = Color(0, 0, 0, 1)
+shader_parameter/nebula_color_increase = Color(0.857407, 0, 0.186136, 1)

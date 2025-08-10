@@ -60,7 +60,7 @@ func update_spawner_timer():
 
 func update_wave_timer():
 	wave_timer.wait_time = wave_timer_length
-	wave_spawn_amount = randi_range(wave_min_max.x, wave_min_max.y)
+	wave_spawn_amount = randi_range((int)(wave_min_max.x), (int)(wave_min_max.y))
 	wave_timer.start()
 	spawn_enemy(position)
 
@@ -73,7 +73,6 @@ func set_weights():
 	enemy_spawn_weights.resize(enemy_data.size())
 	for i in range(0, enemy_spawn_weights.size()):
 		enemy_spawn_weights[i] = 0
-	var total_tokens = spawn_tokens
 	var tokens_left = spawn_tokens * randf_range(0.5, 2.0)
 	total_weights = 0
 	

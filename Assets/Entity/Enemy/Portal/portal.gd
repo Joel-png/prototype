@@ -2,7 +2,7 @@ extends Node3D
 
 var time_scale = 0.1
 
-func _process(delta):
+func _process(_delta):
 	rotate_pivot()
 
 func rotate_pivot():

@@ -10,5 +10,4 @@ func _ready() -> void:
 func spawn_enemy_spawner(data):
 	var enemy_spawner = scene.instantiate()
 	enemy_spawner.set_multiplayer_authority(data)
-	enemy_spawner.position.y = terrain.height_multiplier + 250 * 4
 	return enemy_spawner

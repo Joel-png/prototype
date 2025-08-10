@@ -14,8 +14,7 @@ func _ready() -> void:
 		print("Created world with seed: " + str(terrain_seed))
 	terrain_generator.setup()
 	if is_multiplayer_authority():
-		enemy_spawner_spawner.spawn(1)
-		
+		pass#spawn_portal()
 
 func set_seed() -> void:
 	terrain_seed = randi_range(0, 1000)
@@ -28,4 +27,10 @@ func _process(_delta: float) -> void:
 			fog += 0.001
 		fog = clamp(fog, 0.01, 0.99)
 	environment.get_environment().volumetric_fog_density = fog_curve.sample(fog)
-	
+
+func spawn_portal():
+	var portal = enemy_spawner_spawner.spawn(1)
+	var world_size = terrain_generator.world_size
+	var world_scale = terrain_generator.scale_multiplier
+	var world_height = terrain_generator.height_multiplier * terrain_generator.height_multiplier
+	portal.position = Vector3((randi_range(0, world_size) - world_size / 2) * world_scale, world_height, (randi_range(0, world_size) - world_size / 2) * world_scale)
