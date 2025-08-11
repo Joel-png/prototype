@@ -143,8 +143,13 @@ func lerp_angle_look_at(look_at_position: Vector3, delta: float, _rotation_speed
 
 func lerp_look_at(thing_looking, look_at_position: Vector3, _delta: float, _rotation_speed: float) -> void:
 	#var old_rotation: Vector3 = thing_looking.rotation
-	if not Vector3.UP.cross(look_at_position - global_transform.origin).is_zero_approx():
-		thing_looking.look_at(look_at_position)
+	var dir = (look_at_position - global_transform.origin).normalized()
+	var up = Vector3.UP
+
+	# If dir and up are too close, pick a different up vector
+	if abs(dir.dot(up)) > 0.999:
+		up = Vector3.FORWARD  # or Vector3.RIGHT, something not parallel
+	thing_looking.look_at(look_at_position, up)
 	#var new_rotation: Vector3 = thing_looking.rotation
 	#thing_looking.rotation = old_rotation
 	#thing_looking.rotate_y(((new_rotation.y - old_rotation.y) * delta * rotation_speed))

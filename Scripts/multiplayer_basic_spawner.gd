@@ -6,8 +6,12 @@ extends MultiplayerSpawner
 func _ready() -> void:
 	spawn_function = spawn_scene
 
+func spawn_with_parameters(_position, _scale, auth):
+	var new_scene = spawn(auth)
+	new_scene.position = _position
+	new_scene.scale = _scale
+	
 func spawn_scene(data):
 	var new_scene = scene.instantiate()
 	new_scene.set_multiplayer_authority(data)
-	new_scene.scale = scale_amount
 	return new_scene

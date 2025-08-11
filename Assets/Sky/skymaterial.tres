@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=26 format=3 uid="uid://bacunb6pjuynp"]
 
 [ext_resource type="Shader" uid="uid://du51jwk85kl8e" path="res://sky_shader.gdshader" id="1_2b77l"]
-[ext_resource type="Texture2D" uid="uid://dlrnlinxlbhq1" path="res://Assets/Sky/sun.png" id="2_2b77l"]
+[ext_resource type="Texture2D" uid="uid://fkuhp7xciy78" path="res://Assets/Sky/sun.png" id="2_2b77l"]
 
 [sub_resource type="Curve" id="Curve_26xuy"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.369427, 0.87516), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -137,7 +137,7 @@ shader_parameter/bottom_color = Color(0, 0, 0, 1)
 shader_parameter/sun_scatter = Color(0.1482, 0.160559, 0.25673, 1)
 shader_parameter/astro_tint = Color(1, 1, 1, 1)
 shader_parameter/astro_sampler = ExtResource("2_2b77l")
-shader_parameter/astro_scale = 3.2
+shader_parameter/astro_scale = 2.9
 shader_parameter/astro_intensity = 3.0
 shader_parameter/star_texture = SubResource("NoiseTexture2D_un7io")
 shader_parameter/star_amount = 0.99

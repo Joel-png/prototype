@@ -58,6 +58,7 @@ func attack(attack_number: int):
 	if not eyeball_attack_animation.is_playing():
 		currently_attacking = true
 		calc_movement()
+		update_scale()
 		eyeball_attack_animation.play(attack_animations[attack_number])
 
 func _on_timer_attack_timeout() -> void:

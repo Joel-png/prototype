@@ -14,15 +14,13 @@ func _ready() -> void:
 		set_seed()
 		print("Created world with seed: " + str(terrain_seed))
 	terrain_generator.setup()
+	var world_height = terrain_generator.height_multiplier * terrain_generator.height_multiplier
+	var world_size = terrain_generator.world_size * terrain_generator.scale_multiplier
 	if is_multiplayer_authority():
-		var scene = azathoth_spawner.spawn(1)
-		scene.position.y = terrain_generator.height_multiplier * 32.0
-		scene.position.z = terrain_generator.height_multiplier + terrain_generator.world_size / 4.0
-		scene.scale = Vector3(150, 150, 150)
-		scene.update_scale()
-		for i in range(0, 50):
-			scene = scuttler_spawner.spawn(1)
-			scene.position.y = terrain_generator.height_multiplier * 2.0
+		azathoth_spawner.spawn_with_parameters(Vector3(0.0, world_height, world_size / 4), Vector3(150, 150, 150), 1)
+
+		for i in range(0, 25):
+			scuttler_spawner.spawn_with_parameters(Vector3(0, world_height * 2, 0), Vector3(1, 1, 1), 1)
 		#spawn_portal()
 		
 

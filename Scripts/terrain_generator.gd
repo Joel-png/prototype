@@ -2,7 +2,7 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh: MeshInstance3D
-var world_size: int = 400
+var world_size: int = 100
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
 var height_multiplier: int = 4 * scale_multiplier
