@@ -19,7 +19,7 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		azathoth_spawner.spawn_with_parameters(Vector3(0.0, world_height, world_size / 4), Vector3(150, 150, 150), 1)
 
-		for i in range(0, 25):
+		for i in range(0, 2):
 			scuttler_spawner.spawn_with_parameters(Vector3(0, world_height * 2, 0), Vector3(1, 1, 1), 1)
 		#spawn_portal()
 		

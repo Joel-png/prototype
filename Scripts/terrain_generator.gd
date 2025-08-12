@@ -25,6 +25,9 @@ var flower_image: Image
 @export var random_noise_texture: NoiseTexture2D
 var random_image: Image
 
+@export var rock_texture: NoiseTexture2D
+@export var rock_normal: NoiseTexture2D
+
 @export var grass_color_gradient: GradientTexture1D
 
 @onready var grassbare_mesh: Mesh = preload("res://Assets/Terrain/Plants/grass_mesh.tres")

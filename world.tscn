@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=4 uid="uid://dshywy58vc6s7"]
+[gd_scene load_steps=64 format=4 uid="uid://dshywy58vc6s7"]
 
 [ext_resource type="Script" uid="uid://c5ajkb3r4g0y1" path="res://Scripts/world.gd" id="1_5i068"]
 [ext_resource type="PackedScene" uid="uid://dqvqvqgmttuvl" path="res://player.tscn" id="2_6vsb2"]
@@ -31,8 +31,9 @@ background_mode = 2
 background_energy_multiplier = 0.1
 background_intensity = 3.0
 sky = SubResource("Sky_tug5e")
-ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.8
+ambient_light_energy = 0.14
 reflected_light_source = 2
 tonemap_mode = 2
 sdfgi_read_sky_light = false
@@ -155,6 +156,20 @@ as_normal_map = true
 bump_strength = 999.5
 color_ramp = SubResource("Gradient_il2jm")
 noise = SubResource("FastNoiseLite_wjb0r")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wukud"]
+noise_type = 2
+frequency = 0.0232
+fractal_weighted_strength = 0.75
+cellular_return_type = 0
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_il2jm"]
+seamless = true
+seamless_blend_skirt = 0.521
+as_normal_map = true
+bump_strength = 32.0
+noise = SubResource("FastNoiseLite_wukud")
 
 [sub_resource type="Gradient" id="Gradient_2u3nc"]
 offsets = PackedFloat32Array(0.00297619, 0.758929, 1)
@@ -444,6 +459,8 @@ spike_direction_noise_texture = SubResource("NoiseTexture2D_ikiii")
 tree_noise_texture = SubResource("NoiseTexture2D_bc84e")
 flower_noise_texture = SubResource("NoiseTexture2D_wukud")
 random_noise_texture = SubResource("NoiseTexture2D_mc2jv")
+rock_texture = SubResource("NoiseTexture2D_il2jm")
+rock_normal = SubResource("NoiseTexture2D_il2jm")
 grass_color_gradient = SubResource("GradientTexture1D_udxuc")
 test_noise = SubResource("NoiseTexture2D_bsnyw")
 height_curve = SubResource("Curve_udxuc")
