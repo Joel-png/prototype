@@ -17,11 +17,13 @@ func _ready() -> void:
 	var world_height = terrain_generator.height_multiplier * terrain_generator.height_multiplier
 	var world_size = terrain_generator.world_size * terrain_generator.scale_multiplier
 	if is_multiplayer_authority():
-		azathoth_spawner.spawn_with_parameters(Vector3(0.0, world_height, world_size / 4), Vector3(150, 150, 150), 1)
+		#azathoth_spawner.spawn_with_parameters(Vector3(0.0, world_height, world_size / 4), Vector3(150, 150, 150), 1)
 
 		for i in range(0, 2):
 			scuttler_spawner.spawn_with_parameters(Vector3(0, world_height * 2, 0), Vector3(1, 1, 1), 1)
-		#spawn_portal()
+		spawn_portal()
+		spawn_portal()
+		
 		
 
 func set_seed() -> void:
@@ -41,4 +43,4 @@ func spawn_portal():
 	var world_size = terrain_generator.world_size
 	var world_scale = terrain_generator.scale_multiplier
 	var world_height = terrain_generator.height_multiplier * terrain_generator.height_multiplier
-	portal.position = Vector3((randi_range(0, world_size) - world_size / 2) * world_scale, world_height, (randi_range(0, world_size) - world_size / 2) * world_scale)
+	portal.position = Vector3((randi_range(0, world_size) - world_size / 2) * world_scale, world_height * 0.70, (randi_range(0, world_size) - world_size / 2) * world_scale)

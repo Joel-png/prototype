@@ -51,10 +51,12 @@ fog_depth_begin = 0.0
 fog_depth_end = 860.8
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
-volumetric_fog_albedo = Color(0.171633, 0.00380404, 0.0539891, 1)
+volumetric_fog_albedo = Color(0.361335, 0.0163116, 0.145201, 1)
 volumetric_fog_emission = Color(0.0295017, 1.92704e-05, 0.14326, 1)
 volumetric_fog_anisotropy = 0.9
 volumetric_fog_detail_spread = 6.0
+volumetric_fog_temporal_reprojection_enabled = false
+adjustment_enabled = true
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iuys2"]
 properties/0/path = NodePath(".:terrain_seed")
