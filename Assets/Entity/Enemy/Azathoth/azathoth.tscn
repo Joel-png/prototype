@@ -301,7 +301,6 @@ physics_interpolation_mode = 2
 mesh = SubResource("ArrayMesh_qcecu")
 
 [node name="Laser" parent="Body/Eye/EyeballMesh" instance=ExtResource("2_7yw3t")]
-physics_interpolation_mode = 2
 transform = Transform3D(-0.5, 0, -7.54979e-08, 0, 0.5, 0, 7.54979e-08, 0, -0.5, 0, 0, -0.729548)
 
 [node name="EyeballAttackAnimation" type="AnimationPlayer" parent="Body/Eye/EyeballMesh"]

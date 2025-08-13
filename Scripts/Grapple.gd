@@ -48,7 +48,7 @@ func action(_delta: float) -> void:
 	if overseer.is_grappling and not Input.is_action_pressed("left_click"):
 		overseer.is_grappling = false
 
-func end_action() -> void:
+func end_action(_delta) -> void:
 	if overseer.is_grappling:
 		show_mesh.rpc()
 	else:

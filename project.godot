@@ -22,6 +22,7 @@ Player=""
 FishManager=""
 Damagable=""
 MainPlayer=""
+World=""
 
 [input]
 

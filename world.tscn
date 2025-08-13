@@ -51,7 +51,7 @@ fog_depth_begin = 0.0
 fog_depth_end = 860.8
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
-volumetric_fog_albedo = Color(0.361335, 0.0163116, 0.145201, 1)
+volumetric_fog_albedo = Color(0.143601, 0.00277321, 0.0405097, 1)
 volumetric_fog_emission = Color(0.0295017, 1.92704e-05, 0.14326, 1)
 volumetric_fog_anisotropy = 0.9
 volumetric_fog_detail_spread = 6.0
@@ -414,7 +414,7 @@ material = ExtResource("12_ulnk3")
 
 [sub_resource type="MultiMesh" id="MultiMesh_ikiii"]
 
-[node name="World" type="Node3D" groups=["Damagable"]]
+[node name="World" type="Node3D" groups=["World"]]
 script = ExtResource("1_5i068")
 fog_curve = SubResource("Curve_sq6ro")
 

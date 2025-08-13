@@ -22,9 +22,6 @@ func _ready() -> void:
 		for i in range(0, 2):
 			scuttler_spawner.spawn_with_parameters(Vector3(0, world_height * 2, 0), Vector3(1, 1, 1), 1)
 		spawn_portal()
-		spawn_portal()
-		
-		
 
 func set_seed() -> void:
 	terrain_seed = randi_range(0, 1000)

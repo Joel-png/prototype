@@ -16,7 +16,7 @@ func init(new_overseer) -> void:
 func action(_delta: float) -> void:
 	return
 
-func end_action() -> void:
+func end_action(_delta: float) -> void:
 	return
 
 func add_to_parent() -> void:

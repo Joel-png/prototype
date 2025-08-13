@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://di0vdc17qa57q"]
+
+[ext_resource type="Script" uid="uid://d0sxchapg8mt" path="res://hook.gd" id="1_1mm2r"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n13h4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xfyhh"]
+
+[node name="Hook" type="CharacterBody3D"]
+physics_interpolation_mode = 2
+top_level = true
+collision_layer = 0
+script = ExtResource("1_1mm2r")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_n13h4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xfyhh")
