@@ -2,7 +2,7 @@ class_name TerrainGeneration
 extends Node3D
 
 var mesh: MeshInstance3D
-var world_size: int = 400
+var world_size: int = 50
 var mesh_resolution: int = 1
 var scale_multiplier: int = 8
 var height_multiplier: int = 4 * scale_multiplier
@@ -383,8 +383,8 @@ func mul_colour(colour: Color, val: float):
 	colour.b *= val
 	return colour
 	
-func water_setup(water_height: float):
-	water.position.y = water_height
+func water_setup(_water_height: float):
+	water.position.y = _water_height
 	var water_mesh = water.mesh
 	var mesh_scale = world_size * scale_multiplier * 4
 	water_mesh.size = Vector2(mesh_scale, mesh_scale)

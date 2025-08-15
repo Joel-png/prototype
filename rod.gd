@@ -1,10 +1,13 @@
 extends Holdable
 class_name Rod
 
-var base_action_cooldown: float = 1
-var action_cooldown: float = 1
-var cast_speed: float = 2.0
 var random_scaler = 0.5
+
+var casting: bool = false
+var fishing: bool = false
+
+var fish_time: float = 1.0
+var fish_counter: float = 0.0
 
 @onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
 @onready var hook = $Hook
@@ -18,7 +21,12 @@ var normal_array: PackedVector3Array = []
 var tangent_array: PackedVector3Array = []
 var uv_array: PackedVector2Array = []
 var rope_width: float = 0.15
-var resolution: int = 4
+@export var resolution: int = 4
+@export var subdivide: int = 2
+@export var sag_amount: float = 1.0
+
+@export var catching_curve: Curve
+@export var catch_tight_time: float = 0.5
 
 var mesh = ImmediateMesh.new()
 
@@ -28,9 +36,39 @@ func _ready() -> void:
 
 func action(_delta: float) -> void:
 	if is_focus():
-		if Input.is_action_just_pressed("left_click"):
-			hook.cast(global_position, Vector3(0.0, global_rotation.y, 0.0), overseer.get_what_look_at())
+		if not fishing:
+			if Input.is_action_just_pressed("left_click"):
+				if not casting:
+					cast()
+				elif casting and not fishing:
+					finish_cast.rpc()
+	if not fishing:
+		if casting and hook.hit_water:
+			print("hit water")
+			fishing = true
+			fish_counter = fish_time
+	else:
+		fish_counter -= _delta
+		if fish_counter <= 0.0:
+			print("fished")
+			fishing = false
 			fish()
+			finish_cast.rpc()
+
+func cast():
+	cast_hook.rpc(global_position, Vector3(0.0, global_rotation.y, 0.0), overseer.get_what_look_at())
+
+@rpc("any_peer", "call_local")
+func cast_hook(pos, rot, look_at_pos):
+	hook.cast(pos, rot, look_at_pos)
+	casting = true
+	hook.show()
+	print(casting)
+
+@rpc("any_peer", "call_local")
+func finish_cast():
+	casting = false
+	hook.hide()
 
 func fish():
 	var random_droprate = fish_manager.get_random_droprate()
@@ -45,18 +83,26 @@ func set_rarity():
 	rarity = min(1.0, rarity)
 	return rarity
 
-func end_action(_delta):
-	hook._process_hook(_delta)
-	create_rope_mesh()
-	
+func _process(_delta):
+	if selected:
+		if casting:
+			hook._process_hook(_delta)
+			create_rope_mesh()
+
 func create_rope_mesh() -> void:
 	var points : PackedVector3Array = []
-	points.append(line_start.global_position)
-	points.append(hook.global_position)
+	var start_point = line_start.global_position
+	var end_point = hook.global_position
+	for i in range(subdivide + 1): # +1 so we include the last point
+		var t = float(i) / subdivide
+		var pos = start_point.lerp(end_point, t)
+		var sag = sag_amount * (1.0 - (2.0 * t - 1.0) * (2.0 * t - 1.0))
+		pos.y -= sag
+		points.append(pos)
 	
 	vertex_array.clear()
 	
-	calculate_rope_normal()
+	calculate_rope_normal(points)
 	
 	index_array.clear()
 	
@@ -112,20 +158,19 @@ func create_rope_mesh() -> void:
 	mesh.surface_end()
 	line_mesh.mesh = mesh
 
-func calculate_rope_normal() -> void:
-	var points : PackedVector3Array = []
-	points.append(line_start.global_position)
-	points.append(hook.global_position)
-	
+func calculate_rope_normal(_points) -> void:
 	normal_array.clear()
 	tangent_array.clear()
 	
-	for i in range(points.size()):
+	for i in range(_points.size()):
 		var tangent := Vector3(0,0,0)
 		var normal := Vector3(0,0,0)
 		var temp_helper_vector := Vector3(0,0,0)
 		
-		tangent = (points[1] - points[0]).normalized()
+		if i + 1 < _points.size():
+			tangent = (_points[i + 1] - _points[i]).normalized()
+		else:
+			tangent = (_points[i] - _points[i - 1]).normalized()
 		
 		if i == 0:
 			temp_helper_vector = -Vector3.FORWARD if (tangent.dot(Vector3.UP) > 0.5) else Vector3.UP

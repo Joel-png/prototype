@@ -46,7 +46,7 @@ func update_inventory_display_page(page_number: int):
 	for slot in inventory_slots:
 		slot.update_item()
 		
-	print_inventory()
+	#print_inventory()
 
 func update_selected_fish():
 	var slot_list = $CenterContainer/InventoryGrid.get_children()
@@ -54,7 +54,7 @@ func update_selected_fish():
 	for slot in slot_list:
 		if slot.get_fish_name() != "null":
 			valid_fish.append(slot.item)
-	print(valid_fish.size())
+	#print(valid_fish.size())
 	return valid_fish
 
 func grab():
@@ -74,7 +74,7 @@ func hold():
 
 func swap_items(first, second):
 	if first != second:
-		print("swapping " + first.get_fish_name() + " " + second.get_fish_name())
+		#print("swapping " + first.get_fish_name() + " " + second.get_fish_name())
 		fix_backpack(first, second)
 		var temp_item = first.item
 		first.item = second.item
@@ -82,7 +82,7 @@ func swap_items(first, second):
 		first.update_item()
 		second.update_item()
 		inventory_manager.update_grimoire_fish(update_selected_fish())
-		print_inventory()
+		#print_inventory()
 		set_description(second)
 
 func fix_backpack(first, second):

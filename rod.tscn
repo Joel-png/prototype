@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyalckmpd84sl"]
+[gd_scene load_steps=8 format=3 uid="uid://dyalckmpd84sl"]
 
 [ext_resource type="Script" uid="uid://c8cmuu8cb5bns" path="res://rod.gd" id="1_fbgki"]
 [ext_resource type="PackedScene" uid="uid://di0vdc17qa57q" path="res://hook.tscn" id="2_k04ny"]
+
+[sub_resource type="Curve" id="Curve_k04ny"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.92413, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_o1qp4"]
 
@@ -10,22 +14,37 @@ cull_mode = 2
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_k04ny"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k04ny"]
+
 [node name="Rod" type="Node3D"]
+physics_interpolation_mode = 2
 script = ExtResource("1_fbgki")
+resolution = 6
+subdivide = 6
+sag_amount = 0.595
+catching_curve = SubResource("Curve_k04ny")
 
 [node name="Pivot" type="Node3D" parent="."]
+physics_interpolation_mode = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+physics_interpolation_mode = 2
 transform = Transform3D(0.140176, 0, 0, 0, 1.43106, 0, 0, 0, 0.141392, 0, 0.667468, 0)
 mesh = SubResource("BoxMesh_o1qp4")
 skeleton = NodePath("../..")
 
 [node name="LineStart" type="Node3D" parent="Pivot"]
+physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2556, 0)
 
 [node name="Hook" parent="." instance=ExtResource("2_k04ny")]
 
 [node name="Line" type="MeshInstance3D" parent="."]
+physics_interpolation_mode = 2
 top_level = true
 material_override = SubResource("StandardMaterial3D_k04ny")
 mesh = SubResource("ImmediateMesh_k04ny")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+physics_interpolation_mode = 2
+replication_config = SubResource("SceneReplicationConfig_k04ny")

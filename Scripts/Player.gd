@@ -51,10 +51,13 @@ var noise_increase = 2.0
 @onready var rod_spawner = $MSRod
 @onready var inventory = $PlayerHead/Camera3D/Inventory/Inventory
 
+@onready var hotbar_container = $PlayerHead/Camera3D/Inventory/HotbarContainer
+
 @onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
 @onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
 
 var holdable: Holdable = null
+var holdable_index: int = 0
 var hotbar = []
 var hotbar_length: int = hotbar.size()
 var hotbar_selected: int = 0
@@ -74,6 +77,7 @@ func _ready() -> void:
 	if !is_player:
 		debug0.hide()
 		debug1.hide()
+		call_deferred("start_hotbar")
 	else:
 		add_to_group("MainPlayer")
 		var auth = get_multiplayer_authority()
@@ -193,6 +197,7 @@ func _process(delta: float) -> void:
 		scale_marker(position.distance_to(player_manager.main_player_position))
 	if holdable:
 		holdable.end_action(delta)
+	
 
 func hotbar_logic() -> void:
 	if is_player:
@@ -211,8 +216,20 @@ func select_holdable(item_to_hold: int) -> void:
 	if holdable:
 		holdable.deselect.rpc()
 	holdable = hotbar[item_to_hold]
+	holdable_index = item_to_hold
 	holdable.select.rpc()
 	
+
+func start_hotbar():
+	var i = 0
+	for item in hotbar_container.get_children():
+		if i != holdable_index:
+			item.visible = false
+			item.selected = false
+		else:
+			item.visible = true
+			item.selected = true
+		i += 1
 
 func cast_spell(pos, rot, spell_type, damage, projectile_count, cast_cost, equipped_fish):
 	print("spawn proj" + spell_type + " " + str(damage) + " " + str(projectile_count) + " " + str(cast_cost))
@@ -268,7 +285,6 @@ func calc_bloom(bloom: float, proj_amount: int, i) -> float:
 	return (lower_bloom + upper_bloom) / 2
 	
 
-	
 func scale_marker(distance: float) -> void:
 	var max_distance: float = 15.0
 	var marker_scale: float = 1.0

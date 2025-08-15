@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=20 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" uid="uid://0yl2v46tthnx" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://opeswkewbdxj" path="res://grimoire.tscn" id="5_b26j0"]
 [ext_resource type="PackedScene" uid="uid://brgrcy3cn8f7f" path="res://inventory.tscn" id="6_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://dyalckmpd84sl" path="res://rod.tscn" id="6_b26j0"]
+[ext_resource type="Script" uid="uid://bcgqpnafy2d0t" path="res://hotbar_container.gd" id="9_n7ghd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -39,6 +40,9 @@ properties/5/replication_mode = 1
 properties/6/path = NodePath(".:noise_level")
 properties/6/spawn = true
 properties/6/replication_mode = 2
+properties/7/path = NodePath(".:holdable_index")
+properties/7/spawn = true
+properties/7/replication_mode = 2
 
 [sub_resource type="Animation" id="Animation_8jv3a"]
 length = 0.001
@@ -108,22 +112,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_tfnp7")
 
 [node name="MSInstrument" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("3_dw050")
 
 [node name="MSGrapple" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("4_dw050")
 
 [node name="MSGrimoire" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("5_b26j0")
 
 [node name="MSRod" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory")
+spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("6_b26j0")
 
@@ -162,6 +166,9 @@ mesh = SubResource("BoxMesh_64nf0")
 
 [node name="Inventory" parent="PlayerHead/Camera3D/Inventory" instance=ExtResource("6_1jxqw")]
 visible = false
+
+[node name="HotbarContainer" type="Node3D" parent="PlayerHead/Camera3D/Inventory"]
+script = ExtResource("9_n7ghd")
 
 [node name="Crosshair" parent="PlayerHead/Camera3D" instance=ExtResource("2_72jpy")]
 
