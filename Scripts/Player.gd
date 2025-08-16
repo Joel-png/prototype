@@ -30,9 +30,12 @@ var noise_increase = 2.0
 
 
 @onready var head = $PlayerHead
-@onready var camera = $PlayerHead/Camera3D
-@onready var camera_cast = $PlayerHead/Camera3D/camera_cast
-@onready var crosshair = $PlayerHead/Camera3D/Crosshair
+@export var camera: Node3D
+#@onready var camera = $PlayerHead/Camera3D
+@export var camera_cast: RayCast3D
+#@onready var camera_cast = $PlayerHead/Camera3D/camera_cast
+@export var crosshair: Control
+#@onready var crosshair = $PlayerHead/Camera3D/Crosshair
 @onready var grapple_pivot = $PlayerGrapplePivot
 @onready var animation_player = $AnimationPlayer
 @onready var projectiles = $"../../Projectiles"
@@ -49,13 +52,13 @@ var noise_increase = 2.0
 @onready var instrument_spawner = $MSInstrument
 @onready var grimoire_spawner = $MSGrimoire
 @onready var rod_spawner = $MSRod
-@onready var inventory = $PlayerHead/Camera3D/Inventory/Inventory
-@onready var settings_ui = $PlayerHead/Camera3D/Settings
+@export var inventory: Control
+@export var settings_ui: Control
 
-@onready var hotbar_container = $PlayerHead/Camera3D/Inventory/HotbarContainer
+@export var hotbar_container: Node3D
 
-@onready var debug0 = $PlayerHead/Camera3D/DebugLabel0
-@onready var debug1 = $PlayerHead/Camera3D/DebugLabel1
+@export var debug0: Control
+@export var debug1: Control
 
 var holdable: Holdable = null
 var holdable_index: int = 0
@@ -69,6 +72,7 @@ var mouse_rotation: Vector2
 var mouse_moving = false
 
 func _ready() -> void:
+	$PlayerHead/SubViewportContainer/SubViewport.world_3d = get_viewport().world_3d
 	hotbar = []
 	is_player = is_multiplayer_authority()
 	camera.current = is_player
@@ -111,8 +115,8 @@ func _process(delta: float) -> void:
 	
 	if is_player:
 		rotate_y(mouse_rotation.x * SENSITIVITY)
-		camera.rotate_x(mouse_rotation.y * SENSITIVITY)
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
+		head.rotate_x(mouse_rotation.y * SENSITIVITY)
+		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 		mouse_rotation = Vector2.ZERO
 			
 		calc_noise(delta)
@@ -210,11 +214,11 @@ func _process(delta: float) -> void:
 		get_parent_node_3d().update_grass(position)
 		
 		player_manager.main_player_position = position
+		fix_viewport()
 	else:
 		scale_marker(position.distance_to(player_manager.main_player_position))
 	if holdable:
 		holdable.end_action(delta)
-	
 
 func hotbar_logic() -> void:
 	if is_player:
@@ -228,6 +232,14 @@ func hotbar_logic() -> void:
 		hotbar_selected = hotbar_to_select
 		
 
+func fix_viewport():
+	var viewport_size = get_viewport().size
+	if $PlayerHead/SubViewportContainer.stretch:
+		$PlayerHead/SubViewportContainer.size = viewport_size
+	else:
+		$PlayerHead/SubViewportContainer/SubViewport.size = viewport_size
+	camera.global_position = head.global_position
+	camera.global_rotation = head.global_rotation
 #@rpc("any_peer", "call_local")
 func select_holdable(item_to_hold: int) -> void:
 	if holdable:
@@ -257,7 +269,6 @@ func cast_projectile(multiplayer_auth, pos, _rot, _spell_type, damage, projectil
 	var p = fireball.instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
 	p.setup(multiplayer_auth, pos, get_what_look_at(), damage, projectile_count, equipped_fish)
 	projectiles.add_child(p)
-	
 
 func get_what_look_at() -> Vector3:
 	# if point to shoot at is too close bullets will go to the side | if point isn't in raycast
@@ -300,7 +311,6 @@ func calc_bloom(bloom: float, proj_amount: int, i) -> float:
 	var upper_bloom: float = (-bloom) + bloom_inc * (i + 1)
 	#return rng.randf_range(lower_bloom, upper_bloom)
 	return (lower_bloom + upper_bloom) / 2
-	
 
 func scale_marker(distance: float) -> void:
 	var max_distance: float = 15.0

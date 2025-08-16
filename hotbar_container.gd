@@ -1,3 +1,3 @@
 extends Node3D
 
-@onready var player = $"../../../.."
+@export var player = CharacterBody3D

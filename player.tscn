@@ -50,7 +50,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerHead/Camera3D/Inventory:position")
+tracks/0/path = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -66,7 +66,7 @@ length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerHead/Camera3D/Inventory:position")
+tracks/0/path = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -95,13 +95,21 @@ material = SubResource("StandardMaterial3D_b3jbe")
 radius = 0.1
 height = 0.2
 
-[node name="Player" type="CharacterBody3D" groups=["Player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("camera", "camera_cast", "crosshair", "inventory", "settings_ui", "hotbar_container", "debug0", "debug1") groups=["Player"]]
 physics_interpolation_mode = 2
 collision_layer = 2
 floor_constant_speed = true
 floor_max_angle = 1.309
 floor_snap_length = 0.3
 script = ExtResource("1_i527r")
+camera = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D")
+camera_cast = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/camera_cast")
+crosshair = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Crosshair")
+inventory = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/Inventory")
+settings_ui = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Settings")
+hotbar_container = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/HotbarContainer")
+debug0 = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/DebugLabel0")
+debug1 = NodePath("PlayerHead/SubViewportContainer/SubViewport/Camera3D/DebugLabel1")
 
 [node name="PlayerMesh3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -113,67 +121,82 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_tfnp7")
 
 [node name="MSInstrument" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
+spawn_path = NodePath("../PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("3_dw050")
 
 [node name="MSGrapple" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
+spawn_path = NodePath("../PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("4_dw050")
 
 [node name="MSGrimoire" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
+spawn_path = NodePath("../PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("5_b26j0")
 
 [node name="MSRod" type="MultiplayerSpawner" parent="."]
-spawn_path = NodePath("../PlayerHead/Camera3D/Inventory/HotbarContainer")
+spawn_path = NodePath("../PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory/HotbarContainer")
 script = ExtResource("3_0l2rs")
 scene = ExtResource("6_b26j0")
 
 [node name="PlayerHead" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)
 
-[node name="Camera3D" type="Camera3D" parent="PlayerHead"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PlayerHead"]
+texture_filter = 1
+offset_right = 1145.0
+offset_bottom = 643.0
+stretch = true
+stretch_shrink = 4
 
-[node name="DebugLabel0" type="Label" parent="PlayerHead/Camera3D"]
+[node name="SubViewport" type="SubViewport" parent="PlayerHead/SubViewportContainer"]
+physics_interpolation_mode = 2
+handle_input_locally = false
+anisotropic_filtering_level = 0
+size = Vector2i(286, 160)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="PlayerHead/SubViewportContainer/SubViewport"]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.39705, 0)
+
+[node name="DebugLabel0" type="Label" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D"]
 offset_right = 241.0
 offset_bottom = 90.0
 text = "Text"
-metadata/_edit_use_anchors_ = true
 
-[node name="DebugLabel1" type="Label" parent="PlayerHead/Camera3D"]
+[node name="DebugLabel1" type="Label" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D"]
 offset_top = 175.0
 offset_right = 241.0
 offset_bottom = 265.0
 text = "Text"
-metadata/_edit_use_anchors_ = true
 
-[node name="camera_cast" type="RayCast3D" parent="PlayerHead/Camera3D"]
+[node name="camera_cast" type="RayCast3D" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00139099)
 target_position = Vector3(0, 0, -10)
 hit_from_inside = true
 hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 1, 1)
 
-[node name="Inventory" type="Node3D" parent="PlayerHead/Camera3D"]
+[node name="Inventory" type="Node3D" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.998166, -0.0605433, 0, 0.0605433, 0.998166, 0.471, -0.201, -0.538)
 script = ExtResource("5_1jxqw")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead/Camera3D/Inventory"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 4.72592e-09, 0, -4.72592e-09, 0.1, 0, 0, 0)
 mesh = SubResource("BoxMesh_64nf0")
 
-[node name="Inventory" parent="PlayerHead/Camera3D/Inventory" instance=ExtResource("6_1jxqw")]
+[node name="Inventory" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory" instance=ExtResource("6_1jxqw")]
 visible = false
 
-[node name="HotbarContainer" type="Node3D" parent="PlayerHead/Camera3D/Inventory"]
+[node name="HotbarContainer" type="Node3D" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D/Inventory" node_paths=PackedStringArray("player")]
 script = ExtResource("9_n7ghd")
+player = NodePath("../../../../../..")
 
-[node name="Crosshair" parent="PlayerHead/Camera3D" instance=ExtResource("2_72jpy")]
+[node name="Crosshair" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D" instance=ExtResource("2_72jpy")]
 
-[node name="Settings" parent="PlayerHead/Camera3D" instance=ExtResource("11_nvl01")]
+[node name="Settings" parent="PlayerHead/SubViewportContainer/SubViewport/Camera3D" instance=ExtResource("11_nvl01")]
 visible = false
 
 [node name="PlayerGrapplePivot" type="Node3D" parent="."]
