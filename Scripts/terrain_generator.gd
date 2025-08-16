@@ -4,8 +4,8 @@ extends Node3D
 var mesh: MeshInstance3D
 var world_size: int = 50
 var mesh_resolution: int = 1
-var scale_multiplier: int = 8
-var height_multiplier: int = 4 * scale_multiplier
+var scale_multiplier: int = 12
+var height_multiplier: int = 3 * scale_multiplier
 var water_height: float = height_multiplier * 0.3
 
 var grass_scale: int = 7
@@ -40,6 +40,7 @@ var test_image: Image
 @export var mountain_curve: Curve
 @export var spike_scale_curve: Curve
 @export var random_curve: Curve
+@export var spike_threshold = 0.4
 
 var terrain_seed: int = 0
 
@@ -185,7 +186,7 @@ func generate():
 		random_vertex.x = vertex.x + random_x * random_multiplier * scale_multiplier
 		random_vertex.z = vertex.z + random_z * random_multiplier * scale_multiplier
 		
-		var spike_threshold = 0.5
+		
 		if spikeness > spike_threshold:
 			
 			spike_count += 1

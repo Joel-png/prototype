@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dqvqvqgmttuvl"]
+[gd_scene load_steps=21 format=3 uid="uid://dqvqvqgmttuvl"]
 
 [ext_resource type="Script" uid="uid://0yl2v46tthnx" path="res://Scripts/Player.gd" id="1_i527r"]
 [ext_resource type="PackedScene" uid="uid://dcy6qmu5knesv" path="res://crosshair.tscn" id="2_72jpy"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://brgrcy3cn8f7f" path="res://inventory.tscn" id="6_1jxqw"]
 [ext_resource type="PackedScene" uid="uid://dyalckmpd84sl" path="res://rod.tscn" id="6_b26j0"]
 [ext_resource type="Script" uid="uid://bcgqpnafy2d0t" path="res://hotbar_container.gd" id="9_n7ghd"]
+[ext_resource type="PackedScene" uid="uid://duni65jxpnkbc" path="res://settings.tscn" id="11_nvl01"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qh12d"]
 
@@ -171,6 +172,9 @@ visible = false
 script = ExtResource("9_n7ghd")
 
 [node name="Crosshair" parent="PlayerHead/Camera3D" instance=ExtResource("2_72jpy")]
+
+[node name="Settings" parent="PlayerHead/Camera3D" instance=ExtResource("11_nvl01")]
+visible = false
 
 [node name="PlayerGrapplePivot" type="Node3D" parent="."]
 

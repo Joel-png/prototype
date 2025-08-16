@@ -5,8 +5,10 @@ var random_scaler = 0.5
 
 var casting: bool = false
 var fishing: bool = false
+var cast_charging: bool = true
+var cast_charging_amount: float = 0
 
-var fish_time: float = 1.0
+var fish_time: float = 5.0
 var fish_counter: float = 0.0
 
 @onready var fish_manager = get_tree().get_nodes_in_group("FishManager")[0]
@@ -20,7 +22,7 @@ var normal_array: PackedVector3Array = []
  
 var tangent_array: PackedVector3Array = []
 var uv_array: PackedVector2Array = []
-var rope_width: float = 0.15
+var rope_width: float = 0.03
 @export var resolution: int = 4
 @export var subdivide: int = 2
 @export var sag_amount: float = 1.0
@@ -37,11 +39,17 @@ func _ready() -> void:
 func action(_delta: float) -> void:
 	if is_focus():
 		if not fishing:
-			if Input.is_action_just_pressed("left_click"):
-				if not casting:
-					cast()
+			if Input.is_action_just_pressed("left_click") and not cast_charging:
+				if not casting and not cast_charging:
+					cast_charging = true
 				elif casting and not fishing:
 					finish_cast.rpc()
+			if cast_charging:
+				cast_charging_amount += _delta
+				if Input.is_action_just_released("left_click") or cast_charging_amount > 5.0:
+					cast_charging = false
+					cast()
+					cast_charging_amount = 0
 	if not fishing:
 		if casting and hook.hit_water:
 			print("hit water")
@@ -56,19 +64,21 @@ func action(_delta: float) -> void:
 			finish_cast.rpc()
 
 func cast():
-	cast_hook.rpc(global_position, Vector3(0.0, global_rotation.y, 0.0), overseer.get_what_look_at())
+	cast_hook.rpc(global_position, Vector3(0.0, global_rotation.y, 0.0), overseer.get_what_look_at(), cast_charging_amount)
 
 @rpc("any_peer", "call_local")
-func cast_hook(pos, rot, look_at_pos):
-	hook.cast(pos, rot, look_at_pos)
+func cast_hook(pos, rot, look_at_pos, cast_vel):
+	hook.cast(pos, rot, look_at_pos, cast_vel)
 	casting = true
 	hook.show()
+	line_mesh.show()
 	print(casting)
 
 @rpc("any_peer", "call_local")
 func finish_cast():
 	casting = false
 	hook.hide()
+	line_mesh.hide()
 
 func fish():
 	var random_droprate = fish_manager.get_random_droprate()

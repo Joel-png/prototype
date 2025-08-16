@@ -11,6 +11,7 @@ point_count = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k04ny"]
 cull_mode = 2
+shading_mode = 0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_k04ny"]
 
@@ -21,7 +22,7 @@ physics_interpolation_mode = 2
 script = ExtResource("1_fbgki")
 resolution = 6
 subdivide = 6
-sag_amount = 0.595
+sag_amount = 0.6
 catching_curve = SubResource("Curve_k04ny")
 
 [node name="Pivot" type="Node3D" parent="."]

@@ -50,6 +50,7 @@ var noise_increase = 2.0
 @onready var grimoire_spawner = $MSGrimoire
 @onready var rod_spawner = $MSRod
 @onready var inventory = $PlayerHead/Camera3D/Inventory/Inventory
+@onready var settings_ui = $PlayerHead/Camera3D/Settings
 
 @onready var hotbar_container = $PlayerHead/Camera3D/Inventory/HotbarContainer
 
@@ -116,14 +117,30 @@ func _process(delta: float) -> void:
 			
 		calc_noise(delta)
 		hotbar_logic()
-		if Input.is_action_just_pressed("Escape"):
+		if Input.is_action_just_pressed("Inventory"):
 			if is_focus:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 				inventory.show()
+				crosshair.hide()
 				is_focus = false
 			else:
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 				inventory.hide()
+				settings_ui.hide()
+				crosshair.show()
+				is_focus = true
+		
+		if Input.is_action_just_pressed("Escape"):
+			if is_focus:
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+				settings_ui.show()
+				crosshair.hide()
+				is_focus = false
+			else:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				settings_ui.hide()
+				inventory.hide()
+				crosshair.show()
 				is_focus = true
 			
 		if holdable:
